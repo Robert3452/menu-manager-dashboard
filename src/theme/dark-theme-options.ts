@@ -25,7 +25,8 @@ const primary = {
     main: '#7582EB',
     light: '#909BEF',
     dark: '#515BA4',
-    contrastText: neutral[900]
+    contrastText: neutral[900],
+    ...neutral
 };
 
 const secondary = {
@@ -176,12 +177,13 @@ export const darkThemeOptions: ThemeOptions = {
         mode: 'dark',
         grey: neutral,
     
-        // neutral,
+        
         primary,
         secondary,
         success,
         text,
-        warning
+        warning,
+
     },
     shadows: [
         'none',

@@ -1,6 +1,6 @@
 import { createSvgIcon } from '@mui/material';
 
-export const PaperClip = ()=> createSvgIcon(
+export const PaperClip = createSvgIcon(
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
     <path
       fillRule="evenodd"

@@ -1,6 +1,6 @@
 import { createSvgIcon } from '@mui/material';
 
-export const SwitchHorizontal = ()=> createSvgIcon(
+export const SwitchHorizontal = createSvgIcon(
   <svg
     width="20"
     height="20"

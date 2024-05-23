@@ -1,0 +1,177 @@
+import React from "react";
+import { Box, Button, Link, OutlinedInput, Typography } from "@mui/material";
+import { useDispatch, useSelector } from "../../../store";
+import { useState } from "react";
+import { Plus as PlusIcon } from "../../../icons/plus";
+import { createRow } from "../../../slices/menu";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import toast from "react-hot-toast";
+import { useRouter } from "next/router";
+import { branchesApi } from "../../../api/branch-api";
+
+const CorridorRowAdd = (props) => {
+  const dispatch = useDispatch();
+  const [isExpanded, setIsExpanded] = useState(false);
+  const { allIds } = useSelector((state) => state.menu.rows);
+  const router = useRouter();
+  const validationSchema = Yup.object().shape({
+    index: Yup.number(),
+    name: Yup.string().required("This field is required"),
+    description: Yup.string(),
+  });
+  const formik = useFormik({
+    initialValues: {
+      index: allIds?.length ? allIds?.length : 0,
+      name: "",
+      description: "",
+      branchesIds: [router.query.branchId],
+    },
+    validationSchema,
+    onSubmit: async (values, helpers) => {
+      try {
+        const response = await dispatch(createRow(values));
+        setIsExpanded(false);
+        toast.success(response.message);
+        helpers.resetForm();
+        helpers.setStatus({ success: true });
+      } catch (error) {
+        console.error(err);
+        toast.error("Something went wrong");
+        helpers.setStatus({ success: false });
+        helpers.setErrors({ submit: err.message });
+        helpers.setSubmitting(false);
+      }
+    },
+  });
+
+  const handleAddInit = () => {
+    setIsExpanded(true);
+  };
+
+  const handleAddCancel = () => {
+    setIsExpanded(false);
+    formik.resetForm();
+  };
+  return (
+    <Box
+      sx={{
+        px: 1,
+      }}
+      {...props}
+    >
+      <Box
+        sx={{
+          backgroundColor: (theme) =>
+            theme.palette.mode === "dark" ? "neutral.800" : "neutral.200",
+          borderRadius: 1,
+          mt: 7,
+          mx: 1,
+          width: {
+            xs: 300,
+          },
+        }}
+      >
+        <Box
+          sx={{
+            p: 2,
+          }}
+        >
+          {isExpanded ? (
+            <form
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                justifyContent: "center",
+              }}
+              onSubmit={formik.handleSubmit}
+            >
+              <OutlinedInput
+                autoFocus
+                fullWidth
+                placeholder="New Corridor"
+                name="name"
+                onChange={formik.handleChange}
+                value={formik.values.name}
+                sx={{
+                  backgroundColor: "background.paper",
+                  "& .MuiInputBase-input": {
+                    px: 2,
+                    py: 1,
+                  },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "neutral.400",
+                  },
+                }}
+              />
+              <OutlinedInput
+                autoFocus
+                fullWidth
+                multiline
+                minRows={3}
+                maxRows={3}
+                placeholder="Description"
+                name="description"
+                onChange={formik.handleChange}
+                value={formik.values.description}
+                sx={{
+                  mt: 2,
+                  backgroundColor: "background.paper",
+                  "& .MuiInputBase-input": {
+                    px: 0,
+                    py: 0,
+                  },
+                  "& .MuiOutlinedInput-notchedOutline": {
+                    borderColor: "neutral.400",
+                  },
+                }}
+              />
+              <Box
+                sx={{
+                  alignItems: "center",
+                  display: "flex",
+                  justifyContent: "flex-end",
+                  mt: 2,
+                  width: "100%",
+                }}
+              >
+                <Button
+                  // onClick={handleAddConfirm}
+                  size="small"
+                  startIcon={<PlusIcon fontSize="small" />}
+                  disabled={formik.isSubmitting}
+                  type="submit"
+                  variant="contained"
+                >
+                  Add Row
+                </Button>
+                <Button onClick={handleAddCancel} size="small" sx={{ ml: 2 }}>
+                  Cancel
+                </Button>
+              </Box>
+            </form>
+          ) : (
+            <Link
+              onClick={handleAddInit}
+              sx={{
+                alignItems: "center",
+                cursor: "pointer",
+                display: "flex",
+                justifyContent: "flex-start",
+              }}
+              underline="none"
+            >
+              <PlusIcon sx={{ color: "action.active" }} />
+              <Typography color="textSecondary" variant="subtitle1">
+                Add corridor
+              </Typography>
+            </Link>
+          )}
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
+export default CorridorRowAdd;

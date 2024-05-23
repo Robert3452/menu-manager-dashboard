@@ -1,6 +1,6 @@
 "use client";
 import { SettingsButton } from "@/components/settings-button";
-import { AuthConsumer, AuthProvider } from "@/contexts/jwt-cotext";
+import { AuthConsumer, AuthProvider } from "@/contexts/jwt-context";
 import { SettingsConsumer, SettingsProvider } from "@/contexts/settings-context";
 import { store } from "@/store";
 import { createTheme } from "@/theme";

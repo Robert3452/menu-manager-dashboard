@@ -1,6 +1,6 @@
 import { createSvgIcon } from '@mui/material';
 
-export const ReceiptTax = ()=> createSvgIcon(
+export const ReceiptTax = createSvgIcon(
   <svg viewBox="0 0 18 20" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
     <path
       fillRule="evenodd"
