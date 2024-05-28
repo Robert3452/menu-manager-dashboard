@@ -5,7 +5,9 @@ export interface CreateBranchDto {
   storeId: number;
 }
 
-export interface UpdateBranchDto extends Partial<CreateBranchDto> {}
+export interface UpdateBranchDto extends Partial<CreateBranchDto> {
+  id: number;
+}
 
 const httpClient = HttpClient(
   `${process.env.NEXT_PUBLIC_MENU_MANAGER}/api/branches`

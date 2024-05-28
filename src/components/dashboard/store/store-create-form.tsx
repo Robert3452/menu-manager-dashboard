@@ -1,33 +1,27 @@
-import { useState } from 'react';
-import { useRouter } from 'next/router';
-import toast from 'react-hot-toast';
-import * as Yup from 'yup';
-import { useFormik } from 'formik';
 import {
   Box,
   Button,
   Card,
   CardContent,
-  FormControlLabel,
-  FormHelperText,
   Grid,
-  MenuItem,
-  Switch,
   TextField,
   Typography
-} from '@mui/material';
-import { FileDropzone } from '../../file-dropzone';
-import { QuillEditor } from '../../quill-editor';
-import UploadInput from '../../upload-input';
-import { storeApi } from '../../../api/store-api';
+} from "@mui/material";
+import { useFormik } from "formik";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import * as Yup from "yup";
+// import UploadInput from "../../upload-input";
+import UploadInput from "@/components/upload-input";
+import { storeApi } from "../../../api/store-api";
 
-
-export const StoreCreateForm = (props) => {
+export const StoreCreateForm = (props: any) => {
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
       name: "",
-      file: ""
+      file: "",
     },
     validationSchema: Yup.object({
       name: Yup.string().max(255).required(),
@@ -35,67 +29,47 @@ export const StoreCreateForm = (props) => {
     }),
     onSubmit: async (values, helpers) => {
       try {
+        if (!file) return;
         const response = await storeApi.createStore({ ...values, file });
         // NOTE: Make API request
         toast.success(response.message);
-        router.push('/dashboard/stores');
-      } catch (err) {
+        router.push("/dashboard/stores");
+      } catch (err: any) {
         console.error(err);
-        toast.error('Something went wrong!');
+        toast.error("Something went wrong!");
         helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
       }
-    }
+    },
   });
 
-  const [file, setFile] = useState(null)
-  const handleChange = (event) => {
+  const [file, setFile] = useState(null);
+  const handleChange = (event: any) => {
     const uploadedFile = event.target.files[0];
     formik.setFieldValue("file", uploadedFile);
     setFile(uploadedFile);
-  }
-  const handleDelete = (event) => {
+  };
+  const handleDelete = (_: any) => {
     setFile(null);
-    formik.setFieldValue("file", null)
-  }
+    formik.setFieldValue("file", null);
+  };
 
   return (
-    <form
-
-      onSubmit={formik.handleSubmit}
-      {...props}>
+    <form onSubmit={formik.handleSubmit} {...props}>
       <Card>
         <CardContent>
-          <Grid
-            container
-            spacing={3}
-
-          >
-            <Grid
-              item
-              md={4}
-              xs={12}
-            >
-              <Typography variant="h6">
-                Basic details
-              </Typography>
+          <Grid container spacing={3}>
+            <Grid item md={4} xs={12}>
+              <Typography variant="h6">Basic details</Typography>
             </Grid>
-            <Grid
-              item
-              md={8}
-              xs={12}
-            >
+            <Grid item md={8} xs={12}>
               <Grid
                 container
-                flex
+                sx={{ display: "flex" }}
                 alignItems={"flex-start"}
                 spacing={2}
               >
-                <Grid
-                  item
-                  md={6}
-                  xs={12}>
+                <Grid item md={6} xs={12}>
                   <TextField
                     error={Boolean(formik.touched.name && formik.errors.name)}
                     fullWidth
@@ -106,13 +80,8 @@ export const StoreCreateForm = (props) => {
                     onChange={formik.handleChange}
                     value={formik.values.name}
                   />
-
                 </Grid>
-                <Grid
-                  item
-                  md={6}
-                  xs={12}
-                >
+                <Grid item md={6} xs={12}>
                   <UploadInput
                     error={Boolean(formik.touched.file && formik.errors.file)}
                     helperText={formik.touched.file && formik.errors.file}
@@ -121,39 +90,35 @@ export const StoreCreateForm = (props) => {
                     name={"file"}
                     placeholder={"Set a logo"}
                   />
-
                 </Grid>
               </Grid>
-
             </Grid>
           </Grid>
         </CardContent>
       </Card>
       <Box
         sx={{
-          display: 'flex',
-          flexWrap: 'wrap',
-          justifyContent: 'space-between',
+          display: "flex",
+          flexWrap: "wrap",
+          justifyContent: "space-between",
           mx: -1,
           mb: -1,
-          mt: 3
+          mt: 3,
         }}
       >
         <Button
           sx={{ m: 1, ml: "auto" }}
           variant="outlined"
-          onClick={() => { router.back() }}
+          onClick={() => {
+            router.back();
+          }}
         >
           Cancel
         </Button>
-        <Button
-          sx={{ m: 1 }}
-          type="submit"
-          variant="contained"
-        >
+        <Button sx={{ m: 1 }} type="submit" variant="contained">
           Create
         </Button>
       </Box>
-    </form >
+    </form>
   );
 };

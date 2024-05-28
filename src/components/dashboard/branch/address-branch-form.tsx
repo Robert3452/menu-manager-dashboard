@@ -24,7 +24,11 @@ import { ubigeoApi } from "../../../api/masterData/ubigeo";
 import { Home as HomeIcon } from "../../../icons/home";
 import { OfficeBuilding as BuildingIcon } from "../../../icons/office-building";
 import { createAddress, updateAddress } from "../../../slices/branches";
-import { useDispatch, useSelector } from "../../../store";
+import { Branch } from "@/api/models/branch";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { CreateAddressDto } from "@/api/address-api";
+import { StreetTypes } from "@/api/models/enums/StreetTypes";
+// import { useDispatch, useSelector } from "../../../store";
 
 const addressTypesOptions = [
   {
@@ -47,7 +51,13 @@ const streetTypes = [
   { text: "Jiron", value: "jiron" },
   { text: "Pasaje", value: "pasaje" },
 ];
-export const AddressBranchForm = (props) => {
+type AddressBranchFormProps = {
+  branch: Branch;
+};
+interface QueryParams {
+  branchId?: number;
+}
+export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
   const { branch, ...other } = props;
   const [department, setDepartment] = useState(null);
   const [province, setProvince] = useState(null);
@@ -56,6 +66,7 @@ export const AddressBranchForm = (props) => {
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
   const router = useRouter();
+  const query = router.query as QueryParams;
   const validationSchema = Yup.object().shape({
     address: Yup.string().required("This field is required"),
     department: Yup.string().required("Department field is required"),
@@ -68,8 +79,8 @@ export const AddressBranchForm = (props) => {
     phoneNumber: Yup.string().required("Phone Number field is required"),
     references: Yup.string(), //.required("References field is required")
   });
-  const dispatch = useDispatch();
-  const { branches } = useSelector((state) => state.branch);
+  const dispatch = useAppDispatch();
+  // const { branches } = useAppSelector((state) => state.branches);
   const formik = useFormik({
     initialValues: {
       address: branch?.address?.address || "",
@@ -97,7 +108,10 @@ export const AddressBranchForm = (props) => {
           toast.success(addressResponse.message);
         } else {
           const addressResponse = await dispatch(
-            createAddress({ branchId: branch.id, address: values })
+            createAddress({
+              branchId: branch.id,
+              address: { ...values } as CreateAddressDto,
+            })
           );
           toast.success(addressResponse.message);
         }
@@ -109,24 +123,24 @@ export const AddressBranchForm = (props) => {
         console.error(err);
         toast.error("Something went wrong!");
         helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
+        // helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
       }
     },
   });
-  const handleProvince = (event, newValue) => {
+  const handleProvince = (_: any, newValue: any) => {
     getDistricts(department, newValue);
     setProvince(newValue);
     let form = formik.values;
     form.province = newValue?.name;
 
     if (districts.length > 0) {
-      form.address.district = "";
+      form.district = "";
       setDistrict(null);
     }
     formik.setValues(form);
   };
-  const handleDepartment = (event, newValue) => {
+  const handleDepartment = (event: any, newValue: any) => {
     getProvinces(newValue);
     setDepartment(newValue);
     let form = formik.values;
@@ -140,7 +154,7 @@ export const AddressBranchForm = (props) => {
     }
     formik.setValues(form);
   };
-  const handleDistrict = (event, newValue) => {
+  const handleDistrict = (event: any, newValue: any) => {
     setDistrict(newValue);
     let form = formik.values;
     form.district = newValue?.name;
@@ -156,7 +170,7 @@ export const AddressBranchForm = (props) => {
       setDepartments([]);
     }
   };
-  const getProvinces = async (department) => {
+  const getProvinces = async (department: any) => {
     try {
       const data = await ubigeoApi.getProvincesByDepartmentCode(
         department.departmentCode
@@ -169,7 +183,7 @@ export const AddressBranchForm = (props) => {
       setDistricts([]);
     }
   };
-  const getDistricts = async (department, province) => {
+  const getDistricts = async (department: any, province: any) => {
     try {
       const data = await ubigeoApi.getDistrictsByProvinceCode(
         department.departmentCode,
@@ -182,22 +196,25 @@ export const AddressBranchForm = (props) => {
       setDistricts([]);
     }
   };
-  const [streetType, setStreetType] = useState(null);
+  const [streetType, setStreetType] = useState<{
+    text: string;
+    value: string;
+  } | null>(null);
 
   const handleEditForm = async () => {
     const currDepartment = departments.find(
-      (el) => el.name == branch?.address?.department
+      (el: any) => el.name == branch?.address?.department
     );
     if (!currDepartment) return;
     setDepartment(currDepartment);
     const provinces = await getProvinces(currDepartment);
     const currProvince = provinces.find(
-      (el) => el.name == branch.address.province
+      (el: any) => el.name == branch.address.province
     );
     const districts = await getDistricts(currDepartment, currProvince);
     setProvince(currProvince);
     const currDistrict = districts.find(
-      (el) => el.name == branch.address.district
+      (el: any) => el.name == branch.address.district
     );
     setDistrict(currDistrict);
   };
@@ -208,26 +225,25 @@ export const AddressBranchForm = (props) => {
 
   useEffect(() => {
     getDepartments();
-    if (router.query?.branchId) {
+    if (query.branchId) {
       setStreetType(
         streetTypes.find(
-          (el) => el.value.toLowerCase() == branch?.address?.streetType
-        )
+          (el: any) => el.value.toLowerCase() == branch?.address?.streetType
+        ) || null
       );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const streetTypeChange = (event, newValue) => {
+  const streetTypeChange = (event: any, newValue: any) => {
     let form = formik.values;
     form.streetType = newValue?.value;
     formik.setValues(form);
     setStreetType(newValue);
   };
-  const radioButtonChange = (event) => {
+  const radioButtonChange = (event: any) => {
     const { value } = event.target;
     const form = formik.values;
     form.addressType = value;
-    // console.log(form)
     formik.setValues(form);
   };
 
@@ -240,7 +256,7 @@ export const AddressBranchForm = (props) => {
             <Grid container spacing={3}>
               <Grid item md={6} xs={12}>
                 <Autocomplete
-                  isOptionEqualToValue={(option, value) =>
+                  isOptionEqualToValue={(option: any, value: any) =>
                     option?.departmentCode === value?.departmentCode
                   }
                   getOptionLabel={(option) => option.name}
@@ -251,7 +267,6 @@ export const AddressBranchForm = (props) => {
                   renderInput={(params) => (
                     <TextField
                       autoComplete="off"
-                      fullWidth
                       label="Department"
                       {...params}
                     />
@@ -260,7 +275,7 @@ export const AddressBranchForm = (props) => {
               </Grid>
               <Grid item md={6} xs={12}>
                 <Autocomplete
-                  isOptionEqualToValue={(option, value) =>
+                  isOptionEqualToValue={(option:any, value:any) =>
                     option?.provinceCode === value?.provinceCode
                   }
                   getOptionLabel={(option) => option.name}
@@ -271,7 +286,7 @@ export const AddressBranchForm = (props) => {
                   autoComplete={false}
                   renderInput={(params) => (
                     <TextField
-                      fullWidth
+                      // fullWidth
                       autoComplete="off"
                       label="Province"
                       {...params}
@@ -281,7 +296,7 @@ export const AddressBranchForm = (props) => {
               </Grid>
               <Grid item md={6} xs={12}>
                 <Autocomplete
-                  isOptionEqualToValue={(option, value) =>
+                  isOptionEqualToValue={(option:any, value:any) =>
                     option?.districtCode === value?.districtCode
                   }
                   getOptionLabel={(option) => option.name}
@@ -291,7 +306,7 @@ export const AddressBranchForm = (props) => {
                   value={district}
                   renderInput={(params) => (
                     <TextField
-                      fullWidth
+                      // fullWidth
                       autoComplete="off"
                       label="District"
                       {...params}
@@ -309,7 +324,7 @@ export const AddressBranchForm = (props) => {
                   renderInput={(params) => (
                     <TextField
                       autoComplete="off"
-                      fullWidth
+                      // fullWidth
                       label="Street type / Tipo de calle"
                       {...params}
                     />

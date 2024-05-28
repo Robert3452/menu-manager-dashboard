@@ -323,7 +323,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
   const { onClose, open } = props;
   const router = useRouter();
   const { t } = useTranslation();
-  const lgUp = useMediaQuery((theme:any) => theme.breakpoints.up("lg"), {
+  const lgUp = useMediaQuery((theme: any) => theme.breakpoints.up("lg"), {
     noSsr: true,
   });
   const sections = useMemo(() => getSections(t), [t]);
@@ -373,15 +373,15 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
           }}
         >
           <div>
-            <Box sx={{ p: 3 }}>
+            <Box sx={{ p: 3, width: "100%" }}>
               <NextLink href="/" passHref>
                 {/* <a> */}
-                  <Logo
-                    sx={{
-                      height: 42,
-                      width: 42,
-                    }}
-                  />
+                <Logo
+                  sx={{
+                    height: 42,
+                    width: 42,
+                  }}
+                />
                 {/* </a> */}
               </NextLink>
             </Box>
@@ -512,5 +512,3 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
     </Drawer>
   );
 };
-
-

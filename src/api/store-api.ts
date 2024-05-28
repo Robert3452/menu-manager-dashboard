@@ -1,6 +1,6 @@
-import { Store } from "@mui/icons-material";
 import { HttpClient } from "./httpClient";
-import { format } from "date-fns";
+import { IResponse } from "./models/GenericResponse";
+import { Store } from "./models/store";
 const httpClient = HttpClient(
   `${process.env.NEXT_PUBLIC_MENU_MANAGER}/api/stores`
 );
@@ -8,43 +8,43 @@ export interface CreateStoreDto {
   name: string;
   file: Blob;
 }
-
 export interface UpdateStoreDto extends Partial<CreateStoreDto> {}
+
 class StoresApi {
-  async getStores() {
-    const {
-      data: { data },
-    } = await httpClient.get("");
+  async getStores(): Promise<IResponse<Store[]>> {
+    const { data } = await httpClient.get<IResponse<Store[]>>("");
     return data;
   }
 
-  async getStorebyId(storeId: number) {
-    const {
-      data: { data },
-    } = await httpClient.get(`${storeId}`);
+  async getStorebyId(storeId: number): Promise<IResponse<Store>> {
+    const { data } = await httpClient.get<IResponse<Store>>(`${storeId}`);
     return data;
   }
-  async updateStore(storeId: number, updateStore: UpdateStoreDto) {
+  async updateStore(
+    storeId: number,
+    updateStore: UpdateStoreDto
+  ): Promise<IResponse<Store>> {
     const { name, file } = updateStore;
     const formData = new FormData();
     if (name) formData.append("name", name);
     if (file) formData.append("file", file);
-    const { data } = await httpClient.put(`/${storeId}`, formData);
-    console.log(data);
+    const { data } = await httpClient.put<IResponse<Store>>(
+      `/${storeId}`,
+      formData
+    );
     return data;
   }
 
-  async deleteStore(storeId: number) {
-    const { data } = await httpClient.delete(`/${storeId}`);
+  async deleteStore(storeId: number): Promise<IResponse<Store>> {
+    const { data } = await httpClient.delete<IResponse<Store>>(`/${storeId}`);
     return data;
   }
-  async createStore(newStore: CreateStoreDto) {
+  async createStore(newStore: CreateStoreDto): Promise<IResponse<Store>> {
     const { name, file } = newStore;
     const formData = new FormData();
     formData.append("name", name);
     formData.append("file", file);
-    const { data } = await httpClient.post("", formData);
-    console.log(data);
+    const { data } = await httpClient.post<IResponse<Store>>("", formData);
     return data;
   }
 }

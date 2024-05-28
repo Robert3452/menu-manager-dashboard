@@ -40,6 +40,8 @@ export const DashboardSidebarItem = (props: any) => {
           mb: 0.5,
           py: 0,
           px: 2,
+          width: "100%",
+          "&>a": { width: "100%" },
         }}
         {...other}
       >
@@ -88,6 +90,9 @@ export const DashboardSidebarItem = (props: any) => {
     <ListItem
       disableGutters
       sx={{
+        width: "100%",
+        "&>a": { width: "100%" },
+
         display: "flex",
         mb: 0.5,
         py: 0,

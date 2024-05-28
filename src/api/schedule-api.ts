@@ -1,4 +1,5 @@
 import { HttpClient } from "./httpClient";
+import { Weekdays } from "./models/enums/Weekdays";
 
 const httpClient = HttpClient(
   `${process.env.NEXT_PUBLIC_MENU_MANAGER}/api/schedules`
@@ -9,20 +10,11 @@ export interface CreateScheduleDto {
 }
 
 export interface UpdateScheduleDto extends Partial<CreateScheduleDto> {}
-export enum Weekdays {
-  monday = "monday",
-  tuesday = "tuesday",
-  wednesday = "wednesday",
-  thursday = "thursday",
-  friday = "friday",
-  saturday = "saturday",
-  sunday = "sunday",
-}
 
 export interface CreateWeekdayScheduleDto {
   weekday: Weekdays;
-  openTime: string;
-  endTime: string;
+  openTime?: string;
+  endTime?: string;
   closed: boolean;
   id?: number;
   scheduleId: number;

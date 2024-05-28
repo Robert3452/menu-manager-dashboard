@@ -39,7 +39,6 @@ export const SettingsDrawer = (props: any) => {
     const [values, setValues] = useState(getValues(settings));
 
     useEffect(() => {
-        console.log(settings)
         setValues(getValues(settings));
     }, [settings]);
 
@@ -112,7 +111,6 @@ export const SettingsDrawer = (props: any) => {
                 >
                     {themes.map((theme) => {
                         const { label, icon: Icon, value } = theme;
-                        console.log(Icon)
                         return (
                             <div key={value}>
                                 <Box

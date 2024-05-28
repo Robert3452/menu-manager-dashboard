@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Scrollbar } from "../../scrollbar";
+import { SeverityPill } from "@/components/severity-pill";
 // import { SeverityPill } from "../../severity-pill";
 
 const transactions = [

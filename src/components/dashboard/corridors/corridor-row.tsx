@@ -17,26 +17,34 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { DotsHorizontal } from "../../../icons/dots-horizontal";
 import { clearRow, deleteRow, updateRow } from "../../../slices/menu";
-import { useDispatch, useSelector } from "../../../store";
+// import { useDispatch, useSelector } from "../../../store";
 import MenuCard from "./menu-card";
 import MenuCardAdd from "./menu-card-add";
+import { store, useAppDispatch, useAppSelector } from "@/store";
+import { CorridorState } from "@/api/models/corridor";
 
-const rowSelector = (state, rowId) => {
+const rowSelector = (
+  state: ReturnType<typeof store.getState>,
+  rowId: number
+) => {
   const { rows } = state.menu;
+
   return rows.byId[rowId];
 };
-
-const CorridorRow = (props) => {
-  const { rowId, ...other } = props;
+type CorridorRowProps = {
+  rowId: number;
+};
+const CorridorRow: React.FC<CorridorRowProps> = (props) => {
+  const { rowId } = props;
   const [isRenaming, setIsRenaming] = useState(false);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const moreRef = useRef(null);
-  const row = useSelector((state) => rowSelector(state, rowId));
+  const row = useAppSelector((state) => rowSelector(state, rowId));
   const [name, setName] = useState(row?.name || "");
   const [openMenu, setOpenMenu] = useState(false);
-  
-  const handleChange = (event) => {
+
+  const handleChange = (event: any) => {
     setName(event.target.value);
   };
 
@@ -89,22 +97,23 @@ const CorridorRow = (props) => {
       toast.error("Something went wrong");
     }
   };
-  const [grid, setGrid] = useState([]);
+  const [grid, setGrid] = useState<number[][]>();
 
   useEffect(() => {
-    console.log(row)
-    if (row);
-    {
-      const count = 0;
+    if (row) {
+      let count = 0;
       if (!row?.cardIds) return;
-      const currentGrid = row.cardIds.reduce((acc, curr) => {
-        if (!acc[count]) acc[count] = [];
+      const currentGrid = row.cardIds.reduce<number[][]>(
+        (acc: number[][], curr: number) => {
+          if (!acc[count]) acc[count] = [];
 
-        acc[count].push(curr);
-        if (acc[count].length % 3 === 0) count++;
+          acc[count].push(curr);
+          if (acc[count].length % 3 === 0) count++;
 
-        return acc;
-      }, []);
+          return acc;
+        },
+        [] as number[][]
+      );
       setGrid(currentGrid);
     }
   }, [row]);
@@ -202,10 +211,9 @@ const CorridorRow = (props) => {
         }}
       >
         <Box sx={{ minHeight: 210 }}>
-          {grid.length > 0 ? (
-            grid.map((rowGrid, indexRow) => (
+          {grid && grid.length > 0 ? (
+            grid.map((rowGrid:number[], indexRow:number) => (
               <Droppable
-                id={`id${indexRow}`}
                 droppableId={`${row?.id}|${indexRow}`}
                 key={`rowGrid${indexRow}`}
                 type="grid"
@@ -236,7 +244,7 @@ const CorridorRow = (props) => {
                       >
                         {(_provided, snapshot) => (
                           <MenuCard
-                            cardId={cardId}
+                            cardId={cardId.toString()}
                             dragging={snapshot.isDragging}
                             index={index}
                             key={cardId}

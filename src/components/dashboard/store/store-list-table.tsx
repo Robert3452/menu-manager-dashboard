@@ -4,16 +4,24 @@ import {
   TableCell,
   TableHead,
   TablePagination,
-  TableRow
-} from '@mui/material';
+  TableRow,
+} from "@mui/material";
 
-import PropTypes from 'prop-types';
-import { useState } from 'react';
-import { Scrollbar } from '../../scrollbar';
-import StoreListItem from './store-list-item';
+import PropTypes from "prop-types";
+import { useState } from "react";
+import { Scrollbar } from "../../scrollbar";
+import StoreListItem from "./store-list-item";
+import { Store } from "@/api/models/store";
+type StoreListProps = {
+  stores: Store[];
+  storesCount: number;
+  onPageChange: any;
+  onRowsPerPageChange: any;
+  page: number;
+  rowsPerPage: number;
+};
 
-
-export const StoreListTable = (props) => {
+export const StoreListTable: React.FC<StoreListProps> = (props) => {
   const {
     onPageChange,
     onRowsPerPageChange,
@@ -24,35 +32,33 @@ export const StoreListTable = (props) => {
     ...other
   } = props;
   const [openStore, setOpenStore] = useState(null);
-  const handleOpenStore = (storeId) => {
+  const handleOpenStore = (storeId: any) => {
     setOpenStore((prevValue) => (prevValue === storeId ? null : storeId));
   };
 
   return (
     <div {...other}>
       <Scrollbar>
-        <Table
-          sx={{ minWidth: 970 }}>
+        <Table sx={{ minWidth: 970 }}>
           <TableHead>
             <TableRow>
               <TableCell width="6%" />
-              <TableCell  width="65%">
-                Name
-              </TableCell>
+              <TableCell width="65%">Name</TableCell>
 
-              <TableCell align="right">
-                Actions
-              </TableCell>
+              <TableCell align="right">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {stores.map((store) => {
+            {stores.map((store: Store) => {
               return (
-                <StoreListItem
-                  key={`item_${store.id}`}
-                  open={store.id === openStore}
-                  handleOpenStore={handleOpenStore}
-                  store={store} />
+                store && (
+                  <StoreListItem
+                    key={`item_${store.id}`}
+                    open={store.id === openStore}
+                    handleOpenStore={handleOpenStore}
+                    store={store}
+                  />
+                )
               );
             })}
           </TableBody>
@@ -69,13 +75,4 @@ export const StoreListTable = (props) => {
       />
     </div>
   );
-};
-
-StoreListTable.propTypes = {
-  stores: PropTypes.array.isRequired,
-  storesCount: PropTypes.number.isRequired,
-  onPageChange: PropTypes.func,
-  onRowsPerPageChange: PropTypes.func,
-  page: PropTypes.number.isRequired,
-  rowsPerPage: PropTypes.number.isRequired
 };

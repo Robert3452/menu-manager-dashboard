@@ -1,16 +1,16 @@
-import {
-  Box,
-  Card,
-  Grid,
-  Typography
-} from "@mui/material";
+import { Box, Card, Grid, Typography } from "@mui/material";
 import React, { forwardRef, useState } from "react";
 
 import PropTypes from "prop-types";
-import { useSelector } from "../../../store";
+// import { useSelector } from "../../../store";
 import MenuCardModal from "./menu-card-modal";
+import { store, useAppSelector } from "@/store";
+import { CorridorState } from "@/api/models/corridor";
 
-const cardSelector = (state, cardId) => {
+const cardSelector = (
+  state: ReturnType<typeof store.getState>,
+  cardId: number
+) => {
   const { cards } = state.menu;
   const card = cards.byId[cardId];
   // debugger
@@ -19,11 +19,17 @@ const cardSelector = (state, cardId) => {
     // members: card.memberIds.map((memberId) => members.byId[memberId])
   };
 };
+type MenuCardProps = {
+  cardId: number;
+  dragging: boolean;
+  row: CorridorState;
 
-const MenuCard = forwardRef((props, ref) => {
+};
+// eslint-disable-next-line react/display-name
+const MenuCard= forwardRef<HTMLDivElement,MenuCardProps>((props, ref) => {
   const { cardId, dragging, row, ...other } = props;
   // debugger
-  const card = useSelector((state) => cardSelector(state, cardId));
+  const card = useAppSelector((state) => cardSelector(state, cardId));
 
   const [open, setOpen] = useState(false);
 
@@ -34,16 +40,16 @@ const MenuCard = forwardRef((props, ref) => {
   return (
     <>
       <Box
+        // ref={ref}
         ref={ref}
-        xs={4}
-        lg={4}
+        // lg={4}
         sx={{
           outline: "none",
           // py: 1,
           width: 340,
           height: 180,
         }}
-        {...other}
+        // {...other}
       >
         <Card
           onClick={toggleOpen}
@@ -124,16 +130,16 @@ const MenuCard = forwardRef((props, ref) => {
   );
 });
 
-MenuCard.propTypes = {
-  cardId: PropTypes.any.isRequired,
-  dragging: PropTypes.bool,
-  index: PropTypes.number,
-  row: PropTypes.object.isRequired,
-  style: PropTypes.object,
-};
+// MenuCard.propTypes = {
+//   cardId: PropTypes.any.isRequired,
+//   dragging: PropTypes.bool,
+//   index: PropTypes.number,
+//   row: PropTypes.object.isRequired,
+//   style: PropTypes.object,
+// };
 
-MenuCard.defaultProps = {
-  dragging: false,
-};
+// MenuCard.defaultProps = {
+//   dragging: false,
+// };
 
 export default MenuCard;

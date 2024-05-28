@@ -5,38 +5,42 @@ import toast from "react-hot-toast";
 import * as Yup from "yup";
 
 import {
-    Button,
-    Container,
-    Divider,
-    Grid,
-    TextField,
-    Typography
+  Button,
+  Container,
+  Divider,
+  Grid,
+  TextField,
+  Typography,
 } from "@mui/material";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-import { createBranch } from "../../../slices/branches";
-import { useDispatch } from "../../../store";
+import { useAppDispatch } from "@/store";
+import { createBranch } from "@/slices/branches";
+import { CreateBranchDto } from "@/api/branch-api";
 const NewBranchForm = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const router = useRouter();
   const formik = useFormik({
     initialValues: {
       branchName: "",
-      storeId: router.query.storeId,
+      storeId:
+        typeof router.query.storeId === "string" ? +router.query.storeId : 0,
     },
     validationSchema: Yup.object().shape({
       branchName: Yup.string().required("branch name required"),
     }),
     onSubmit: async (values, helpers) => {
       try {
-        const response = await dispatch(createBranch(values));
+        const response = await dispatch(
+          createBranch({ ...values } as CreateBranchDto)
+        );
         toast.success(response.message);
         helpers.resetForm();
       } catch (error) {
         console.error(error);
         toast.error("Algo va mal.");
         helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
+        // helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
       }
     },
@@ -51,8 +55,7 @@ const NewBranchForm = () => {
           alignItems={"center"}
           spacing={3}
         >
-          <Grid item xs={12} display={"flex"}
-justifyContent={"flex-start"}>
+          <Grid item xs={12} display={"flex"} justifyContent={"flex-start"}>
             <Typography variant="h5">New Branch</Typography>
           </Grid>
           <Divider />

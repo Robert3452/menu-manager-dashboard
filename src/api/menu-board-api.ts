@@ -1,14 +1,15 @@
 import { HttpClient } from "./httpClient";
+import { Branch } from "./models/branch";
+import { Corridor } from "./models/corridor";
+import { IResponse } from "./models/GenericResponse";
+import { Product } from "./models/product";
 const client = HttpClient(`${process.env.NEXT_PUBLIC_MENU_MANAGER}/api`);
 
-export interface CreateCorridorDto {
-  name: string;
-  description: string;
-  index: number;
-  branchesIds: number[];
-}
+export interface CreateCorridorDto extends Corridor {}
 
-export interface UpdateCorridorDto extends Partial<CreateCorridorDto> {}
+export interface UpdateCorridorDto extends Partial<CreateCorridorDto> {
+  id?: number;
+}
 
 export interface MoveCardDto {
   productId: number;
@@ -17,17 +18,19 @@ export interface MoveCardDto {
   branchId: number;
 }
 class BranchesMenuApi {
-  async getBoard(branchId: number) {
+  async getBoard(branchId: number): Promise<IResponse<Branch>> {
     const { data } = await client.get(`/branches/${branchId}/menu`);
     return data;
   }
 
-  async createCorridorRow(body: CreateCorridorDto) {
+  async createCorridorRow(
+    body: CreateCorridorDto
+  ): Promise<IResponse<Corridor>> {
     const { data } = await client.post(`/corridors`, body);
     return data;
   }
 
-  async moveCard(body: MoveCardDto) {
+  async moveCard(body: MoveCardDto): Promise<IResponse<Product>> {
     const { branchId, index, productId, corridorId } = body;
     const { data } = await client.put(`/products/move-card`, {
       branchId,

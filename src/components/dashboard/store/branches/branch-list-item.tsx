@@ -36,7 +36,6 @@ const BranchListItem = (props) => {
         onSubmit: async (values, helpers) => {
             try {
                 const response = await storeApi.updateStore(branch.id, { ...values, file })
-                console.log("response ", response);
                 toast.success(response.message);
                 router.push('/dashboard/stores');
 
