@@ -40,8 +40,8 @@ export const KanbanColumnAdd = (props) => {
       <Box
         sx={{
           backgroundColor: (theme) => theme.palette.mode === 'dark'
-            ? 'neutral.800'
-            : 'neutral.200',
+            ? 'grey.800'
+            : 'grey.200',
           borderRadius: 1,
           mt: 7,
           mx: 1,
@@ -69,7 +69,7 @@ export const KanbanColumnAdd = (props) => {
                       py: 1
                     },
                     '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: 'neutral.400'
+                      borderColor: 'grey.400'
                     }
                   }}
                 />

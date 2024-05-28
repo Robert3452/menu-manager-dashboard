@@ -57,7 +57,7 @@ export const DashboardSidebarItem = (props: any) => {
           onClick={handleToggle}
           startIcon={icon}
           sx={{
-            color: active ? "secondary.main" : "neutral.300",
+            color: active ? "secondary.main" : "grey.300",
             justifyContent: "flex-start",
             pl: `${paddingLeft}px`,
             pr: 3,
@@ -68,10 +68,10 @@ export const DashboardSidebarItem = (props: any) => {
               backgroundColor: "rgba(255,255,255, 0.08)",
             },
             "& .MuiButton-startIcon": {
-              color: active ? "secondary.main" : "neutral.400",
+              color: active ? "secondary.main" : "grey.400",
             },
             "& .MuiButton-endIcon": {
-              color: "neutral.400",
+              color: "grey.400",
             },
           }}
         >
@@ -108,7 +108,7 @@ export const DashboardSidebarItem = (props: any) => {
           sx={{
             backgroundColor: active && "rgba(255,255,255, 0.08)",
             borderRadius: 1,
-            color: active ? "secondary.main" : "neutral.300",
+            color: active ? "secondary.main" : "grey.300",
             fontWeight: active && "fontWeightBold",
             justifyContent: "flex-start",
             pl: `${paddingLeft}px`,
@@ -117,7 +117,7 @@ export const DashboardSidebarItem = (props: any) => {
             textTransform: "none",
             width: "100%",
             "& .MuiButton-startIcon": {
-              color: active ? "secondary.main" : "neutral.400",
+              color: active ? "secondary.main" : "grey.400",
             },
             "&:hover": {
               backgroundColor: "rgba(255,255,255, 0.08)",

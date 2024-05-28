@@ -55,7 +55,7 @@ export const KanbanCardAdd = (props) => {
                   py: 1
                 },
                 '& .MuiOutlinedInput-notchedOutline': {
-                  borderColor: 'neutral.400'
+                  borderColor: 'grey.400'
                 }
               }}
               value={name}

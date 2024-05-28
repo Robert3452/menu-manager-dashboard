@@ -66,7 +66,7 @@ export const CustomerListTable = (props) => {
     <div {...other}>
       <Box
         sx={{
-          backgroundColor: 'neutral.100',
+          backgroundColor: 'grey.100',
           display: !enableBulkActions && 'none',
           px: 2,
           py: 0.5

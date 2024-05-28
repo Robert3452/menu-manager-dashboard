@@ -98,7 +98,6 @@ const CorridorRow: React.FC<CorridorRowProps> = (props) => {
     }
   };
   const [grid, setGrid] = useState<number[][]>();
-
   useEffect(() => {
     if (row) {
       let count = 0;
@@ -205,14 +204,14 @@ const CorridorRow: React.FC<CorridorRowProps> = (props) => {
       <Box
         sx={{
           backgroundColor: (theme) =>
-            theme.palette.mode === "dark" ? "neutral.800" : "neutral.200",
+            theme.palette.mode === "dark" ? "grey.800" : "grey.200",
           minHeight: 210,
           borderRadius: 1,
         }}
       >
         <Box sx={{ minHeight: 210 }}>
           {grid && grid.length > 0 ? (
-            grid.map((rowGrid:number[], indexRow:number) => (
+            grid.map((rowGrid: number[], indexRow: number) => (
               <Droppable
                 droppableId={`${row?.id}|${indexRow}`}
                 key={`rowGrid${indexRow}`}
@@ -238,13 +237,13 @@ const CorridorRow: React.FC<CorridorRowProps> = (props) => {
                   >
                     {rowGrid.map((cardId, index) => (
                       <Draggable
-                        draggableId={`${cardId}`}
+                        draggableId={cardId.toString()}
                         index={index}
                         key={cardId}
                       >
                         {(_provided, snapshot) => (
                           <MenuCard
-                            cardId={cardId.toString()}
+                            cardId={cardId}
                             dragging={snapshot.isDragging}
                             index={index}
                             key={cardId}
@@ -295,7 +294,7 @@ const CorridorRow: React.FC<CorridorRowProps> = (props) => {
         <Divider
           sx={{
             borderColor: (theme) =>
-              theme.palette.mode === "dark" ? "neutral.700" : "neutral.300",
+              theme.palette.mode === "dark" ? "grey.700" : "grey.300",
             pt: 3,
           }}
         />

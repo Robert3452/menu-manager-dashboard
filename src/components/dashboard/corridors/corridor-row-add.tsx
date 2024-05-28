@@ -1,19 +1,22 @@
 import React from "react";
 import { Box, Button, Link, OutlinedInput, Typography } from "@mui/material";
-import { useDispatch, useSelector } from "../../../store";
+// import { useDispatch, useSelector } from "../../../store";
 import { useState } from "react";
 import { Plus as PlusIcon } from "../../../icons/plus";
-import { createRow } from "../../../slices/menu";
+// import { createRow } from "../../../slices/menu";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
 import { branchesApi } from "../../../api/branch-api";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { createRow } from "@/slices/menu";
+import { CreateCorridorDto } from "@/api/menu-board-api";
 
-const CorridorRowAdd = (props) => {
-  const dispatch = useDispatch();
+const CorridorRowAdd: React.FC<any> = (props) => {
+  const dispatch = useAppDispatch();
   const [isExpanded, setIsExpanded] = useState(false);
-  const { allIds } = useSelector((state) => state.menu.rows);
+  const { allIds } = useAppSelector((state) => state.menu.rows);
   const router = useRouter();
   const validationSchema = Yup.object().shape({
     index: Yup.number(),
@@ -30,16 +33,17 @@ const CorridorRowAdd = (props) => {
     validationSchema,
     onSubmit: async (values, helpers) => {
       try {
-        const response = await dispatch(createRow(values));
+        const response = await dispatch(
+          createRow({ ...values } as CreateCorridorDto)
+        );
         setIsExpanded(false);
         toast.success(response.message);
         helpers.resetForm();
         helpers.setStatus({ success: true });
       } catch (error) {
-        console.error(err);
+        console.error(error);
         toast.error("Something went wrong");
         helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);
       }
     },
@@ -63,7 +67,7 @@ const CorridorRowAdd = (props) => {
       <Box
         sx={{
           backgroundColor: (theme) =>
-            theme.palette.mode === "dark" ? "neutral.800" : "neutral.200",
+            theme.palette.mode === "dark" ? "grey.800" : "grey.200",
           borderRadius: 1,
           mt: 7,
           mx: 1,
@@ -101,7 +105,7 @@ const CorridorRowAdd = (props) => {
                     py: 1,
                   },
                   "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "neutral.400",
+                    borderColor: "grey.400",
                   },
                 }}
               />
@@ -123,7 +127,7 @@ const CorridorRowAdd = (props) => {
                     py: 0,
                   },
                   "& .MuiOutlinedInput-notchedOutline": {
-                    borderColor: "neutral.400",
+                    borderColor: "grey.400",
                   },
                 }}
               />

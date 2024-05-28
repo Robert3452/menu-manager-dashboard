@@ -6,8 +6,7 @@ export interface CreateProductDto {
   index: number;
   name: string;
   content: string;
-  image: string;
-  mandatory: boolean;
+  image: string | Blob | null;
   realPrice: number;
   corridorId: number;
   toppingCategories?: CreateToppingCategoryDto[];

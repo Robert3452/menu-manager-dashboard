@@ -37,8 +37,8 @@ export const CompanyAssets = (props) => {
                   sx={{
                     display: 'flex',
                     backgroundColor: (theme) => theme.palette.mode === 'dark'
-                      ? 'neutral.900'
-                      : 'neutral.100',
+                      ? 'grey.900'
+                      : 'grey.100',
                     justifyContent: 'center',
                     py: 3
                   }}

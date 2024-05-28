@@ -188,8 +188,8 @@ export const KanbanColumn = (props) => {
         <Box
           sx={{
             backgroundColor: (theme) => theme.palette.mode === 'dark'
-              ? 'neutral.800'
-              : 'neutral.200',
+              ? 'grey.800'
+              : 'grey.200',
             borderRadius: 1
           }}
         >
@@ -235,8 +235,8 @@ export const KanbanColumn = (props) => {
           <Divider
             sx={{
               borderColor: (theme) => theme.palette.mode === 'dark'
-                ? 'neutral.700'
-                : 'neutral.300'
+                ? 'grey.700'
+                : 'grey.300'
             }}
           />
           <Box sx={{ p: 2 }}>

@@ -70,7 +70,7 @@ export const DashboardSidebarSection = (props: any) => {
           disableGutters
           disableSticky
           sx={{
-            color: "neutral.500",
+            color: "grey.500",
             fontSize: "0.75rem",
             fontWeight: 700,
             lineHeight: 2.5,

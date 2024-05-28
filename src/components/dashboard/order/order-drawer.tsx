@@ -53,8 +53,8 @@ const OrderPreview = (props) => {
         sx={{
           alignItems: 'center',
           backgroundColor: (theme) => theme.palette.mode === 'dark'
-            ? 'neutral.800'
-            : 'neutral.100',
+            ? 'grey.800'
+            : 'grey.100',
           borderRadius: 1,
           display: 'flex',
           flexWrap: 'wrap',
@@ -236,8 +236,8 @@ const OrderForm = (props) => {
         sx={{
           alignItems: 'center',
           backgroundColor: (theme) => theme.palette.mode === 'dark'
-            ? 'neutral.800'
-            : 'neutral.100',
+            ? 'grey.800'
+            : 'grey.100',
           borderRadius: 1,
           display: 'flex',
           flexWrap: 'wrap',

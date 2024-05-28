@@ -93,7 +93,7 @@ const ToppingListTable = ({
             },
           }}
         >
-          <TableHead sx={{ backgroundColor: "neutral.900" }}>
+          <TableHead sx={{ backgroundColor: "grey.900" }}>
             <TableRow>
               <TableCell className="MuiTableCell-AddTopping" colSpan={5}>
                 <Button

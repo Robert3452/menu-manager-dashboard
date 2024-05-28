@@ -23,10 +23,11 @@ type MenuCardProps = {
   cardId: number;
   dragging: boolean;
   row: CorridorState;
-
+  index: number;
+  // other:any
 };
 // eslint-disable-next-line react/display-name
-const MenuCard= forwardRef<HTMLDivElement,MenuCardProps>((props, ref) => {
+const MenuCard = forwardRef<HTMLDivElement, MenuCardProps>((props, ref) => {
   const { cardId, dragging, row, ...other } = props;
   // debugger
   const card = useAppSelector((state) => cardSelector(state, cardId));
@@ -49,7 +50,7 @@ const MenuCard= forwardRef<HTMLDivElement,MenuCardProps>((props, ref) => {
           width: 340,
           height: 180,
         }}
-        // {...other}
+        {...other}
       >
         <Card
           onClick={toggleOpen}

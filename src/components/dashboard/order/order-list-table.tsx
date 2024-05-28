@@ -51,8 +51,8 @@ export const OrderListTable = (props) => {
                 <Box
                   sx={{
                     backgroundColor: (theme) => theme.palette.mode === 'dark'
-                      ? 'neutral.800'
-                      : 'neutral.200',
+                      ? 'grey.800'
+                      : 'grey.200',
                     borderRadius: 2,
                     maxWidth: 'fit-content',
                     ml: 3,

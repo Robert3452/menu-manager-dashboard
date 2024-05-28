@@ -26,20 +26,29 @@ import * as Yup from "yup";
 import EditProductImage from "./edit-product-image";
 import CategoryList from "./toppingCategories/category-list";
 import { Trash as TrashIcon } from "../../../icons/trash";
-import { useDispatch } from "../../../store";
 import {
   createProductCard,
   deleteProductCard,
   updateProductCard,
 } from "../../../slices/menu";
-const MenuCardModal = (props) => {
-  const { row, onClose, open, ...other } = props;
+import { Corridor } from "@/api/models/corridor";
+import { Product } from "@/api/models/product";
+import { useAppDispatch } from "@/store";
+
+type MenuCardModalProps = {
+  row: Corridor;
+  onClose: any;
+  open: boolean;
+  card?: Product;
+};
+const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
+  const { row, onClose, open } = props;
   const product = props.card;
   const theme = useTheme();
-  const dispatch = useDispatch();
-  const moreRef = useRef();
-  const [productImage, setProductImage] = useState(product?.image);
-  const [file, setFile] = useState(null);
+  const dispatch = useAppDispatch();
+  const moreRef = useRef<HTMLButtonElement>(null);
+  const [productImage, setProductImage] = useState<any>(product?.image);
+  const [file, setFile] = useState<Blob>();
   const validationSchema = Yup.object().shape({
     id: Yup.number(),
     name: Yup.string().required(),
@@ -78,12 +87,12 @@ const MenuCardModal = (props) => {
     validationSchema,
     initialValues: {
       id: product?.id,
-      name: product?.name,
-      content: product?.content,
+      name: product?.name || "",
+      content: product?.content || "",
       image: product?.image,
-      index: product?.index,
-      realPrice: product?.realPrice,
-      corridorId: row?.id,
+      index: product?.index || 0,
+      realPrice: product?.realPrice || 0,
+      corridorId: row?.id || 0,
       toppingCategories: !product?.toppingCategories
         ? []
         : product?.toppingCategories.map((el) => ({
@@ -97,13 +106,13 @@ const MenuCardModal = (props) => {
         const response = product
           ? await dispatch(
               updateProductCard({
-                productId: values.id,
+                productId: values.id || 0,
                 product: { ...values, image: file },
               })
             )
           : await dispatch(
               createProductCard({
-                product: { ...values, image: file },
+                product: { ...values, image: file || null },
               })
             );
         toast.success(response.message);
@@ -112,7 +121,6 @@ const MenuCardModal = (props) => {
       } catch (error) {
         toast.error("Algo va mal.");
         helpers.setStatus({ success: false });
-        helpers.setErrors({ submit: error.message });
         helpers.setSubmitting(false);
       }
     },
@@ -125,7 +133,7 @@ const MenuCardModal = (props) => {
     realPrice: product?.realPrice || "",
     corridorId: row?.id || 0,
   });
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     const value = event.target.value;
     const field = event.target.name;
 
@@ -140,17 +148,20 @@ const MenuCardModal = (props) => {
     // formik.setValues(productForm);
   };
   const handleDeleteProduct = async () => {
+    if (!product?.id) return;
     const response = await dispatch(
-      deleteProductCard({ productId: product?.id })
+      deleteProductCard({ productId: product?.id || 0 })
     );
     toast.success(response.message);
     toggleMenu();
   };
-  const handleChangeImage = (event) => {
+  const handleChangeImage = (event: any) => {
     const reader = new FileReader();
 
     reader.onload = () => {
-      setProductImage(reader.result);
+      let result = reader.result;
+
+      if (result instanceof Blob) setProductImage(result);
     };
     reader.readAsDataURL(event.target.files[0]);
     const uploadedFile = event.target.files[0];
@@ -166,7 +177,7 @@ const MenuCardModal = (props) => {
   }, [formik.errors]);
 
   return (
-    <Dialog fullWidth maxWidth="lg" onClose={onClose} open={open} {...other}>
+    <Dialog fullWidth maxWidth="lg" onClose={onClose} open={open}>
       <form onSubmit={formik.handleSubmit}>
         <FormikProvider value={formik}>
           <Grid
@@ -187,7 +198,7 @@ const MenuCardModal = (props) => {
               pt={1}
             >
               <Typography
-                color="neutral.200"
+                color="grey.200"
                 sx={{
                   mb: 2,
                   mt: 2,
@@ -198,22 +209,24 @@ const MenuCardModal = (props) => {
               </Typography>
 
               <Tooltip title="options" placement="top">
-                <IconButton onClick={toggleMenu} ref={moreRef}>
-                  <DotsHorizontalIcon fontSize="small" />
-                </IconButton>
-                <Menu
-                  anchorEl={moreRef.current}
-                  keepMounted
-                  onClose={toggleMenu}
-                  open={openMenu}
-                >
-                  <MenuItem onClick={handleDeleteProduct}>
-                    <ListItemIcon>
-                      <TrashIcon fontSize="small" />
-                    </ListItemIcon>
-                    <ListItemText primary="Delete Product" />
-                  </MenuItem>
-                </Menu>
+                <>
+                  <IconButton onClick={toggleMenu} ref={moreRef}>
+                    <DotsHorizontalIcon fontSize="small" />
+                  </IconButton>
+                  <Menu
+                    anchorEl={moreRef.current}
+                    keepMounted
+                    onClose={toggleMenu}
+                    open={openMenu}
+                  >
+                    <MenuItem onClick={handleDeleteProduct}>
+                      <ListItemIcon>
+                        <TrashIcon fontSize="small" />
+                      </ListItemIcon>
+                      <ListItemText primary="Delete Product" />
+                    </MenuItem>
+                  </Menu>
+                </>
               </Tooltip>
             </Grid>
             <Grid

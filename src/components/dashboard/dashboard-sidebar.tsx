@@ -404,13 +404,13 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
                   <Typography color="inherit" variant="subtitle1">
                     Acme Inc
                   </Typography>
-                  <Typography color="neutral.400" variant="body2">
+                  <Typography color="grey.400" variant="body2">
                     {t("Your tier")} : Premium
                   </Typography>
                 </div>
                 <SelectorIcon
                   sx={{
-                    color: "neutral.500",
+                    color: "grey.500",
                     width: 14,
                     height: 14,
                   }}
@@ -442,10 +442,10 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
             }}
           />
           <Box sx={{ p: 2 }}>
-            <Typography color="neutral.100" variant="subtitle2">
+            <Typography color="grey.100" variant="subtitle2">
               {t("Need Help?")}
             </Typography>
-            <Typography color="neutral.500" variant="body2">
+            <Typography color="grey.500" variant="body2">
               {t("Check our docs")}
             </Typography>
             <NextLink href="/docs/welcome" passHref>
@@ -477,7 +477,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
         open
         PaperProps={{
           sx: {
-            backgroundColor: "neutral.900",
+            backgroundColor: "grey.900",
             borderRightColor: "divider",
             borderRightStyle: "solid",
             borderRightWidth: (theme) =>
@@ -500,7 +500,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
       open={open}
       PaperProps={{
         sx: {
-          backgroundColor: "neutral.900",
+          backgroundColor: "grey.900",
           color: "#FFFFFF",
           width: 280,
         },

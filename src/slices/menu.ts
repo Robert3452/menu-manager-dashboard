@@ -129,9 +129,11 @@ const slice = createSlice({
     },
     moveProductCard(state, action) {
       const { cardId, position, rowId } = action.payload;
+      const f = {...state.cards.byId};
+      console.log(f);
       const sourceRowId = state.cards.byId[cardId].corridorId || 0;
-      if (sourceRowId)
-        throw new Error(`not found corridor Id in product card ${cardId}`);
+      if (!sourceRowId)
+        throw new Error(`Corridor not found Id in product card ${cardId}`);
       // Remove card from source row
       state.rows.byId[sourceRowId].cardIds = state.rows.byId[
         sourceRowId
@@ -221,6 +223,7 @@ export const createRow =
         cardIds,
       })
     );
+    return response;
   };
 
 export const deleteRow = (rowId: number) => async (dispatch: Dispatch) => {
