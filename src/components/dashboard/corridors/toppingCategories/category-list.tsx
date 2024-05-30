@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Plus as PlusIcon } from "../../../../icons/plus";
 import { CategoryListTable } from "./category-list-table";
 
-const CategoryList = ({ arrayHelpers, formik }) => {
+const CategoryList = ({ arrayHelpers, formik }:any) => {
   const addCategory = () => {
     let form = { ...formik.values };
     const newCategory = {
@@ -17,7 +17,7 @@ const CategoryList = ({ arrayHelpers, formik }) => {
       toppings: [],
     };
     form.toppingCategories = [...form?.toppingCategories, newCategory];
-    const mapped = form.toppingCategories.map((el, index) => ({
+    const mapped = form.toppingCategories.map((el:any, index:number) => ({
       ...el,
       index,
     }));

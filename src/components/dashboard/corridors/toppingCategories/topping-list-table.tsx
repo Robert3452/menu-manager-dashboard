@@ -6,14 +6,13 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import React from "react";
-import { v4 as uuidv4 } from "uuid";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import { v4 as uuidv4 } from "uuid";
 import { Plus as PlusIcon } from "../../../../icons/plus";
-import { getRandomInt } from "../../../../utils/getRandomInt";
 import ItemRowTopping from "./item-row-topping";
+import { Topping } from "@/api/models/topping";
 
-const ToppingListTable = ({
+const ToppingListTable: React.FC<any> = ({
   toppings,
   formik,
   arrayHelpers,
@@ -44,7 +43,7 @@ const ToppingListTable = ({
 
     // arrayHelpers.unshift();
   };
-  const onDragEnd = (result) => {
+  const onDragEnd = (result: any) => {
     if (!result.destination) return;
     let updatedToppings = [...toppings];
     const [removedTopping] = updatedToppings.splice(result.source.index, 1);
@@ -126,7 +125,7 @@ const ToppingListTable = ({
               {(provided) => (
                 <TableBody ref={provided.innerRef} {...provided.droppableProps}>
                   {toppings.map(
-                    (topping, index) =>
+                    (topping: Topping, index: number) =>
                       !topping.remove && (
                         <Draggable
                           key={topping?.key}

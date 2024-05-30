@@ -1,6 +1,6 @@
 import { ToppingsCategory } from "./toppingsCategory";
 
-export interface Topping{
+export interface Topping {
   id: number;
   available: boolean;
   title: string;
@@ -10,4 +10,6 @@ export interface Topping{
   required: boolean;
   toppingsCategory: ToppingsCategory;
   toppingCategoryId: number;
+  remove?: boolean;
+  key?: string;
 }
