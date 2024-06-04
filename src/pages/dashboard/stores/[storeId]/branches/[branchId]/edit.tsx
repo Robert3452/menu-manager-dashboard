@@ -2,7 +2,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Avatar, Box, Chip, Container, Link, Typography } from '@mui/material';
 import Head from 'next/head';
 import NextLink from 'next/link';
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, ReactNode } from 'react';
 import { AuthGuard } from '../../../../../../components/authentication/auth-guard';
 import { DashboardLayout } from '../../../../../../components/dashboard/dashboard-layout';
 // import { storeApi } from '../../../../api/store-api';
@@ -61,7 +61,7 @@ const StoreEdit = () => {
     );
 }
 
-StoreEdit.getLayout = (page) => (
+StoreEdit.getLayout = (page:ReactNode) => (
     <AuthGuard>
         <DashboardLayout>
             {page}

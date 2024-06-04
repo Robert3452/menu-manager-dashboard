@@ -13,7 +13,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { AuthGuard } from "../../components/authentication/auth-guard";
+// import { AuthGuard } from "../../components/authentication/auth-guard";
 import { DashboardLayout } from "../../components/dashboard/dashboard-layout";
 import { OverviewBanner } from "../../components/dashboard/overview/overview-banner";
 import { OverviewCryptoWallet } from "../../components/dashboard/overview/overview-crypto-wallet";
@@ -31,6 +31,7 @@ import { Reports as ReportsIcon } from "@/icons/reports";
 // import { UsersIcon } from '@/icons/users';
 import { gtm } from "../../lib/gtm";
 import UsersIcon from "@/icons/users";
+import { AuthGuard } from "@/components/authentication/auth-guard";
 
 const Overview = () => {
   const [displayBanner, setDisplayBanner] = useState(true);

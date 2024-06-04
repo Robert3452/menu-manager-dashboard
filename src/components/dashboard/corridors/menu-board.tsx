@@ -2,7 +2,7 @@ import { Box, Container, Grid, Typography } from "@mui/material";
 import React, { ReactNode, useEffect } from "react";
 import { DragDropContext } from "react-beautiful-dnd";
 import toast from "react-hot-toast";
-import { AuthGuard } from "../../../components/authentication/auth-guard";
+import { AuthGuard } from "../../authentication/auth-guard";
 import CorridorRow from "../../../components/dashboard/corridors/corridor-row";
 import CorridorRowAdd from "../../../components/dashboard/corridors/corridor-row-add";
 import { DashboardLayout } from "../../../components/dashboard/dashboard-layout";

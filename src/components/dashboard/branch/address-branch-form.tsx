@@ -52,7 +52,7 @@ const streetTypes = [
   { text: "Pasaje", value: "pasaje" },
 ];
 type AddressBranchFormProps = {
-  branch: Branch;
+  branch?: Branch;
 };
 interface QueryParams {
   branchId?: number;

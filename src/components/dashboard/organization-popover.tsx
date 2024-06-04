@@ -1,14 +1,11 @@
-import { MenuItem, Popover } from '@mui/material';
+import { MenuItem, Popover } from "@mui/material";
 
-const organizations = [
-  'Acme Inc',
-  'Division Inc'
-];
+const organizations = ["Acme Inc", "Division Inc"];
 
-export const OrganizationPopover = (props) => {
+export const OrganizationPopover: React.FC<any> = (props) => {
   const { anchorEl, onClose, open, ...other } = props;
 
-  const handleChange = (organization) => {
+  const handleChange = (organization: any) => {
     onClose?.();
   };
 
@@ -16,20 +13,18 @@ export const OrganizationPopover = (props) => {
     <Popover
       anchorEl={anchorEl}
       anchorOrigin={{
-        horizontal: 'left',
-        vertical: 'bottom'
+        horizontal: "left",
+        vertical: "bottom",
       }}
       keepMounted
       onClose={onClose}
       open={open}
       PaperProps={{ sx: { width: 248 } }}
       transitionDuration={0}
-      {...other}>
+      {...other}
+    >
       {organizations.map((organization) => (
-        <MenuItem
-          key={organization}
-          onClick={() => handleChange(organization)}
-        >
+        <MenuItem key={organization} onClick={() => handleChange(organization)}>
           {organization}
         </MenuItem>
       ))}
