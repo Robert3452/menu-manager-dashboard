@@ -27,9 +27,17 @@ const toppingTypeOpts = [
   { value: "exclusive", name: "Exclusive" },
   { value: "inclusive", name: "Inclusive" },
 ];
-
-const ItemRowCategory = ({
-  dragging,
+type ItemRowCategoryProps = {
+  // dragging: any;
+  category: any;
+  formik: any;
+  arrayHelpers: any;
+  index: number;
+  provided: any;
+  [k: string]: any;
+};
+const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
+  // dragging,
   category,
   formik,
   arrayHelpers,
@@ -72,7 +80,7 @@ const ItemRowCategory = ({
     index: formik.values?.toppingCategories?.[index]?.index,
     key: formik.values?.toppingCategories?.[index]?.key,
   });
-  const handleChange = (event) => {
+  const handleChange = (event: any) => {
     const value = event.target.value;
     const field = event.target.name.split(".").pop();
     const current = {
@@ -88,13 +96,13 @@ const ItemRowCategory = ({
       toppings: formik.values?.toppingCategories?.[index]?.toppings,
     });
   };
-  const handleMandatory = (event, newValue) => {
+  const handleMandatory = (event: any, newValue: any) => {
     setMandatory(newValue);
     handleChange({
       target: { value: newValue?.value, name: "field.mandatory" },
     });
   };
-  const handleToppingType = (event, newValue) => {
+  const handleToppingType = (event: any, newValue: any) => {
     setToppingType(newValue);
     handleChange({
       target: { value: newValue?.value, name: "field.toppingType" },
@@ -138,7 +146,7 @@ const ItemRowCategory = ({
             }}
           >
             <DragIndicatorIcon />
-            <IconButton onClick={() => handleOpenTopping(category.id)}>
+            <IconButton onClick={() => handleOpenTopping()}>
               {showTopping ? (
                 <ChevronDownIcon fontSize="small" />
               ) : (
@@ -196,7 +204,6 @@ const ItemRowCategory = ({
                 isOptionEqualToValue={(option, value) =>
                   option?.value === value?.value
                 }
-                name={`toppingCategories[${index}].toppingType`}
                 fullWidth
                 getOptionLabel={(option) => option.name}
                 getOptionKey={(option) => option.value}
@@ -207,7 +214,8 @@ const ItemRowCategory = ({
                 autoComplete={false}
                 renderInput={(params) => (
                   <TextField
-                    fullWidth
+                    name={`toppingCategories[${index}].toppingType`}
+                    // fullWidth
                     autoComplete="off"
                     label="Choose"
                     {...params}

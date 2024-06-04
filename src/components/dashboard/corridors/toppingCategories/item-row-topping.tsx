@@ -9,8 +9,19 @@ import {
 import React, { useState } from "react";
 import { Close } from "@mui/icons-material";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
+import { Topping } from "@/api/models/topping";
 
-const ItemRowTopping = ({
+type ItemRowtoppingProps = {
+  topping: Topping;
+  arrayHelpers: any;
+  formik: any;
+  index: number;
+  toppingsField: any;
+  indexCategory: number;
+  provided: any;
+  [key: string]: any;
+};
+const ItemRowTopping: React.FC<ItemRowtoppingProps> = ({
   topping,
   arrayHelpers,
   formik,
@@ -33,7 +44,7 @@ const ItemRowTopping = ({
   const saveChange = () => {
     arrayHelpers.replace(index, toppingForm);
   };
-  const handleChange = (event, field) => {
+  const handleChange = (event: any, field: any) => {
     const current = {
       ...toppingForm,
       [field]:

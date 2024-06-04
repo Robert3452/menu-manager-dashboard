@@ -1,3 +1,4 @@
+import { ToppingsCategoryProps } from "@/api/models/toppingsCategory";
 import {
   Table,
   TableBody,
@@ -9,9 +10,15 @@ import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
 import { Scrollbar } from "../../../scrollbar";
 import ItemRowCategory from "./item-row-category";
 
-export const CategoryListTable = (props) => {
+type CategoryListTableProps = {
+  [key: string]: any;
+  categories: ToppingsCategoryProps[];
+  formik: any;
+  arrayHelpers: any;
+};
+export const CategoryListTable: React.FC<CategoryListTableProps> = (props) => {
   const { categories, formik, arrayHelpers, ...other } = props;
-  const onDragEnd = (result) => {
+  const onDragEnd = (result: any) => {
     if (!result.destination) return;
     let updatedCategories = categories;
     const [removedCategory] = updatedCategories.splice(result.source.index, 1);
