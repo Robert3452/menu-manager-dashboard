@@ -36,9 +36,9 @@ import { AuthGuard } from "@/components/authentication/auth-guard";
 const Overview = () => {
   const [displayBanner, setDisplayBanner] = useState(true);
 
-  useEffect(() => {
-    gtm.push({ event: "page_view" });
-  }, []);
+  // useEffect(() => {
+  //   gtm.push({ event: "page_view" });
+  // }, []);
 
   useEffect(() => {
     // Restore the persistent state from local/session storage

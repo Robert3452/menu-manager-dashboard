@@ -1,8 +1,10 @@
 import { createContext, useEffect, useReducer } from "react";
 import PropTypes from "prop-types";
 import { I } from "@/utils/generalObj";
-import { authApi } from "@/__fake-api__/auth-api";
+// import { authApi } from "@/__fake-api__/auth-api";
 
+import { SessionProvider, signIn, useSession, signOut } from "next-auth/react";
+import { authApi, CreateUserDto } from "@/api/auth/auth-api";
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
@@ -57,17 +59,25 @@ export const AuthContext = createContext({
 });
 
 export const AuthProvider = (props: any) => {
+  const { data: session } = useSession();
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
 
   useEffect(() => {
+    dispatch({
+      type: "INITIALIZE",
+      payload: {
+        isAuthenticated: false,
+        user: null,
+      },
+    });
+  }, []);
+  useEffect(() => {
     const initialize = async () => {
       try {
-        const accessToken = window.localStorage.getItem("accessToken");
-
-        if (accessToken) {
-          const user = await authApi.me(accessToken);
-
+        console.log(session);
+        const user = session?.user;
+        if (user) {
           dispatch({
             type: "INITIALIZE",
             payload: {
@@ -95,34 +105,31 @@ export const AuthProvider = (props: any) => {
         });
       }
     };
-
-    initialize();
-  }, []);
+    if (session) initialize();
+  }, [session]);
 
   const login = async (email: string, password: string) => {
-    const accessToken = await authApi.login({ email, password });
-    const user = await authApi.me(accessToken);
-
-    localStorage.setItem("accessToken", `${accessToken}`);
-
-    dispatch({
-      type: "LOGIN",
-      payload: {
-        user,
-      },
+    const signinResponse = await signIn("credentials", {
+      username: email,
+      password,
+      redirect: false,
     });
   };
 
   const logout = async () => {
-    localStorage.removeItem("accessToken");
+    await signOut();
     dispatch({ type: "LOGOUT" });
   };
 
   const register = async (email: string, name: string, password: string) => {
-    const accessToken = await authApi.register({ email, name, password });
-    const user = await authApi.me(accessToken);
+    const user = await authApi.register({
+      email,
+      firstName: name,
+      password,
+    } as CreateUserDto);
+    // const user = await authApi.me(accessToken);
 
-    localStorage.setItem("accessToken", `${accessToken}`);
+    // localStorage.setItem("accessToken", `${accessToken}`);
 
     dispatch({
       type: "REGISTER",

@@ -13,8 +13,8 @@ export const JWTLogin: React.FC<any> = (props) => {
   const { login } = useAuth();
   const formik = useFormik({
     initialValues: {
-      email: "demo@devias.io",
-      password: "Password123!",
+      email: "romeza1239@gmail.com",
+      password: "admin1234",
       submit: null,
     },
     validationSchema: Yup.object({

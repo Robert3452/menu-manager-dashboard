@@ -89,12 +89,12 @@ const Login = () => {
             >
               <NextLink href="/" passHref>
                 {/* <a> */}
-                  <Logo
-                    sx={{
-                      height: 40,
-                      width: 40,
-                    }}
-                  />
+                <Logo
+                  sx={{
+                    height: 40,
+                    width: 40,
+                  }}
+                />
                 {/* </a> */}
               </NextLink>
               <Typography variant="h4">Log in</Typography>
@@ -111,8 +111,10 @@ const Login = () => {
               {/* {platform === 'Amplify' && <AmplifyLogin />} */}
               {/* {platform === 'Auth0' && <Auth0Login />} */}
               {/* {platform === 'Firebase' && <FirebaseLogin />} */}
-              {platform === "JWT" && <JWTLogin />}
+              {/* {platform === "JWT" && <JWTLogin />} */}
+              <JWTLogin />
             </Box>
+
             <Divider sx={{ my: 3 }} />
             <NextLink
               href={

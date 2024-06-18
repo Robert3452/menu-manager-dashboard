@@ -16,7 +16,7 @@ import Head from "next/head";
 import "@/theme/reset.css";
 // import Router from "next/router";
 import { LocalizationProvider } from "@mui/x-date-pickers";
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 // import nProgress from 'nprogress';
 import { AppProps } from "next/app";
@@ -25,6 +25,7 @@ import { Provider as ReduxProvider } from "react-redux";
 import { Page } from "../../types/page";
 import "../i18n";
 import { SplashScreen } from "@/components/splash-screen";
+import { SessionProvider } from "next-auth/react";
 type Props = AppProps & {
   Component: Page;
   emotionCache: EmotionCache;
@@ -64,36 +65,38 @@ export default function RootLayout(props: Props) {
       </Head>
       <ReduxProvider store={store}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
-          <AuthProvider>
-            <SettingsProvider>
-              <SettingsConsumer>
-                {({ settings }) => (
-                  <ThemeProvider
-                    theme={createTheme({
-                      direction: settings.direction,
-                      responsiveFontSizes: settings.responsiveFontSizes,
-                      mode: settings.theme,
-                    })}
-                  >
-                    {/* <RTL direction={settings.direction}> */}
-                    <CssBaseline />
-                    <Toaster position="top-center" />
-                    <SettingsButton />
-                    <AuthConsumer>
-                      {(auth) => {
-                        return !auth.isInitialized ? (
-                          <SplashScreen />
-                        ) : (
-                          getLayout(<Component {...pageProps} />)
-                        );
-                      }}
-                    </AuthConsumer>
-                    {/* </RTL> */}
-                  </ThemeProvider>
-                )}
-              </SettingsConsumer>
-            </SettingsProvider>
-          </AuthProvider>
+          <SessionProvider>
+            <AuthProvider>
+              <SettingsProvider>
+                <SettingsConsumer>
+                  {({ settings }) => (
+                    <ThemeProvider
+                      theme={createTheme({
+                        direction: settings.direction,
+                        responsiveFontSizes: settings.responsiveFontSizes,
+                        mode: settings.theme,
+                      })}
+                    >
+                      {/* <RTL direction={settings.direction}> */}
+                      <CssBaseline />
+                      <Toaster position="top-center" />
+                      <SettingsButton />
+                      <AuthConsumer>
+                        {(auth) => {
+                          return !auth.isInitialized ? (
+                            <SplashScreen />
+                          ) : (
+                            getLayout(<Component {...pageProps} />)
+                          );
+                        }}
+                      </AuthConsumer>
+                      {/* </RTL> */}
+                    </ThemeProvider>
+                  )}
+                </SettingsConsumer>
+              </SettingsProvider>
+            </AuthProvider>
+          </SessionProvider>
         </LocalizationProvider>
       </ReduxProvider>
     </>
