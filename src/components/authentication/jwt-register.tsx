@@ -41,7 +41,7 @@ export const JWTRegister: React.FC<any> = (props) => {
 
         if (isMounted()) {
           const returnUrl = query.returnUrl || "/dashboard";
-          // router.push(returnUrl);
+          router.push(returnUrl);
         }
       } catch (err) {
         console.error(err);

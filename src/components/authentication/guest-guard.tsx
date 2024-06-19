@@ -15,10 +15,12 @@ export const GuestGuard: React.FC<any> = (props) => {
       if (!router.isReady) {
         return;
       }
-
+      console.log(router.route.includes("/dashboard"));
+      console.log(router.route);
       // You should remove the "disableGuard" check, because it's meant to be used only in the demo.
-      if (auth.isAuthenticated && disableGuard !== "true") {
+      if (auth.isAuthenticated && !router.route.includes("/dashboard")) {
         router.push("/dashboard");
+        console.log("redirecting now");
       } else {
         setChecked(true);
       }

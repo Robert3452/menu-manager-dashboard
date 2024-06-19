@@ -4,13 +4,28 @@ import { useFormik } from "formik";
 import { Alert, Box, Button, FormHelperText, TextField } from "@mui/material";
 import { useAuth } from "../../hooks/use-auth";
 import { useMounted } from "@/hooks/use-mounted";
+import GoogleLogo from "@/icons/googleg-g-logo";
+import { useEffect } from "react";
+import { useSession } from "next-auth/react";
 // import { useMounted } from "../../hooks/use-mounted";
 
 export const JWTLogin: React.FC<any> = (props) => {
   const isMounted = useMounted();
   const router = useRouter();
+  const { loginGoogle, isAuthenticated } = useAuth();
   const query = router.query as { returnUrl: string };
   const { login } = useAuth();
+  const { data: session } = useSession();
+  // useEffect(() => {
+  //   if (isAuthenticated || session?.user) {
+  //     router.push("/dashboard");
+  //     console.log("authenticated");
+  //     return;
+  //   }
+  //   console.log("notauthenticated");
+  //   return;
+  // }, [session]);
+
   const formik = useFormik({
     initialValues: {
       email: "romeza1239@gmail.com",
@@ -88,11 +103,21 @@ export const JWTLogin: React.FC<any> = (props) => {
         </Button>
       </Box>
       <Box sx={{ mt: 2 }}>
-        <Alert severity="info">
-          <div>
-            Use <b>demo@devias.io</b> and password <b>Password123!</b>
-          </div>
-        </Alert>
+        <Button
+          disabled={formik.isSubmitting}
+          fullWidth
+          size="large"
+          type="button"
+          variant="contained"
+          startIcon={<GoogleLogo />}
+          onClick={loginGoogle}
+          sx={{
+            background: (theme) => theme.palette.grey["100"],
+            "&:hover": { background: (theme) => theme.palette.grey["400"] },
+          }}
+        >
+          Signin with Google
+        </Button>
       </Box>
     </form>
   );

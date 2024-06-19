@@ -1,10 +1,9 @@
-import { createContext, useEffect, useReducer } from "react";
-import PropTypes from "prop-types";
 import { I } from "@/utils/generalObj";
-// import { authApi } from "@/__fake-api__/auth-api";
-
-import { SessionProvider, signIn, useSession, signOut } from "next-auth/react";
+import PropTypes from "prop-types";
+import { createContext, useEffect, useMemo, useReducer } from "react";
 import { authApi, CreateUserDto } from "@/api/auth/auth-api";
+import { signIn, signOut, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
@@ -54,48 +53,40 @@ export const AuthContext = createContext({
   ...initialState,
   platform: "JWT",
   login: (...args: any[]) => Promise.resolve(),
+  loginGoogle: (...args: any[]) => Promise.resolve(),
   logout: (...args: any[]) => Promise.resolve(),
   register: (...args: any[]) => Promise.resolve(),
+  // registerGoogle: (...args: any[]) => Promise.resolve(),
 });
 
 export const AuthProvider = (props: any) => {
   const { data: session } = useSession();
   const { children } = props;
+  const router = useRouter();
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  useEffect(() => {
-    dispatch({
-      type: "INITIALIZE",
-      payload: {
-        isAuthenticated: false,
-        user: null,
-      },
-    });
-  }, []);
-  useEffect(() => {
-    const initialize = async () => {
-      try {
-        console.log(session);
-        const user = session?.user;
-        if (user) {
-          dispatch({
-            type: "INITIALIZE",
-            payload: {
-              isAuthenticated: true,
-              user,
-            },
-          });
-        } else {
-          dispatch({
-            type: "INITIALIZE",
-            payload: {
-              isAuthenticated: false,
-              user: null,
-            },
-          });
-        }
-      } catch (err) {
-        console.error(err);
+  // useEffect(() => {
+  //   dispatch({
+  //     type: "INITIALIZE",
+  //     payload: {
+  //       isAuthenticated: false,
+  //       user: null,
+  //     },
+  //   });
+  // }, []);
+  const initialize = async () => {
+    try {
+      const user = session?.user;
+
+      if (user) {
+        dispatch({
+          type: "INITIALIZE",
+          payload: {
+            isAuthenticated: true,
+            user,
+          },
+        });
+      } else {
         dispatch({
           type: "INITIALIZE",
           payload: {
@@ -104,16 +95,34 @@ export const AuthProvider = (props: any) => {
           },
         });
       }
-    };
-    if (session) initialize();
+    } catch (err) {
+      console.error(err);
+      dispatch({
+        type: "INITIALIZE",
+        payload: {
+          isAuthenticated: false,
+          user: null,
+        },
+      });
+    }
+  };
+  useEffect(() => {
+    initialize();
+  }, []);
+  useEffect(() => {
+    initialize();
   }, [session]);
 
+  const loginGoogle = async () => {
+    signIn("google");
+  };
   const login = async (email: string, password: string) => {
-    const signinResponse = await signIn("credentials", {
+    await signIn("credentials", {
       username: email,
       password,
       redirect: false,
     });
+    
   };
 
   const logout = async () => {
@@ -147,6 +156,7 @@ export const AuthProvider = (props: any) => {
         login,
         logout,
         register,
+        loginGoogle,
       }}
     >
       {children}
