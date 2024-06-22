@@ -122,9 +122,4 @@ const MenuBoard: React.FC<MenuBoardProps> = ({ branch }) => {
     </Box>
   );
 };
-// MenuBoard.getLayout = (page: ReactNode) => (
-//   <AuthGuard>
-//     <DashboardLayout>{page}</DashboardLayout>
-//   </AuthGuard>
-// );
 export default MenuBoard;

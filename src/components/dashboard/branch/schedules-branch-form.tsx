@@ -70,9 +70,9 @@ const ScheduleBranchForm = () => {
       // formik.errors
     },
   });
-  useEffect(() => {
-    console.log(formik.errors);
-  }, [formik.errors]);
+  // useEffect(() => {
+  //   console.log(formik.errors);
+  // }, [formik.errors]);
   const showErrors = () => {
     console.log(formik.values);
     console.log(formik.errors);

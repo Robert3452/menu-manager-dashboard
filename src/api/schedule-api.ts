@@ -24,22 +24,38 @@ export interface UpdateWeekdayScheduleDto
 
 class SchedulesApi {
   async upsertSchedule(body: CreateScheduleDto) {
-    const { data } = await httpClient.post("", body);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.post("", body, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 
   async updateSchedule(scheduleId: number, body: UpdateScheduleDto) {
-    const { data } = await httpClient.put(`/${scheduleId}`, body);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.put(`/${scheduleId}`, body, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 
   async getSchedule(scheduleId: number) {
-    const { data } = await httpClient.get(`/${scheduleId}`);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.get(`/${scheduleId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 
   async deleteScheduleWeekday(scheduleId: number, weekday: Weekdays) {
-    const { data } = await httpClient.delete(`/${scheduleId}/${weekday}`);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.delete(`/${scheduleId}/${weekday}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 }

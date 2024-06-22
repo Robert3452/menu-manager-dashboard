@@ -17,6 +17,7 @@ import { useRouter } from "next/router";
 import { useAppDispatch } from "@/store";
 import { createBranch } from "@/slices/branches";
 import { CreateBranchDto } from "@/api/branch-api";
+import { AxiosError } from "axios";
 const NewBranchForm = () => {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -36,9 +37,9 @@ const NewBranchForm = () => {
         );
         toast.success(response.message);
         helpers.resetForm();
-      } catch (error) {
-        console.error(error);
-        toast.error("Algo va mal.");
+      } catch (error: any) {
+        toast.error(error.message);
+        helpers.resetForm();
         helpers.setStatus({ success: false });
         // helpers.setErrors({ submit: err.message });
         helpers.setSubmitting(false);

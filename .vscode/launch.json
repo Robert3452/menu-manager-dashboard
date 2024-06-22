@@ -6,7 +6,7 @@
             "name": "Run Script NEXT DASHBOARD: dev",
             "request": "launch",
             // "command": "npm run dev",
-            "cwd": "${workspaceFolder}/src"
+            "cwd": "${workspaceFolder}"
         }
     ]
 }

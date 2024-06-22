@@ -14,21 +14,37 @@ const httpClient = HttpClient(
 );
 class BranchesApi {
   async createBranch(body: CreateBranchDto) {
-    const { data } = await httpClient.post(``, body);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.post(``, body, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 
   async deleteBranch(branchId: number) {
-    const { data } = await httpClient.delete(`/${branchId}`);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.delete(`/${branchId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 
   async updateBranch(branchId: number, body: UpdateBranchDto) {
-    const { data } = await httpClient.put(`/${branchId}`, body);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.put(`/${branchId}`, body, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
   async getBranchById(branchId: number) {
-    const { data } = await httpClient.get(`/${branchId}`);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.get(`/${branchId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 }

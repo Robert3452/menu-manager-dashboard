@@ -128,20 +128,7 @@ const Login = () => {
                 Create new account
               </Link>
             </NextLink>
-            {platform === "Amplify" && (
-              <NextLink
-                href={
-                  disableGuard
-                    ? `/authentication/password-recovery?disableGuard=${disableGuard}`
-                    : "/authentication/password-recovery"
-                }
-                passHref
-              >
-                <Link color="textSecondary" sx={{ mt: 1 }} variant="body2">
-                  Forgot password
-                </Link>
-              </NextLink>
-            )}
+          
           </Card>
         </Container>
       </Box>

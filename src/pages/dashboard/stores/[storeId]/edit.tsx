@@ -81,9 +81,7 @@ const StoreEdit = () => {
 };
 
 StoreEdit.getLayout = (page: ReactNode) => (
-  <AuthGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </AuthGuard>
+  <DashboardLayout>{page}</DashboardLayout>
 );
 
 export default StoreEdit;

@@ -16,15 +16,6 @@ export const JWTLogin: React.FC<any> = (props) => {
   const query = router.query as { returnUrl: string };
   const { login } = useAuth();
   const { data: session } = useSession();
-  // useEffect(() => {
-  //   if (isAuthenticated || session?.user) {
-  //     router.push("/dashboard");
-  //     console.log("authenticated");
-  //     return;
-  //   }
-  //   console.log("notauthenticated");
-  //   return;
-  // }, [session]);
 
   const formik = useFormik({
     initialValues: {

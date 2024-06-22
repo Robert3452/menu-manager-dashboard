@@ -57,9 +57,7 @@ const BranchCreate = () => {
 };
 
 BranchCreate.getLayout = (page: ReactNode) => (
-  <AuthGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </AuthGuard>
+  <DashboardLayout>{page}</DashboardLayout>
 );
 
 export default BranchCreate;

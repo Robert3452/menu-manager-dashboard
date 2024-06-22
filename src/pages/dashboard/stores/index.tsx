@@ -125,9 +125,7 @@ const StoreList = () => {
 };
 
 StoreList.getLayout = (page: ReactNode) => (
-  <AuthGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </AuthGuard>
+  <DashboardLayout>{page}</DashboardLayout>
 );
 
 export default StoreList;

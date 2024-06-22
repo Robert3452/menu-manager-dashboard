@@ -51,9 +51,7 @@ const StoreCreate = () => {
 };
 
 StoreCreate.getLayout = (page: ReactNode) => (
-  <AuthGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </AuthGuard>
+  <DashboardLayout>{page}</DashboardLayout>
 );
 
 export default StoreCreate;

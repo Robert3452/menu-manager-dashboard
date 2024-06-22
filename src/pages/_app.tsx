@@ -86,7 +86,9 @@ export default function RootLayout(props: Props) {
                           return !auth.isInitialized ? (
                             <SplashScreen />
                           ) : (
-                            getLayout(<Component {...pageProps} />)
+                            getLayout(
+                              <Component {...pageProps} />
+                            )
                           );
                         }}
                       </AuthConsumer>

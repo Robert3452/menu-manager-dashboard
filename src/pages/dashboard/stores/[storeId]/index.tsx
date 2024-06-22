@@ -120,9 +120,7 @@ const StoreIndex = () => {
 };
 
 StoreIndex.getLayout = (page: ReactNode) => (
-  <AuthGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </AuthGuard>
+  <DashboardLayout>{page}</DashboardLayout>
 );
 
 export default StoreIndex;

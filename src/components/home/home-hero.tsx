@@ -118,7 +118,7 @@ export const HomeHero = (props: any) => {
                         passHref
                     >
                         <Button
-                            component="a"
+                            component="button"
                             size="large"
                             variant="contained"
                         >

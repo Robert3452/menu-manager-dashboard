@@ -62,23 +62,16 @@ export const AuthContext = createContext({
 export const AuthProvider = (props: any) => {
   const { data: session } = useSession();
   const { children } = props;
-  const router = useRouter();
   const [state, dispatch] = useReducer(reducer, initialState);
-
-  // useEffect(() => {
-  //   dispatch({
-  //     type: "INITIALIZE",
-  //     payload: {
-  //       isAuthenticated: false,
-  //       user: null,
-  //     },
-  //   });
-  // }, []);
+  const router = useRouter();
+  const { error } = router.query;
+  console.log(error);
   const initialize = async () => {
     try {
       const user = session?.user;
-
       if (user) {
+        window.localStorage.setItem("accessToken", user.accessToken);
+        // console.log(user.accessToken)
         dispatch({
           type: "INITIALIZE",
           payload: {
@@ -114,7 +107,7 @@ export const AuthProvider = (props: any) => {
   }, [session]);
 
   const loginGoogle = async () => {
-    signIn("google");
+    signIn("google", { callbackUrl: "/dashboard" });
   };
   const login = async (email: string, password: string) => {
     await signIn("credentials", {
@@ -122,11 +115,11 @@ export const AuthProvider = (props: any) => {
       password,
       redirect: false,
     });
-    
   };
 
   const logout = async () => {
     await signOut();
+    window.localStorage.removeItem("accessToken");
     dispatch({ type: "LOGOUT" });
   };
 

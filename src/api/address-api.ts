@@ -23,17 +23,29 @@ class AddressesApi {
     addressId: number,
     body: UpdateAddressDto
   ): Promise<IResponse<Address>> {
-    const { data } = await httpClient.put(`/${addressId}`, body);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.put(`/${addressId}`, body, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 
   async getAddressById(addressId: number): Promise<IResponse<Address>> {
-    const { data } = await httpClient.get(`/${addressId}`);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.get(`/${addressId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 
   async deleteAddress(addressId: number): Promise<IResponse<Address>> {
-    const { data } = await httpClient.get(`/${addressId}`);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.get(`/${addressId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 }

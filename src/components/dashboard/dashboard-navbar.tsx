@@ -22,6 +22,8 @@ import UsersIcon from "@/icons/users";
 import { Search as SearchIcon } from "@/icons/search";
 import { Bell as BellIcon } from "@/icons/bell";
 import { UserCircle as UserCircleIcon } from "@/icons/user-circle";
+import { useSession } from "next-auth/react";
+import { User } from "@/icons/user";
 interface GeneralType {
   [key: string]: string;
 }
@@ -181,10 +183,11 @@ const AccountButton = () => {
   const [openPopover, setOpenPopover] = useState(false);
   // To get the user from the authContext, you can use
   // `const { user } = useAuth();`
-  const user = {
-    avatar: "/static/mock-images/avatars/avatar-anika_visser.png",
-    name: "Anika Visser",
-  };
+  // const user = {
+  //   avatar: "/static/mock-images/avatars/avatar-anika_visser.png",
+  //   name: "Anika Visser",
+  // };
+  const { data: session } = useSession();
 
   const handleOpenPopover = () => {
     setOpenPopover(true);
@@ -206,15 +209,26 @@ const AccountButton = () => {
           ml: 2,
         }}
       >
-        <Avatar
-          sx={{
-            height: 40,
-            width: 40,
-          }}
-          src={user.avatar}
-        >
-          <UserCircleIcon fontSize="small" />
-        </Avatar>
+        {session?.user ? (
+          <Avatar
+            sx={{
+              height: 40,
+              width: 40,
+            }}
+            src={session?.user.image}
+          >
+            <UserCircleIcon fontSize="small" />
+          </Avatar>
+        ) : (
+          <Avatar
+            sx={{
+              height: 40,
+              width: 40,
+            }}
+          >
+            <UserCircleIcon />
+          </Avatar>
+        )}
       </Box>
       <AccountPopover
         anchorEl={anchorRef.current}

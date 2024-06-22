@@ -1,7 +1,6 @@
 import { Box, Card, CardContent, Divider, Grid } from "@mui/material";
 import Head from "next/head";
 import { ReactNode, useEffect, useState } from "react";
-import { storeApi } from "../../../../api/store-api";
 import { AuthGuard } from "../../../authentication/auth-guard";
 import { DashboardLayout } from "../../../../components/dashboard/dashboard-layout";
 import { gtm } from "../../../../lib/gtm";
@@ -148,9 +147,7 @@ const BranchList = () => {
 };
 
 BranchList.getLayout = (page: ReactNode) => (
-  <AuthGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </AuthGuard>
+  <DashboardLayout>{page}</DashboardLayout>
 );
 
 export default BranchList;

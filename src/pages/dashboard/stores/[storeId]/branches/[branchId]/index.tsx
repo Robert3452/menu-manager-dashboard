@@ -110,9 +110,7 @@ const BranchIndex = () => {
 };
 
 BranchIndex.getLayout = (page: ReactNode) => (
-  <AuthGuard>
-    <DashboardLayout>{page}</DashboardLayout>
-  </AuthGuard>
+  <DashboardLayout>{page}</DashboardLayout>
 );
 
 export default BranchIndex;

@@ -7,13 +7,13 @@ import { ChevronRight as ChevronRightIcon } from "../../icons/chevron-right";
 
 export const DashboardSidebarItem = (props: any) => {
   const {
-    active,
+    active = false,
     children,
     chip,
     depth,
     icon,
     info,
-    open: openProp,
+    open: openProp = false,
     path,
     title,
     ...other
@@ -144,7 +144,7 @@ DashboardSidebarItem.propTypes = {
   chip: PropTypes.any,
 };
 
-DashboardSidebarItem.defaultProps = {
-  active: false,
-  open: false,
-};
+// DashboardSidebarItem.defaultProps = {
+//   active: false,
+//   open: false,
+// };

@@ -12,12 +12,20 @@ export interface UpdateStoreDto extends Partial<CreateStoreDto> {}
 
 class StoresApi {
   async getStores(): Promise<IResponse<Store[]>> {
-    const { data } = await httpClient.get<IResponse<Store[]>>("");
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.get<IResponse<Store[]>>("", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 
   async getStorebyId(storeId: number): Promise<IResponse<Store>> {
-    const { data } = await httpClient.get<IResponse<Store>>(`${storeId}`);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.get<IResponse<Store>>(`${storeId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
   async updateStore(
@@ -28,15 +36,22 @@ class StoresApi {
     const formData = new FormData();
     if (name) formData.append("name", name);
     if (file) formData.append("file", file);
+    const token = window.localStorage.getItem("accessToken");
+
     const { data } = await httpClient.put<IResponse<Store>>(
       `/${storeId}`,
-      formData
+      formData,
+      { headers: { Authorization: `Bearer ${token}` } }
     );
     return data;
   }
 
   async deleteStore(storeId: number): Promise<IResponse<Store>> {
-    const { data } = await httpClient.delete<IResponse<Store>>(`/${storeId}`);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.delete<IResponse<Store>>(`/${storeId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
   async createStore(newStore: CreateStoreDto): Promise<IResponse<Store>> {
@@ -44,7 +59,11 @@ class StoresApi {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("file", file);
-    const { data } = await httpClient.post<IResponse<Store>>("", formData);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.post<IResponse<Store>>("", formData, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 }

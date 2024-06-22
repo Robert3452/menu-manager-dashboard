@@ -49,11 +49,15 @@ export interface UpdateToppingCategoryDto
 class ProductsApi {
   async createProduct({ body: request }: { body: CreateProductDto }) {
     try {
+      const token = window.localStorage.getItem("accessToken");
+
       let urlImage;
       const { image, ...body } = request;
       const {
         data: { data: newProduct },
-      } = await httpClient.post("", body);
+      } = await httpClient.post("", body, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       if (image) {
         const { data } = await this.updateProductImage({
           productId: newProduct.id,
@@ -78,6 +82,8 @@ class ProductsApi {
     body: UpdateProductDto;
   }) {
     try {
+      const token = window.localStorage.getItem("accessToken");
+
       const { image, ...body } = request;
       let urlImage;
       if (image) {
@@ -88,7 +94,10 @@ class ProductsApi {
         `/${productId}`,
         { ...body },
         {
-          headers: { "Content-Type": "application/json" },
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
       );
       return {
@@ -107,19 +116,32 @@ class ProductsApi {
     productId: number;
     image: any;
   }) {
+    const token = window.localStorage.getItem("accessToken");
+
     const formData = new FormData();
     formData.append("file", image);
     return await httpClient.put(`/${productId}/image`, formData, {
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: {
+        "Content-Type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
   async deleteProduct({ productId }: { productId: number }) {
-    const { data } = await httpClient.delete(`/${productId}`);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.delete(`/${productId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 
   async getProductById({ productId }: { productId: number }) {
-    const { data } = await httpClient.get(`/${productId}`);
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.get(`/${productId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 }

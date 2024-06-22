@@ -36,7 +36,7 @@ const StatusIndicatorRoot = styled("span")<OwnerState>(({ ownerState }) => {
 });
 
 export const StatusIndicator: React.FC<RootProps> = (props) => {
-  const { size, status, ...other } = props;
+  const { size = "medium", status = "offline", ...other } = props;
 
   const ownerState = { size, status };
 
@@ -48,7 +48,7 @@ export const StatusIndicator: React.FC<RootProps> = (props) => {
 //   status: PropTypes.oneOf(["online", "offline", "away", "busy"]),
 // };
 
-StatusIndicator.defaultProps = {
-  size: "medium",
-  status: "offline",
-};
+// StatusIndicator.defaultProps = {
+//   size: "medium",
+//   status: "offline",
+// };

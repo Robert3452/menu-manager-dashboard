@@ -1,11 +1,13 @@
 import { authApi } from "@/api/auth/auth-api";
+import { AxiosError } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { AuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-
-// const handler =
 const options: AuthOptions = {
+  session: {
+    maxAge: 60 * 60,
+  },
   secret: process.env.NEXTAUTH_SECRET, // Agrega esta línea,
   providers: [
     GoogleProvider({
@@ -24,7 +26,7 @@ const options: AuthOptions = {
           const { accessToken } = await authApi.login({
             email: credentials?.username || "",
             password: credentials?.password || "",
-            });
+          });
           const user: any = await authApi.me(accessToken);
 
           if (user) return { ...user, accessToken };
@@ -38,31 +40,53 @@ const options: AuthOptions = {
   ],
 
   callbacks: {
-    async jwt({ token, user, trigger, session }) {
-      if (trigger === "update") {
-        return { ...token, ...session.user };
+    async jwt({ token, user, trigger, session, account }) {
+      // account?.provider
+      try {
+        if (account?.provider === "google") {
+          const googleLoginResponse = await authApi.loginGoogle(
+            user.email || ""
+          );
+          user.accessToken = googleLoginResponse.accessToken;
+        }
+        if (trigger === "update") {
+          return { ...token, ...session.user };
+        }
+        return { ...token, ...user };
+      } catch (error: any) {
+        if (error instanceof AxiosError)
+          throw new Error(error.response?.data.message);
+        else throw new Error(error);
       }
-      return { ...token, ...user };
     },
 
-    async session({ session, token }) {
+    async signIn({ user, account, profile, email, credentials }) {
+      try {
+        await authApi.verifyEmail(user.email || "");
+        if (!user) {
+          return false;
+        }
+        // window.localStorage.setItem("accessToken", user.accessToken);
+        return true;
+      } catch (error: any) {
+        return false;
+      }
+    },
+    async session({ session, token, user }) {
       session.user = token as any;
       return session;
     },
   },
   pages: {
     signIn: "/authentication/login",
+    error: "/authentication/register",
   },
 };
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   if (req?.query?.nextauth?.includes("callback") && req.method === "POST") {
-    // console.log(
-    //   "Handling callback request from my Identity Provider",
-    //   req.body
-    // );
   }
+
   // const isDefaultSigninPage =
   //   req.method === "GET" && req?.query?.nextauth?.includes("login");
   return await NextAuth(req, res, options);
 }
-// export { handler as GET, handler as POST };

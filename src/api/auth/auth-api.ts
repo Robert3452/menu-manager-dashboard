@@ -25,9 +25,7 @@ export interface CreateGoogleUserDto {
 
 class AuthApi {
   async login({ email, password }: LoginDto): Promise<JwtResponse> {
-    const {
-      data,
-    } = await httpClient.post("/auth/login", {
+    const { data } = await httpClient.post("/auth/login", {
       email,
       password,
     });
@@ -38,6 +36,14 @@ class AuthApi {
     const { data } = await httpClient.post("/auth/login/google", {
       email,
     });
+    return data;
+  }
+  async verifyEmail(
+    email: string
+  ): Promise<{ message: string; status: boolean }> {
+    // TODO: add a secret api key guard client :D
+
+    const { data } = await httpClient.post("/auth/verify/email", { email });
     return data;
   }
   async registerByGoogle(body: CreateGoogleUserDto): Promise<User> {

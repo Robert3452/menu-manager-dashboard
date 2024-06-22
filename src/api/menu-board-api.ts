@@ -22,25 +22,43 @@ export interface MoveCardDto {
 }
 class BranchesMenuApi {
   async getBoard(branchId: number): Promise<IResponse<Branch>> {
-    const { data } = await client.get(`/branches/${branchId}/menu`);
+    const token = window.localStorage.getItem("acccessToken");
+    const { data } = await client.get(`/branches/${branchId}/menu`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 
   async createCorridorRow(
     body: CreateCorridorDto
   ): Promise<IResponse<Corridor>> {
-    const { data } = await client.post(`/corridors`, body);
+    const token = window.localStorage.getItem("acccessToken");
+
+    const { data } = await client.post(`/corridors`, body, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 
-  async moveCard({ productId, index, corridorId, branchId }:any): Promise<IResponse<Product>> {
+  async moveCard({
+    productId,
+    index,
+    corridorId,
+    branchId,
+  }: any): Promise<IResponse<Product>> {
+    const token = window.localStorage.getItem("acccessToken");
+
     // const { branchId, index, productId, corridorId } = body;
-    const { data } = await client.put(`/products/move-card`,  {
-      branchId,
-      index,
-      id: productId,
-      corridorId,
-    });
+    const { data } = await client.put(
+      `/products/move-card`,
+      {
+        branchId,
+        index,
+        id: productId,
+        corridorId,
+      },
+      { headers: { Authorization: `Bearer ${token}` } }
+    );
     return data;
   }
 
@@ -51,17 +69,29 @@ class BranchesMenuApi {
     corridorId: number;
     body: UpdateCorridorDto;
   }) {
-    const { data } = await client.put(`/corridors/${corridorId}`, body);
+    const token = window.localStorage.getItem("acccessToken");
+
+    const { data } = await client.put(`/corridors/${corridorId}`, body, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 
   async deleteCorridorRow({ corridorId }: { corridorId: number }) {
-    const { data } = await client.delete(`/corridors/${corridorId}`);
+    const token = window.localStorage.getItem("acccessToken");
+
+    const { data } = await client.delete(`/corridors/${corridorId}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
   async clearCorridorRow({ corridorId }: { corridorId: number }) {
+    const token = window.localStorage.getItem("acccessToken");
+
     const { data } = await client.put(
-      `/corridors/${corridorId}/clear-corridor`
+      `/corridors/${corridorId}/clear-corridor`,
+      null,
+      { headers: { Authorization: `Bearer ${token}` } }
     );
     return data;
   }
