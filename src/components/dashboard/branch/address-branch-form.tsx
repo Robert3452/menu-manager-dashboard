@@ -102,15 +102,20 @@ export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
           const addressResponse = await dispatch(
             updateAddress({
               branchId: branch.id,
-              address: { ...values, id: branch.address.id },
+              address: {
+                ...values,
+                id: branch.address.id,
+              },
             })
           );
           toast.success(addressResponse.message);
         } else {
           const addressResponse = await dispatch(
             createAddress({
-              branchId: branch.id,
-              address: { ...values } as CreateAddressDto,
+              address: {
+                ...values,
+                branchId: branch?.id || 0,
+              } as CreateAddressDto,
             })
           );
           toast.success(addressResponse.message);
@@ -209,12 +214,12 @@ export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
     setDepartment(currDepartment);
     const provinces = await getProvinces(currDepartment);
     const currProvince = provinces.find(
-      (el: any) => el.name == branch.address.province
+      (el: any) => el.name == branch?.address.province
     );
     const districts = await getDistricts(currDepartment, currProvince);
     setProvince(currProvince);
     const currDistrict = districts.find(
-      (el: any) => el.name == branch.address.district
+      (el: any) => el.name == branch?.address.district
     );
     setDistrict(currDistrict);
   };
@@ -275,7 +280,7 @@ export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
               </Grid>
               <Grid item md={6} xs={12}>
                 <Autocomplete
-                  isOptionEqualToValue={(option:any, value:any) =>
+                  isOptionEqualToValue={(option: any, value: any) =>
                     option?.provinceCode === value?.provinceCode
                   }
                   getOptionLabel={(option) => option.name}
@@ -296,7 +301,7 @@ export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
               </Grid>
               <Grid item md={6} xs={12}>
                 <Autocomplete
-                  isOptionEqualToValue={(option:any, value:any) =>
+                  isOptionEqualToValue={(option: any, value: any) =>
                     option?.districtCode === value?.districtCode
                   }
                   getOptionLabel={(option) => option.name}

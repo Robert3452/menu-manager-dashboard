@@ -88,7 +88,6 @@ export default function EditProductImage(props: any) {
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState(null);
-  const theme = useTheme();
 
   const handleFileChange = (event: any) => {
     const uploadedFile = event.target.files[0];

@@ -11,11 +11,12 @@ export interface UpdateAddressDto extends Partial<CreateAddressDto> {
 }
 
 class AddressesApi {
-  async createAddress(
-    branchId: number,
-    body: CreateAddressDto
-  ): Promise<IResponse<Address>> {
-    const { data } = await httpClient.post(`/${branchId}`, body);
+  async createAddress(body: CreateAddressDto): Promise<IResponse<Address>> {
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.post("", body, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
     return data;
   }
 

@@ -109,15 +109,20 @@ export const getAddress =
   };
 
 export const createAddress =
-  ({ branchId, address }: { branchId: number; address: CreateAddressDto }) =>
+  ({ address }: { address: CreateAddressDto }) =>
   async (dispatch: Dispatch) => {
-    const response = await addressesApi.createAddress(branchId, address);
-    dispatch(slice.actions.setAddress({ branchId, address: response.data }));
+    const response = await addressesApi.createAddress({ ...address });
+    dispatch(
+      slice.actions.setAddress({
+        branchId: address.branchId,
+        address: response.data,
+      })
+    );
     return response;
   };
 
 export const updateAddress =
-  ({ branchId, address }: { branchId: number; address: UpdateAddressDto }) =>
+  ({ branchId, address }: { branchId: number; address: any }) =>
   async (dispatch: Dispatch) => {
     const response = await addressesApi.updateAddress(address.id, address);
     dispatch(slice.actions.setAddress({ branchId, address: response.data }));
