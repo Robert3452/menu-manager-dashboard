@@ -25,7 +25,7 @@ const StoreEdit = () => {
         <Container maxWidth="md">
           <Box sx={{ mb: 4 }}>
             <NextLink href="/dashboard/stores" passHref>
-              <Link
+              <Typography
                 color="textPrimary"
                 component="a"
                 sx={{
@@ -35,7 +35,7 @@ const StoreEdit = () => {
               >
                 <ArrowBackIcon fontSize="small" sx={{ mr: 1 }} />
                 <Typography variant="subtitle2">Branches</Typography>
-              </Link>
+              </Typography>
             </NextLink>
           </Box>
 

@@ -20,7 +20,7 @@ const MenuBoard: React.FC<MenuBoardProps> = ({ branch }) => {
   const dispatch = useAppDispatch();
   useEffect(() => {
     if (branch) dispatch(getBoard({ branchId: branch?.id }));
-  }, [branch]);
+  }, []);
 
   const handleDragEnd = async ({
     source,

@@ -39,9 +39,9 @@ export const AuthBanner = () => (
             href="/docs/welcome"
             passHref
           >
-            <Link variant="subtitle2">
+            <Typography variant="subtitle2">
               docs
-            </Link>
+            </Typography>
           </NextLink>
           {' '}
           and find out how to switch between

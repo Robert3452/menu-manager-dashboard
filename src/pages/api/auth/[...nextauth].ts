@@ -3,6 +3,7 @@ import { AxiosError } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { AuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
+import Email from "next-auth/providers/email";
 import GoogleProvider from "next-auth/providers/google";
 const options: AuthOptions = {
   session: {
@@ -41,7 +42,6 @@ const options: AuthOptions = {
 
   callbacks: {
     async jwt({ token, user, trigger, session, account }) {
-      // account?.provider
       try {
         if (account?.provider === "google") {
           const googleLoginResponse = await authApi.loginGoogle(
@@ -49,30 +49,31 @@ const options: AuthOptions = {
           );
           user.accessToken = googleLoginResponse.accessToken;
         }
+
         if (trigger === "update") {
           return { ...token, ...session.user };
         }
         return { ...token, ...user };
       } catch (error: any) {
-        if (error instanceof AxiosError)
+        if (error instanceof AxiosError) {
+          console.log(error.response);
           throw new Error(error.response?.data.message);
-        else throw new Error(error);
+        } else throw new Error(error);
       }
     },
 
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ user }) {
       try {
-        await authApi.verifyEmail(user.email || "");
         if (!user) {
           return false;
         }
-        // window.localStorage.setItem("accessToken", user.accessToken);
+        await authApi.verifyEmail(user.email || "");
         return true;
       } catch (error: any) {
         return false;
       }
     },
-    async session({ session, token, user }) {
+    async session({ session, token }) {
       session.user = token as any;
       return session;
     },

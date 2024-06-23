@@ -22,7 +22,6 @@ import { getBranch } from "../../../../../../slices/branches";
 // import { useDispatch, useSelector } from '../../../../../../store';
 import MenuBoard from "../../../../../../components/dashboard/corridors/menu-board";
 import { useAppDispatch, useAppSelector } from "@/store";
-import { Branch } from "@/api/models/branch";
 
 const tabs = [
   { label: "General", value: "general" },
@@ -31,22 +30,19 @@ const tabs = [
   { label: "Menu", value: "menu" },
 ];
 interface QueryParams {
-  branchId?: number;
+  branchId: number;
 }
 const BranchIndex = () => {
   const [currentTab, setCurrentTab] = useState("general");
-  const [branch, setBranch] = useState<Branch | null>(null);
+  // const [branch, setBranch] = useState<Branch | null>(null);
   const router = useRouter();
-  const query = router.query as QueryParams;
+  const query: QueryParams = router.query as any;
   const dispatch = useAppDispatch();
   const { branches: branchStore } = useAppSelector((state) => state.branches);
+  const branch = branchStore.byId[query.branchId];
   useEffect(() => {
     if (query.branchId) dispatch(getBranch(query.branchId));
-  }, []);
-
-  useEffect(() => {
-    if (query.branchId) setBranch(branchStore.byId[query.branchId]);
-  }, [branchStore]);
+  }, [query.branchId]);
 
   const handleTabsChange = (event: any, value: string) => {
     setCurrentTab(value);
@@ -66,7 +62,7 @@ const BranchIndex = () => {
       >
         <Container maxWidth="lg" sx={{ overflowX: "auto" }}>
           <NextLink href={`/dashboard/stores/${router.query.storeId}`} passHref>
-            <Link
+            <Typography
               color="textPrimary"
               component="a"
               sx={{
@@ -78,7 +74,7 @@ const BranchIndex = () => {
             >
               <ArrowBackIcon fontSize="small" sx={{ mr: 1 }} />
               <Typography variant="subtitle2">Branches</Typography>
-            </Link>
+            </Typography>
           </NextLink>
           <Typography variant="h4">Branch {branch?.branchName}</Typography>
           <Tabs

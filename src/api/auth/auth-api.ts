@@ -2,6 +2,7 @@ import { I } from "@/utils/generalObj";
 import { HttpClient } from "../httpClient";
 import { User } from "../models/auth/user";
 import { JwtResponse } from "../models/auth/payloadToken";
+import { httpServices } from "@/config";
 
 const httpClient = HttpClient(`${process.env.NEXT_PUBLIC_AUTH_MANAGER}`);
 export interface LoginDto {
@@ -32,18 +33,27 @@ class AuthApi {
     return data;
   }
   async loginGoogle(email: string): Promise<JwtResponse> {
+    const secretKey = httpServices.apiKey;
     // TODO: add a secret api key guard client :D
-    const { data } = await httpClient.post("/auth/login/google", {
-      email,
-    });
+    const { data } = await httpClient.post(
+      "/auth/login/google",
+      {
+        email,
+      },
+      { headers: { auth: secretKey } }
+    );
     return data;
   }
   async verifyEmail(
     email: string
   ): Promise<{ message: string; status: boolean }> {
     // TODO: add a secret api key guard client :D
-
-    const { data } = await httpClient.post("/auth/verify/email", { email });
+    const secretKey = httpServices.apiKey;
+    const { data } = await httpClient.post(
+      "/auth/verify/email",
+      { email },
+      { headers: { auth: secretKey } }
+    );
     return data;
   }
   async registerByGoogle(body: CreateGoogleUserDto): Promise<User> {

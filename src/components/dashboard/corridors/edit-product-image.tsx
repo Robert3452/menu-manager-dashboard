@@ -1,13 +1,12 @@
-import EditIcon from "@mui/icons-material/Edit";
 import Box from "@mui/material/Box";
 import ButtonBase from "@mui/material/ButtonBase";
 import { styled, useTheme } from "@mui/material/styles";
 import PropTypes from "prop-types";
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Image as ImageIcon } from "../../../icons/image";
-import { palette } from "@mui/system";
 import CenterFocusWeakIcon from "@mui/icons-material/CenterFocusWeak";
 import { Tooltip } from "@mui/material";
+
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -20,6 +19,7 @@ const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
   width: 1,
 });
+
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: "relative",
   height: "330px",
@@ -78,33 +78,33 @@ const Image = styled("span")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  // border: "0.5px solid",
-  borderColor: theme.palette.grey,
+  borderColor: theme.palette.grey[300],
   borderRadius: "10px",
   color: theme.palette.common.white,
 }));
 
-export default function EditProductImage(props) {
+export default function EditProductImage(props: any) {
   const { handleChange, image } = props;
 
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState(null);
   const theme = useTheme();
-  const handleFileChange = (event) => {
+
+  const handleFileChange = (event: any) => {
     const uploadedFile = event.target.files[0];
     handleChange(event);
     setFile(uploadedFile);
   };
-  const onClik = () => {
-    fileInputRef.current.click();
+
+  const onClick = () => {
+    if (fileInputRef?.current) fileInputRef.current.click();
   };
 
   useEffect(() => {
     if (image) setFile(image);
-  }, []);
+  }, [image]);
 
   return (
-    // <Tooltip title="Upload image">
     <Box
       sx={{
         borderRadius: "8px",
@@ -118,13 +118,7 @@ export default function EditProductImage(props) {
       p={4}
     >
       <Tooltip title="Upload image" placement="right-start">
-        <ImageButton
-          tabIndex={-1}
-          focusRipple
-          // key={image.title}
-          onClick={onClik}
-          role="button"
-        >
+        <ImageButton tabIndex={-1} focusRipple onClick={onClick} role="button">
           <VisuallyHiddenInput
             onBlur={props.onBlur}
             ref={fileInputRef}
@@ -132,7 +126,6 @@ export default function EditProductImage(props) {
             name={props.name || "file"}
             onChange={handleFileChange}
           />
-
           <ImageSrc
             style={{
               backgroundImage: `url(${image})`,
@@ -161,8 +154,9 @@ export default function EditProductImage(props) {
   );
 }
 
-EditProductImage.prototype = {
+EditProductImage.propTypes = {
   handleChange: PropTypes.func.isRequired,
-  image: PropTypes.object,
+  image: PropTypes.string,
   name: PropTypes.string,
+  onBlur: PropTypes.func,
 };

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import NextLink from 'next/link';
-import { AppBar, Box, Button, Container, IconButton, Link, Toolbar } from '@mui/material';
+import { AppBar, Box, Button, Container, IconButton, Link, Toolbar, Typography } from '@mui/material';
 import { Menu as MenuIcon } from '../icons/menu';
 import { Logo } from './logo';
 
@@ -63,32 +63,32 @@ export const MainNavbar = (props: any) => {
                             href="/dashboard"
                             passHref
                         >
-                            <Link
+                            <Typography
                                 color="textSecondary"
-                                underline="none"
+                                // underline="none"
                                 variant="subtitle2"
                             >
                                 Live Demo
-                            </Link>
+                            </Typography>
                         </NextLink>
                         <NextLink
                             href="/browse"
                             passHref
                         >
-                            <Link
+                            <Typography
                                 color="textSecondary"
                                 sx={{ ml: 2 }}
                                 underline="none"
                                 variant="subtitle2"
                             >
                                 Components
-                            </Link>
+                            </Typography>
                         </NextLink>
                         <NextLink
                             href="/docs/welcome"
                             passHref
                         >
-                            <Link
+                            <Typography
                                 color="textSecondary"
                                 component="a"
                                 sx={{ ml: 2 }}
@@ -96,7 +96,7 @@ export const MainNavbar = (props: any) => {
                                 variant="subtitle2"
                             >
                                 Documentation
-                            </Link>
+                            </Typography>
                         </NextLink>
                         <Button
                             component="a"

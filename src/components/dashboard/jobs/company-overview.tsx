@@ -71,7 +71,7 @@ export const CompanyOverview = (props) => {
           href="dashboard/jobs/companies/1"
           passHref
         >
-          <Link
+          <Typography
             color="inherit"
             variant="subtitle2"
             sx={{
@@ -86,7 +86,7 @@ export const CompanyOverview = (props) => {
               Jobs
             </Typography>
             <ArrowForwardIcon fontSize="small" />
-          </Link>
+          </Typography>
         </NextLink>
       </Box>
       <Box sx={{ mt: 3 }}>
@@ -107,7 +107,7 @@ export const CompanyOverview = (props) => {
           href="dashboard/jobs/companies/1"
           passHref
         >
-          <Link
+          <Typography
             color="inherit"
             variant="subtitle2"
             sx={{
@@ -122,7 +122,7 @@ export const CompanyOverview = (props) => {
               Members
             </Typography>
             <ArrowForwardIcon fontSize="small" />
-          </Link>
+          </Typography>
         </NextLink>
       </Box>
       <Box sx={{ mt: 3 }}>

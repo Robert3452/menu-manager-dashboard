@@ -42,12 +42,12 @@ export const SocialComment = (props) => {
             href="#"
             passHref
           >
-            <Link
+            <Typography
               color="textPrimary"
               variant="subtitle2"
             >
               {authorName}
-            </Link>
+            </Typography>
           </NextLink>
           <Box sx={{ flexGrow: 1 }} />
           <Typography

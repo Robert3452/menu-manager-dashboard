@@ -134,12 +134,12 @@ export const SocialConnections = (props) => {
                         href="#"
                         passHref
                       >
-                        <Link
+                        <Typography
                           color="textPrimary"
                           variant="subtitle2"
                         >
                           {connection.name}
-                        </Link>
+                        </Typography>
                       </NextLink>
                       <Typography
                         color="textSecondary"

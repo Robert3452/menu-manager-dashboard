@@ -1,8 +1,12 @@
 export const httpServices = {
     menuManager: process.env.NEXT_PUBLIC_MENU_MANAGER,
+    apiKey: process.env.API_KEY
+
     
 }
 
 export const gtmConfig = {
     containerId: process.env.NEXT_PUBLIC_GTM_CONTAINER_ID
 };
+
+

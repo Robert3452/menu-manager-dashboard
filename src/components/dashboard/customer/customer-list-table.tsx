@@ -156,12 +156,12 @@ export const CustomerListTable = (props) => {
                           href="/dashboard/customers/1"
                           passHref
                         >
-                          <Link
+                          <Typography
                             color="inherit"
                             variant="subtitle2"
                           >
                             {customer.name}
-                          </Link>
+                          </Typography>
                         </NextLink>
                         <Typography
                           color="textSecondary"

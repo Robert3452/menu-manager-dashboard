@@ -51,7 +51,7 @@ const PasswordRecovery = () => {
             sx={{
               alignItems: "center",
               backgroundColor: (theme) =>
-                theme.palette.mode === "dark" ? "neutral.900" : "neutral.100",
+                theme.palette.mode === "dark" ? "grey.900" : "grey.100",
               borderColor: "divider",
               borderRadius: 1,
               borderStyle: "solid",

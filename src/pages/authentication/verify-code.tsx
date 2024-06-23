@@ -54,7 +54,7 @@ const VerifyCode = () => {
             sx={{
               alignItems: "center",
               backgroundColor: (theme) =>
-                theme.palette.mode === "dark" ? "neutral.900" : "neutral.100",
+                theme.palette.mode === "dark" ? "grey.900" : "grey.100",
               borderColor: "divider",
               borderRadius: 1,
               borderStyle: "solid",
@@ -111,9 +111,9 @@ const VerifyCode = () => {
                 }
                 passHref
               >
-                <Link color="textSecondary" variant="body2">
+                <Typography color="textSecondary" variant="body2">
                   Did you not receive the code?
-                </Link>
+                </Typography>
               </NextLink>
             )}
           </Card>

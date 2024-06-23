@@ -97,12 +97,12 @@ export const SocialPostCard = (props) => {
               href="#"
               passHref
             >
-              <Link
+              <Typography
                 color="textPrimary"
                 variant="subtitle2"
               >
                 {authorName}
-              </Link>
+              </Typography>
             </NextLink>
             <Typography
               sx={{ ml: 0.5 }}

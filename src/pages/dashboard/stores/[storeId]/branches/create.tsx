@@ -33,7 +33,7 @@ const BranchCreate = () => {
         <Container maxWidth="md">
           <Box sx={{ mb: 4 }}>
             <NextLink href={`/dashboard/stores`} passHref>
-              <Link
+              <Typography
                 color="textPrimary"
                 component="a"
                 sx={{
@@ -43,7 +43,7 @@ const BranchCreate = () => {
               >
                 <ArrowBackIcon fontSize="small" sx={{ mr: 1 }} />
                 <Typography variant="subtitle2">Stores</Typography>
-              </Link>
+              </Typography>
             </NextLink>
           </Box>
 

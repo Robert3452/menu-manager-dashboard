@@ -22,7 +22,7 @@ export interface MoveCardDto {
 }
 class BranchesMenuApi {
   async getBoard(branchId: number): Promise<IResponse<Branch>> {
-    const token = window.localStorage.getItem("acccessToken");
+    const token = window.localStorage.getItem("accessToken");
     const { data } = await client.get(`/branches/${branchId}/menu`, {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -32,7 +32,7 @@ class BranchesMenuApi {
   async createCorridorRow(
     body: CreateCorridorDto
   ): Promise<IResponse<Corridor>> {
-    const token = window.localStorage.getItem("acccessToken");
+    const token = window.localStorage.getItem("accessToken");
 
     const { data } = await client.post(`/corridors`, body, {
       headers: { Authorization: `Bearer ${token}` },
@@ -46,7 +46,7 @@ class BranchesMenuApi {
     corridorId,
     branchId,
   }: any): Promise<IResponse<Product>> {
-    const token = window.localStorage.getItem("acccessToken");
+    const token = window.localStorage.getItem("accessToken");
 
     // const { branchId, index, productId, corridorId } = body;
     const { data } = await client.put(
@@ -69,7 +69,7 @@ class BranchesMenuApi {
     corridorId: number;
     body: UpdateCorridorDto;
   }) {
-    const token = window.localStorage.getItem("acccessToken");
+    const token = window.localStorage.getItem("accessToken");
 
     const { data } = await client.put(`/corridors/${corridorId}`, body, {
       headers: { Authorization: `Bearer ${token}` },
@@ -78,7 +78,7 @@ class BranchesMenuApi {
   }
 
   async deleteCorridorRow({ corridorId }: { corridorId: number }) {
-    const token = window.localStorage.getItem("acccessToken");
+    const token = window.localStorage.getItem("accessToken");
 
     const { data } = await client.delete(`/corridors/${corridorId}`, {
       headers: { Authorization: `Bearer ${token}` },
@@ -86,7 +86,7 @@ class BranchesMenuApi {
     return data;
   }
   async clearCorridorRow({ corridorId }: { corridorId: number }) {
-    const token = window.localStorage.getItem("acccessToken");
+    const token = window.localStorage.getItem("accessToken");
 
     const { data } = await client.put(
       `/corridors/${corridorId}/clear-corridor`,

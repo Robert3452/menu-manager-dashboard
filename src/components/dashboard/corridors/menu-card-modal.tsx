@@ -160,8 +160,9 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
 
     reader.onload = () => {
       let result = reader.result;
+      setProductImage(result)
 
-      if (result instanceof Blob) setProductImage(result);
+      // if (result instanceof Blob) setProductImage(result);
     };
     reader.readAsDataURL(event.target.files[0]);
     const uploadedFile = event.target.files[0];

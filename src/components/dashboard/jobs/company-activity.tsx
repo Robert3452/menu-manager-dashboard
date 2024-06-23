@@ -43,9 +43,9 @@ const getActivityContent = (activity) => {
               href="/dashboard/jobs"
               passHref
             >
-              <Link>
+              <Typography>
                 {activity.addedJob}
-              </Link>
+              </Typography>
             </NextLink>
           </Typography>
         </Box>

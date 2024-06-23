@@ -129,7 +129,7 @@ const slice = createSlice({
     },
     moveProductCard(state, action) {
       const { cardId, position, rowId } = action.payload;
-      const f = {...state.cards.byId};
+      const f = { ...state.cards.byId };
       console.log(f);
       const sourceRowId = state.cards.byId[cardId].corridorId || 0;
       if (!sourceRowId)
@@ -187,6 +187,8 @@ export const getBoard =
   async (dispatch: Dispatch) => {
     try {
       const response = await branchesMenuApi.getBoard(branchId);
+      console.log(response.data.corridors);
+
       const store = response.data.corridors.reduce<IMenuBoard>(
         (prev: IMenuBoard, currCorridor: Corridor) => {
           const { products, ...row } = currCorridor;
@@ -210,13 +212,17 @@ export const getBoard =
 export const createRow =
   (body: CreateCorridorDto) => async (dispatch: Dispatch) => {
     const response = await branchesMenuApi.createCorridorRow(body);
-    const cardIds = response.data.products.reduce<number[]>(
-      (prev: number[], currProd: Product) => {
-        if (currProd && currProd?.id) return [...prev, currProd.id];
-        return [...prev];
-      },
-      []
-    );
+
+    let cardIds: number[] = [];
+    if (response.data?.products) {
+      cardIds = response.data.products.reduce<number[]>(
+        (prev: number[], currProd: Product) => {
+          if (currProd && currProd?.id) return [...prev, currProd.id];
+          return [...prev];
+        },
+        []
+      );
+    }
     dispatch(
       slice.actions.createRow({
         ...response.data,

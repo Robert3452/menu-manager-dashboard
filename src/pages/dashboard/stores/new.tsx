@@ -31,12 +31,12 @@ const StoreCreate = () => {
             <Typography variant="h4">Create a new Store</Typography>
             <Breadcrumbs separator="/" sx={{ mt: 1 }}>
               <NextLink href="/dashboard" passHref>
-                <Link variant="subtitle2">Dashboard</Link>
+                <Typography variant="subtitle2">Dashboard</Typography>
               </NextLink>
               <NextLink href="/dashboard" passHref>
-                <Link color="primary" variant="subtitle2">
+                <Typography color="primary" variant="subtitle2">
                   Management
-                </Link>
+                </Typography>
               </NextLink>
               <Typography color="textSecondary" variant="subtitle2">
                 Stores

@@ -1,15 +1,13 @@
-import { I } from "@/utils/generalObj";
-import PropTypes from "prop-types";
-import { createContext, useEffect, useMemo, useReducer } from "react";
 import { authApi, CreateUserDto } from "@/api/auth/auth-api";
+import { I } from "@/utils/generalObj";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useRouter } from "next/router";
+import PropTypes from "prop-types";
+import { createContext, useEffect, useReducer } from "react";
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
   user: null,
 };
-
 const handlers: I = {
   INITIALIZE: (state: any, action: any) => {
     const { isAuthenticated, user } = action.payload;
@@ -63,15 +61,11 @@ export const AuthProvider = (props: any) => {
   const { data: session } = useSession();
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
-  const router = useRouter();
-  const { error } = router.query;
-  console.log(error);
   const initialize = async () => {
     try {
       const user = session?.user;
       if (user) {
         window.localStorage.setItem("accessToken", user.accessToken);
-        // console.log(user.accessToken)
         dispatch({
           type: "INITIALIZE",
           payload: {

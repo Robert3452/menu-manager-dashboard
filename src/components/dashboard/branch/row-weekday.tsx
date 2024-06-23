@@ -56,7 +56,6 @@ const RowWeekday: React.FC<RowWeekdayProps> = (props) => {
   // useEffect(() => {
   // //    if(item.weekday.toLowerCase()===)
   // if (!item) return;
-  // console.log(item)
   // arrayHelpers.push({
   //     ...item,
   //     endTime: item.endTime ? new Date(item?.endTime) : undefined,

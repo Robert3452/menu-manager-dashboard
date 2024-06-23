@@ -75,7 +75,7 @@ const StoreIndex = () => {
 
                     > */}
           <NextLink href="/dashboard/stores" passHref>
-            <Link
+            <Typography
               color="textPrimary"
               component="a"
               sx={{
@@ -87,7 +87,7 @@ const StoreIndex = () => {
             >
               <ArrowBackIcon fontSize="small" sx={{ mr: 1 }} />
               <Typography variant="subtitle2">Stores</Typography>
-            </Link>
+            </Typography>
           </NextLink>
           <Typography variant="h4">{store?.name}</Typography>
           {/* </Box> */}
