@@ -1,3 +1,4 @@
+"use client"
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -12,12 +13,18 @@ import {
 } from "@mui/material";
 import { useAuth } from "../../hooks/use-auth";
 import { useMounted } from "../../hooks/use-mounted";
-
+import GoogleLogo from "@/icons/googleg-g-logo";
+import { useEffect } from "react";
+import Cookies from "js-cookie";
 export const JWTRegister: React.FC<any> = (props) => {
   const isMounted = useMounted();
   const router = useRouter();
   const query = router.query as { returnUrl: string };
-  const { register } = useAuth();
+  const { register, loginGoogle } = useAuth();
+  useEffect(() => {
+    Cookies.set('auth-intent', 'signup')
+    // return () => Cookies.remove('auth-intent');
+  }, []);
   const formik = useFormik({
     initialValues: {
       email: "",
@@ -128,6 +135,23 @@ export const JWTRegister: React.FC<any> = (props) => {
           variant="contained"
         >
           Register
+        </Button>
+      </Box>
+      <Box sx={{ mt: 2 }}>
+        <Button
+          disabled={formik.isSubmitting}
+          fullWidth
+          size="large"
+          type="button"
+          variant="contained"
+          startIcon={<GoogleLogo />}
+          onClick={loginGoogle}
+          sx={{
+            background: (theme) => theme.palette.grey["100"],
+            "&:hover": { background: (theme) => theme.palette.grey["400"] },
+          }}
+        >
+          Regístrate con Google
         </Button>
       </Box>
     </form>

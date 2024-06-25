@@ -107,7 +107,7 @@ export const JWTLogin: React.FC<any> = (props) => {
             "&:hover": { background: (theme) => theme.palette.grey["400"] },
           }}
         >
-          Signin with Google
+          Inicia sesión con Google
         </Button>
       </Box>
     </form>

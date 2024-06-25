@@ -44,6 +44,13 @@ class AuthApi {
     );
     return data;
   }
+  async signupGoogle(body: CreateGoogleUserDto): Promise<JwtResponse> {
+    const secretKey = httpServices.apiKey;
+    const { data } = await httpClient.post("/users/google/signup", body, {
+      headers: { auth: secretKey },
+    });
+    return data;
+  }
   async verifyEmail(
     email: string
   ): Promise<{ message: string; status: boolean }> {
