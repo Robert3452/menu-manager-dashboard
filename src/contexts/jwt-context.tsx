@@ -94,9 +94,12 @@ export const AuthProvider = (props: any) => {
     }
   };
   useEffect(() => {
+    console.log("initial hook")
     initialize();
   }, []);
   useEffect(() => {
+    console.log("initialize hook")
+
     initialize();
   }, [session]);
 

@@ -20,6 +20,15 @@ class StoresApi {
     return data;
   }
 
+  async getStoreByOwner() {
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.get("/my-store", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    return data;
+  }
+
   async getStorebyId(storeId: number): Promise<IResponse<Store>> {
     const token = window.localStorage.getItem("accessToken");
 

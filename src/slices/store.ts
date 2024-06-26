@@ -33,13 +33,17 @@ const slice = createSlice({
     },
     getStore(state, action: PayloadAction<Store>) {
       const store = action.payload;
-      console.log(store)
       if (store) {
         state.stores.byId[store.id] = store;
         if (!state.stores.allIds.includes(store.id)) {
           state.stores.allIds.unshift(store.id);
         }
       }
+    },
+    getStoreByOwner(state, action: PayloadAction<Store>) {
+      const store = action.payload;
+      state.stores.byId = objFromArray([store]);
+      state.stores.allIds = Object.keys(state.stores.byId).map((el) => +el);
     },
     addStore(state, action: PayloadAction<Store>) {
       const store = action.payload;
@@ -76,6 +80,13 @@ export const getStores = () => async (dispatch: Dispatch) => {
 export const getStore = (storeId: number) => async (dispatch: Dispatch) => {
   const response = await storeApi.getStorebyId(storeId);
   dispatch(slice.actions.getStore(response.data));
+  return response;
+};
+
+export const getStoreByOwner = () => async (dispatch: Dispatch) => {
+  const response = await storeApi.getStoreByOwner();
+  if (response.data) dispatch(slice.actions.getStoreByOwner(response.data));
+  
   return response;
 };
 

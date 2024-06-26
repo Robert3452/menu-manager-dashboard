@@ -5,6 +5,7 @@ import { Alert, Box, Button, FormHelperText, TextField } from "@mui/material";
 import { useAuth } from "../../hooks/use-auth";
 import { useMounted } from "@/hooks/use-mounted";
 import GoogleLogo from "@/icons/googleg-g-logo";
+import Cookies from "js-cookie";
 import { useEffect } from "react";
 import { useSession } from "next-auth/react";
 // import { useMounted } from "../../hooks/use-mounted";
@@ -16,7 +17,10 @@ export const JWTLogin: React.FC<any> = (props) => {
   const query = router.query as { returnUrl: string };
   const { login } = useAuth();
   const { data: session } = useSession();
-
+  useEffect(() => {
+    Cookies.set("auth-intent", "signin");
+    // return () => Cookies.remove('auth-intent');
+  }, []);
   const formik = useFormik({
     initialValues: {
       email: "romeza1239@gmail.com",
