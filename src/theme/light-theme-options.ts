@@ -3,15 +3,15 @@
 import { ThemeOptions } from "@mui/material";
 
 const neutral = {
-  100: "#F3F4F6",
-  200: "#E5E7EB",
-  300: "#D1D5DB",
-  400: "#9CA3AF",
-  500: "#6B7280",
-  600: "#4B5563",
-  700: "#374151",
-  800: "#1F2937",
-  900: "#111827",
+  100: "#f4f4f4", // converted from #F3F4F6
+  200: "#e7e7e7", // converted from #E5E7EB
+  300: "#d5d5d5", // converted from #D1D5DB
+  400: "#a3a3a3", // converted from #9CA3AF
+  500: "#727272", // converted from #6B7280
+  600: "#565656", // converted from #4B5563
+  700: "#404040", // converted from #374151
+  800: "#292929", // converted from #1F2937
+  900: "#161616", // converted from #111827
 };
 
 const background = {
@@ -22,16 +22,19 @@ const background = {
 const divider = "#E6E8F0";
 
 const primary = {
-  main: "#5048E5",
-  light: "#828DF8",
-  dark: "#3832A0",
+  // main: "#5048E5",
+  // light: "#828DF8",
+  // dark: "#3832A0",
+  main: "#E2725B",
+  light: "#F5B9AE",
+  dark: "#A44C39",
   contrastText: "#FFFFFF",
 };
 
 const secondary = {
-  main: "#10B981",
-  light: "#3FC79A",
-  dark: "#0B815A",
+  main: "#FFC107",
+  light: "#FFDC69",
+  dark: "#CC9A06",
   contrastText: "#FFFFFF",
 };
 

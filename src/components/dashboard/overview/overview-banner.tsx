@@ -46,22 +46,22 @@ export const OverviewBanner = (props) => {
           sx={{ mt: 2 }}
           variant="h4"
         >
-          Welcome to Material Kit Pro v5!
+          Bienvenido a Tink food! 🍔
         </Typography>
         <Typography
           color="inherit"
           sx={{ mt: 1 }}
           variant="subtitle2"
         >
-          Your dashboard has been improved! Explore new features like Notifications, Search, Jobs Platform and more.
-        </Typography>
+          Ya iniciaste sesión! Crea tu tienda y registra tus productos en tu nuevo menu virtual🥳!
+           </Typography>
         <Box sx={{ mt: 2 }}>
           <Button
             color="secondary"
             onClick={onDismiss}
             variant="contained"
           >
-            Dismiss Banner
+            Cerrar banner
           </Button>
         </Box>
       </div>

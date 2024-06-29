@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 export const Logo = styled((props: any) => {
   const { variant = "primary", ...other } = props;
 
-  const color = variant === "light" ? "#C1C4D6" : "#5048E5";
+  const color = variant === "light" ? "#C1C4D6" : "#E2725B";
 
   return (
     <svg

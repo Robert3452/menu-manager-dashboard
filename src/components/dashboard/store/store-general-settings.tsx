@@ -25,12 +25,15 @@ import * as Yup from "yup";
 import {
   updateStore,
   deleteStore as dispatchDeleteStore,
+  createStore,
 } from "../../../slices/store";
 import { useAppDispatch, useAppSelector } from "@/store";
 import { Store } from "@/api/models/store";
 import { File } from "buffer";
+import { useSession } from "next-auth/react";
+import { useMounted } from "@/hooks/use-mounted";
 type StoreGeneralSettingsProps = {
-  store: Store;
+  store?: Store | null;
 };
 export const StoreGeneralSettings: React.FC<StoreGeneralSettingsProps> = (
   props
@@ -38,34 +41,58 @@ export const StoreGeneralSettings: React.FC<StoreGeneralSettingsProps> = (
   // To get the user from the authContext, you can use
   const [file, setFile] = useState<Blob | null>();
   const [selectedImage, setSelectedImage] = useState<any>();
+  const stores = useAppSelector((state) => state.stores.stores);
 
+  const { data: session } = useSession();
   const dispatch = useAppDispatch();
-  // `const { user } = useAuth();`
-  const { store } = props;
+  const store = stores.byId[stores.allIds[0]];
   const router = useRouter();
   const [disableDeleteBtn, setDisableDeleteBtn] = useState(false);
-
   const [openModal, setOpenModal] = useState(false);
-  useEffect(() => {}, []);
+
+  useEffect(() => {
+    if (store)
+      formik.setValues({
+        name: store.name,
+        file: store.logo,
+        branchName: store.branches?.[0].branchName || "",
+      });
+  }, [store]);
 
   const formik = useFormik({
     initialValues: {
-      name: store.name || "",
-      file: store.logo || "",
+      name: store?.name || "",
+      file: store?.logo || "",
+      branchName: store?.branches?.[0].branchName || "",
     },
     validationSchema: Yup.object({
       name: Yup.string().max(255),
       file: Yup.mixed(),
+      branchName: Yup.string().max(255),
     }),
     onSubmit: async (values, helpers) => {
       try {
-        const response = await dispatch(
-          updateStore(store.id, { ...values, file: file || undefined })
-        );
+        let response;
+
+        if (!store?.id && file) {
+          response = await dispatch(
+            createStore({ ...values, branchName: values.name, file })
+          );
+          toast.success(response.message);
+        } else if (store?.id) {
+          response = await dispatch(
+            updateStore(store.id, {
+              ...values,
+              file: file || undefined,
+            })
+          );
+          toast.success(response.message);
+        }
         // const response = await storeApi.updateStore(store.id, { ...values, file })
-        toast.success(response.message);
         helpers.setStatus({ success: true });
-        router.reload();
+        // helpers.resetForm()
+        // router.reload();
+        return;
       } catch (error) {
         console.error(error);
         toast.error("Algo fue mal.");
@@ -104,7 +131,7 @@ export const StoreGeneralSettings: React.FC<StoreGeneralSettingsProps> = (
     setFile(uploadedFile);
   };
   const handleDelete = () => {
-    formik.setFieldValue("file", store.logo);
+    formik.setFieldValue("file", store?.logo);
 
     setFile(null);
     setSelectedImage(null);
@@ -206,7 +233,7 @@ export const StoreGeneralSettings: React.FC<StoreGeneralSettingsProps> = (
                   }}
                 >
                   <TextField
-                    defaultValue="dummy.account@gmail.com"
+                    defaultValue={session?.user.email}
                     disabled
                     label="Email Address"
                     required
@@ -219,7 +246,7 @@ export const StoreGeneralSettings: React.FC<StoreGeneralSettingsProps> = (
                       },
                     }}
                   />
-                  <Button>Edit</Button>
+                  {/* <Button>Edit</Button> */}
                 </Box>
               </Grid>
             </Grid>
@@ -242,6 +269,8 @@ export const StoreGeneralSettings: React.FC<StoreGeneralSettingsProps> = (
                 color="error"
                 variant="outlined"
                 onClick={toggleModal}
+                // disable={store?.id}
+                disabled={typeof store === "undefined" || !store}
               >
                 Delete store
               </Button>

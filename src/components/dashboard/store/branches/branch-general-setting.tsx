@@ -121,29 +121,6 @@ export const BranchGeneralSettings: React.FC<BranchGeneralSettingsProps> = (
                   </Button>
                 </Box>
 
-                <Box
-                  sx={{
-                    display: "flex",
-                    mt: 3,
-                    alignItems: "center",
-                  }}
-                >
-                  <TextField
-                    defaultValue="dummy.account@gmail.com"
-                    disabled
-                    label="Email Address"
-                    required
-                    size="small"
-                    sx={{
-                      flexGrow: 1,
-                      mr: 3,
-                      "& .MuiOutlinedInput-notchedOutline": {
-                        borderStyle: "dashed",
-                      },
-                    }}
-                  />
-                  <Button>Edit</Button>
-                </Box>
               </Grid>
             </Grid>
           </CardContent>

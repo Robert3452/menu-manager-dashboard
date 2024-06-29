@@ -131,6 +131,7 @@ export const updateAddress =
 
 export const getBranches = (storeId: number) => async (dispatch: Dispatch) => {
   const { data } = await storeApi.getStorebyId(storeId);
+  if (!data) return;
   dispatch(slice.actions.getBranches(data.branches));
   return data;
 };

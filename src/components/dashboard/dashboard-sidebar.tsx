@@ -34,7 +34,7 @@ const getSections = (t: any) => [
       },
       {
         title: t("Mi tienda"),
-        path: "/store",
+        path: "/my-store",
         icon: <StoreMallDirectoryIcon fontSize="small" />,
       },
       {
@@ -75,26 +75,7 @@ const getSections = (t: any) => [
       },
     ],
   },
-  {
-    title: t("Master (Deprecated)"),
-    items: [
-      {
-        title: t("Stores"),
-        path: "/dashboard/stores",
-        icon: <ShoppingBagIcon fontSize="small" />,
-        children: [
-          {
-            title: t("List"),
-            path: "/dashboard/stores",
-          },
-          {
-            title: t("Create"),
-            path: "/dashboard/stores/new",
-          },
-        ],
-      },
-    ],
-  },
+ 
  
 ];
 type DashboardSidebarProps = {

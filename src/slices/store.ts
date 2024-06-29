@@ -1,6 +1,6 @@
 import { Store } from "@/api/models/store";
 import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
-import { CreateStoreDto, storeApi, UpdateStoreDto } from "../api/store-api";
+import { CreateStoreAndBranchDto, CreateStoreDto, storeApi, UpdateStoreDto } from "../api/store-api";
 import { objFromArray } from "../utils/obj-from-array";
 interface ByIdStore {
   [key: number]: Store;
@@ -86,12 +86,12 @@ export const getStore = (storeId: number) => async (dispatch: Dispatch) => {
 export const getStoreByOwner = () => async (dispatch: Dispatch) => {
   const response = await storeApi.getStoreByOwner();
   if (response.data) dispatch(slice.actions.getStoreByOwner(response.data));
-  
+
   return response;
 };
 
 export const createStore =
-  (store: CreateStoreDto) => async (dispatch: Dispatch) => {
+  (store: CreateStoreAndBranchDto) => async (dispatch: Dispatch) => {
     const response = await storeApi.createStore(store);
     dispatch(slice.actions.addStore(response.data));
     return response;

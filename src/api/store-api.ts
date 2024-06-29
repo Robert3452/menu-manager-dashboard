@@ -8,8 +8,11 @@ export interface CreateStoreDto {
   name: string;
   file: Blob;
 }
-export interface UpdateStoreDto extends Partial<CreateStoreDto> {}
 
+export interface CreateStoreAndBranchDto extends CreateStoreDto {
+  branchName: string;
+}
+export interface UpdateStoreDto extends Partial<CreateStoreDto> {}
 class StoresApi {
   async getStores(): Promise<IResponse<Store[]>> {
     const token = window.localStorage.getItem("accessToken");
@@ -22,7 +25,6 @@ class StoresApi {
 
   async getStoreByOwner() {
     const token = window.localStorage.getItem("accessToken");
-
     const { data } = await httpClient.get("/my-store", {
       headers: { Authorization: `Bearer ${token}` },
     });
@@ -63,10 +65,13 @@ class StoresApi {
     });
     return data;
   }
-  async createStore(newStore: CreateStoreDto): Promise<IResponse<Store>> {
-    const { name, file } = newStore;
-    const formData = new FormData();
+  async createStore(
+    newStore: CreateStoreAndBranchDto
+  ): Promise<IResponse<Store>> {
+    const { name, file, branchName } = newStore;
+    const formData = new FormData(); 
     formData.append("name", name);
+    formData.append("branchName", branchName);
     formData.append("file", file);
     const token = window.localStorage.getItem("accessToken");
 

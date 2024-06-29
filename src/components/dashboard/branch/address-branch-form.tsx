@@ -65,8 +65,6 @@ export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
   const [departments, setDepartments] = useState([]);
   const [provinces, setProvinces] = useState([]);
   const [districts, setDistricts] = useState([]);
-  const router = useRouter();
-  const query = router.query as QueryParams;
   const validationSchema = Yup.object().shape({
     address: Yup.string().required("This field is required"),
     department: Yup.string().required("Department field is required"),
@@ -230,7 +228,7 @@ export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
 
   useEffect(() => {
     getDepartments();
-    if (query.branchId) {
+    if (branch?.id) {
       setStreetType(
         streetTypes.find(
           (el: any) => el.value.toLowerCase() == branch?.address?.streetType

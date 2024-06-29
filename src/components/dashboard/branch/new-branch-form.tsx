@@ -14,18 +14,18 @@ import {
 } from "@mui/material";
 import { useFormik } from "formik";
 import { useRouter } from "next/router";
-import { useAppDispatch } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store";
 import { createBranch } from "@/slices/branches";
 import { CreateBranchDto } from "@/api/branch-api";
 import { AxiosError } from "axios";
 const NewBranchForm = () => {
   const dispatch = useAppDispatch();
-  const router = useRouter();
+  const storeState = useAppSelector((state) => state.stores.stores);
+
   const formik = useFormik({
     initialValues: {
       branchName: "",
-      storeId:
-        typeof router.query.storeId === "string" ? +router.query.storeId : 0,
+      storeId: storeState.allIds[0],
     },
     validationSchema: Yup.object().shape({
       branchName: Yup.string().required("branch name required"),

@@ -92,9 +92,15 @@ const ToppingListTable: React.FC<any> = ({
             },
           }}
         >
-          <TableHead sx={{ backgroundColor: "grey.900" }}>
+          <TableHead
+           sx={{ backgroundColor: "transparent" }}
+          >
             <TableRow>
-              <TableCell className="MuiTableCell-AddTopping" colSpan={5}>
+              <TableCell
+                sx={{ backgroundColor: "transparent" }}
+                className="MuiTableCell-AddTopping"
+                colSpan={6}
+              >
                 <Button
                   onClick={addTopping}
                   startIcon={<PlusIcon fontSize="small" />}

@@ -49,12 +49,12 @@ const applyPagination = (items: any, page: any, rowsPerPage: any) =>
   items.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage);
 
 const BranchList = () => {
-  const [branches, setBranches] = useState<Branch[]>([]);
+  // const [branches, setBranches] = useState<Branch[]>([]);
   const dispatch = useAppDispatch();
   const branchStore = useAppSelector((state) => state.branches.branches);
+  const storeState = useAppSelector((state) => state.stores.stores);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const router = useRouter();
   const [filters, setFilters] = useState({
     name: undefined,
     category: [],
@@ -66,18 +66,14 @@ const BranchList = () => {
     gtm.push({ event: "page_view" });
   }, []);
 
-  useEffect(() => {
-    if (branchStore)
-      setBranches(branchStore.allIds.map((el) => branchStore.byId[el]));
-  }, [branchStore]);
+  // useEffect(() => {
+  //   if (branchStore)
+  //     setBranches(branchStore.allIds.map((el) => branchStore.byId[el]));
+  // }, [branchStore]);
 
   useEffect(
     () => {
-      dispatch(
-        getBranches(
-          typeof router.query.storeId === "string" ? +router.query.storeId : 0
-        )
-      );
+      dispatch(getBranches(storeState.allIds[0]));
     },
     // eslint-disable-next-line react-hooks/exhaustive-deps
     []
@@ -96,7 +92,10 @@ const BranchList = () => {
   };
 
   // Usually query is done on backend with indexing solutions
-  const filteredBranches = applyFilters(branches, filters);
+  const filteredBranches = applyFilters(
+    branchStore.allIds.map((el) => branchStore.byId[el]),
+    filters
+  );
   const paginatedBranches = applyPagination(
     filteredBranches,
     page,
