@@ -34,12 +34,12 @@ const getSections = (t: any) => [
       },
       {
         title: t("Mi tienda"),
-        path: "/my-store",
+        path: "/dashboard/my-store",
         icon: <StoreMallDirectoryIcon fontSize="small" />,
       },
       {
         title: t("Mi menú"),
-        path: "/products",
+        path: "/dashboard/menu",
         icon: <ShoppingBagIcon fontSize="small" />,
       },
       {
@@ -49,7 +49,7 @@ const getSections = (t: any) => [
       },
       {
         title: t("Mi código QR"),
-        path: "/qr-view",
+        path: "/dashboard/qr",
         icon: <QrCode2 fontSize="small" />,
       },
     ],

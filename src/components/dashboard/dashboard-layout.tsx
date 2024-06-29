@@ -1,9 +1,12 @@
-import { ReactNode, useState } from "react";
+"use client";
+import { ReactNode, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { styled } from "@mui/material/styles";
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
 import { Box } from "@mui/material";
+import { useAppDispatch } from "@/store";
+import { getStoreByOwner } from "@/slices/store";
 
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   display: "flex",
@@ -22,6 +25,10 @@ type DashboardLayoutProps = {
 export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
   const { children } = props;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(getStoreByOwner());
+  }, []);
 
   return (
     <>

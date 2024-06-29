@@ -33,21 +33,20 @@ const tabs: ITabStore[] = [
   { label: "General", value: "general", disabled: false },
   { label: "Address", value: "address", disabled: true },
   { label: "Schedule", value: "schedule", disabled: true },
-  { label: "Menu", value: "menu", disabled: true },
+  // { label: "Menu", value: "menu", disabled: true },
   //   { label: "Team", value: "team", disabled: false },
 ];
 
 const StoreIndex = () => {
-  const dispatch = useAppDispatch();
   const [tabsState, setTabsState] = useState<ITabStore[]>(tabs);
   const stores = useAppSelector((state) => state.stores.stores);
   const [currentTab, setCurrentTab] = useState("general");
   //   const [store, setStore] = useState<Store | null>(null);
   const store = stores.byId[stores.allIds[0]];
   const branch = stores.byId[stores.allIds[0]]?.branches?.[0];
-  useEffect(() => {
-    dispatch(getStoreByOwner());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(getStoreByOwner());
+  // }, []);
   useEffect(() => {
     // const currStore = stores.byId[stores.allIds[0]];
     // if (currStore) setStore(currStore);
@@ -85,21 +84,6 @@ const StoreIndex = () => {
         }}
       >
         <Container maxWidth="md">
-          <NextLink href="/dashboard/stores" passHref>
-            <Typography
-              color="textPrimary"
-              component="a"
-              sx={{
-                alignItems: "center",
-                display: "flex",
-                pr: 2,
-                pb: 2,
-              }}
-            >
-              <ArrowBackIcon fontSize="small" sx={{ mr: 1 }} />
-              <Typography variant="subtitle2">Stores</Typography>
-            </Typography>
-          </NextLink>
           <Typography variant="h4">{store?.name}</Typography>
           <Tabs
             indicatorColor="primary"
@@ -123,7 +107,7 @@ const StoreIndex = () => {
           {currentTab === "general" && <StoreGeneralSettings store={store} />}
           {currentTab === "address" && <AddressBranchForm branch={branch} />}
           {currentTab === "schedule" && <ScheduleBranchForm />}
-          {currentTab === "menu" && branch && <MenuBoard branch={branch} />}
+          {/* {currentTab === "menu" && branch && <MenuBoard branch={branch} />} */}
         </Container>
       </Box>
     </>
