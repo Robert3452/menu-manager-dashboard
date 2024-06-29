@@ -79,7 +79,7 @@ export const darkThemeOptions: ThemeOptions = {
       styleOverrides: {
         root: {
           backgroundColor: neutral[500],
-          color: "#FFFFFF",
+          color: "#FAFAFA",
         },
       },
     },

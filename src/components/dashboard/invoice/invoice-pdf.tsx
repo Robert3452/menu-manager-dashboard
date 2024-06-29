@@ -8,7 +8,7 @@ const COLN_WIDTH = (100 - COL1_WIDTH) / 2;
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FAFAFA',
     padding: 24
   },
   h4: {

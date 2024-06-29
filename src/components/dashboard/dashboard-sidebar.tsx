@@ -2,7 +2,7 @@ import { Home as HomeIcon } from "@/icons/home";
 import { Selector as SelectorIcon } from "@/icons/selector";
 import { ShoppingBag as ShoppingBagIcon } from "@/icons/shopping-bag";
 import CoPresentIcon from "@mui/icons-material/CoPresent";
-import GradingIcon from '@mui/icons-material/Grading';
+import GradingIcon from "@mui/icons-material/Grading";
 import StoreMallDirectoryIcon from "@mui/icons-material/StoreMallDirectory";
 import {
   Box,
@@ -54,7 +54,7 @@ const getSections = (t: any) => [
       },
     ],
   },
-  
+
   {
     title: t("Administrar"),
     items: [
@@ -75,8 +75,6 @@ const getSections = (t: any) => [
       },
     ],
   },
- 
- 
 ];
 type DashboardSidebarProps = {
   onClose: any;
@@ -136,57 +134,29 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
           }}
         >
           <div>
-            <Box sx={{ p: 3, width: "100%" }}>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                px: 3,
+                py: 2,
+                width: "100%",
+              }}
+            >
               <NextLink href="/" passHref>
-                {/* <a> */}
                 <Logo
                   sx={{
-                    height: 42,
-                    width: 42,
+                    height: "100%",
+                    width: "100%",
+                    pr: 2,
                   }}
                 />
-                {/* </a> */}
               </NextLink>
-            </Box>
-            <Box sx={{ px: 2 }}>
-              <Box
-                onClick={handleOpenOrganizationsPopover}
-                ref={organizationsRef}
-                sx={{
-                  alignItems: "center",
-                  backgroundColor: "rgba(255, 255, 255, 0.04)",
-                  cursor: "pointer",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  px: 3,
-                  py: "11px",
-                  borderRadius: 1,
-                }}
-              >
-                <div>
-                  <Typography color="inherit" variant="subtitle1">
-                    Acme Inc
-                  </Typography>
-                  <Typography color="grey.400" variant="body2">
-                    {t("Your tier")} : Premium
-                  </Typography>
-                </div>
-                <SelectorIcon
-                  sx={{
-                    color: "grey.500",
-                    width: 14,
-                    height: 14,
-                  }}
-                />
+              <Box>
+                <Typography variant="subtitle2">TinkFood</Typography>
               </Box>
             </Box>
           </div>
-          <Divider
-            sx={{
-              borderColor: "#2D3748",
-              my: 3,
-            }}
-          />
           <Box sx={{ flexGrow: 1 }}>
             {sections.map((section) => (
               <DashboardSidebarSection
@@ -204,7 +174,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
               borderColor: "#2D3748", // dark divider
             }}
           />
-          <Box sx={{ p: 2 }}>
+          {/* <Box sx={{ p: 2 }}>
             <Typography color="grey.100" variant="subtitle2">
               {t("Need Help?")}
             </Typography>
@@ -222,7 +192,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
                 {t("Documentation")}
               </Button>
             </NextLink>
-          </Box>
+          </Box> */}
         </Box>
       </Scrollbar>
       <OrganizationPopover
@@ -245,7 +215,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
             borderRightStyle: "solid",
             borderRightWidth: (theme) =>
               theme.palette.mode === "dark" ? 1 : 0,
-            color: "#FFFFFF",
+            color: "#FAFAFA",
             width: 280,
           },
         }}
@@ -264,7 +234,7 @@ export const DashboardSidebar: React.FC<DashboardSidebarProps> = (props) => {
       PaperProps={{
         sx: {
           backgroundColor: "grey.900",
-          color: "#FFFFFF",
+          color: "#FAFAFA",
           width: 280,
         },
       }}

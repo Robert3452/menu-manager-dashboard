@@ -16,7 +16,7 @@ const neutral = {
 
 const background = {
   default: "#F9FAFC",
-  paper: "#FFFFFF",
+  paper: "#FAFAFA",
 };
 
 const divider = "#E6E8F0";
@@ -28,42 +28,42 @@ const primary = {
   main: "#E2725B",
   light: "#F5B9AE",
   dark: "#A44C39",
-  contrastText: "#FFFFFF",
+  contrastText: "#FAFAFA",
 };
 
 const secondary = {
   main: "#FFC107",
   light: "#FFDC69",
   dark: "#CC9A06",
-  contrastText: "#FFFFFF",
+  contrastText: "#FAFAFA",
 };
 
 const success = {
   main: "#14B8A6",
   light: "#43C6B7",
   dark: "#0E8074",
-  contrastText: "#FFFFFF",
+  contrastText: "#FAFAFA",
 };
 
 const info = {
   main: "#2196F3",
   light: "#64B6F7",
   dark: "#0B79D0",
-  contrastText: "#FFFFFF",
+  contrastText: "#FAFAFA",
 };
 
 const warning = {
   main: "#FFB020",
   light: "#FFBF4C",
   dark: "#B27B16",
-  contrastText: "#FFFFFF",
+  contrastText: "#FAFAFA",
 };
 
 const error = {
   main: "#D14343",
   light: "#DA6868",
   dark: "#922E2E",
-  contrastText: "#FFFFFF",
+  contrastText: "#FAFAFA",
 };
 
 const text = {
@@ -78,7 +78,7 @@ export const lightThemeOptions: ThemeOptions = {
       styleOverrides: {
         root: {
           backgroundColor: neutral[500],
-          color: "#FFFFFF",
+          color: "#FAFAFA",
         },
       },
     },
