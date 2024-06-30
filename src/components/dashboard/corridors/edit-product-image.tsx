@@ -1,12 +1,17 @@
-import Box from "@mui/material/Box";
-import ButtonBase from "@mui/material/ButtonBase";
-import { styled, useTheme } from "@mui/material/styles";
-import PropTypes from "prop-types";
-import React, { useEffect, useRef, useState } from "react";
-import { Image as ImageIcon } from "../../../icons/image";
+import { I } from "@/utils/generalObj";
 import CenterFocusWeakIcon from "@mui/icons-material/CenterFocusWeak";
 import { Tooltip } from "@mui/material";
-
+import Box from "@mui/material/Box";
+import ButtonBase from "@mui/material/ButtonBase";
+import { styled } from "@mui/material/styles";
+import { useEffect, useRef, useState } from "react";
+import { Image as ImageIcon } from "../../../icons/image";
+const breakpoints: I = {
+  xs: "120px",
+  sm: "170px",
+  md: "250px",
+  lg: "330px",
+};
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
   clipPath: "inset(50%)",
@@ -22,16 +27,13 @@ const VisuallyHiddenInput = styled("input")({
 
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: "relative",
-  height: "330px",
   margin: "auto",
-  minHeight: "330px",
-  width: "100%",
-  maxWidth: "320px",
   borderRadius: "8px",
 
   [theme.breakpoints.down("sm")]: {
-    width: "100% !important", // Overrides inline-style
-    height: 100,
+    width: "90% !important", // Overrides inline-style
+    height: 250,
+    margin: "auto",
   },
   "&:hover .EditIcon": {
     backgroundColor: theme.palette.primary.light,
@@ -66,7 +68,7 @@ const ImageSrc = styled("span")(({ theme }) => ({
   backgroundSize: "cover",
   backgroundPosition: "center 40%",
   borderRadius: "8px",
-  backgroundColor: theme.palette.background.default,
+  backgroundColor: theme.palette.grey[700],
 }));
 
 const Image = styled("span")(({ theme }) => ({
@@ -84,7 +86,7 @@ const Image = styled("span")(({ theme }) => ({
 }));
 
 export default function EditProductImage(props: any) {
-  const { handleChange, image } = props;
+  const { handleChange, image, size } = props;
 
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState(null);
@@ -114,10 +116,18 @@ export default function EditProductImage(props: any) {
         display: "flex",
         justifyContent: "center",
       }}
-      p={4}
     >
       <Tooltip title="Upload image" placement="right-start">
-        <ImageButton tabIndex={-1} focusRipple onClick={onClick} role="button">
+        <ImageButton
+          tabIndex={-1}
+          focusRipple
+          onClick={onClick}
+          sx={{
+            height: breakpoints?.[size] || breakpoints.lg,
+            width: breakpoints?.[size] || breakpoints.lg,
+          }}
+          role="button"
+        >
           <VisuallyHiddenInput
             onBlur={props.onBlur}
             ref={fileInputRef}
@@ -153,9 +163,9 @@ export default function EditProductImage(props: any) {
   );
 }
 
-EditProductImage.propTypes = {
-  handleChange: PropTypes.func.isRequired,
-  image: PropTypes.string,
-  name: PropTypes.string,
-  onBlur: PropTypes.func,
-};
+// EditProductImage.propTypes = {
+//   handleChange: PropTypes.func.isRequired,
+//   image: PropTypes.string,
+//   name: PropTypes.string,
+//   onBlur: PropTypes.func,
+// };

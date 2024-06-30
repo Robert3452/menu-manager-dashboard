@@ -62,6 +62,8 @@ const resources = {
       'Finance': 'Finanzas',
       'Logistics': 'Logística',
       'Account': 'Cuenta',
+      'Address':'Dirección',
+      'Schedule':'Horario',
       'Management': 'Gestión',
       'Customers': 'Clientes',
       'List': 'Lista',
@@ -96,7 +98,12 @@ const resources = {
       'Error': 'Error',
       'Need Help?': '¿Necesitas ayuda?',
       'Check our docs': 'Consulte nuestros documentos',
-      'Documentation': 'Documentación'
+      'Documentation': 'Documentación',
+      'Monday':'Lunes',
+      'Tuesday':'Martes',
+      'Wednesday':'Miércoles',
+      'Thursday':'Jueves',
+      'Friday':'Viernes'
     }
   }
 };
@@ -105,8 +112,8 @@ i18n
   .use(initReactI18next)
   .init({
     resources,
-    lng: 'en',
-    fallbackLng: 'en',
+    lng: 'es',
+    fallbackLng: 'es',
     interpolation: {
       escapeValue: false
     }

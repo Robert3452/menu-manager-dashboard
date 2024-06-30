@@ -1,7 +1,13 @@
 import { Store } from "@/api/models/store";
 import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
-import { CreateStoreAndBranchDto, CreateStoreDto, storeApi, UpdateStoreDto } from "../api/store-api";
+import {
+  CreateStoreAndBranchDto,
+  CreateStoreDto,
+  storeApi,
+  UpdateStoreDto,
+} from "../api/store-api";
 import { objFromArray } from "../utils/obj-from-array";
+import { addressesApi, CreateAddressDto } from "@/api/address-api";
 interface ByIdStore {
   [key: number]: Store;
 }
@@ -102,7 +108,6 @@ export const deleteStore = (storeId: number) => async (dispatch: Dispatch) => {
   dispatch(slice.actions.deleteStore(response.data.id));
   return response;
 };
-
 export const updateStore =
   (storeId: number, store: UpdateStoreDto) => async (dispatch: Dispatch) => {
     const response = await storeApi.updateStore(storeId, store);

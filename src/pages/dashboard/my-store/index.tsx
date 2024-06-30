@@ -24,6 +24,8 @@ import { json } from "stream/consumers";
 import AddressBranchForm from "@/components/dashboard/branch/address-branch-form";
 import ScheduleBranchForm from "@/components/dashboard/branch/schedules-branch-form";
 import MenuBoard from "@/components/dashboard/corridors/menu-board";
+import { t } from "i18next";
+import { getBranch } from "@/slices/branches";
 interface ITabStore {
   label: string;
   value: string;
@@ -44,9 +46,10 @@ const StoreIndex = () => {
   //   const [store, setStore] = useState<Store | null>(null);
   const store = stores.byId[stores.allIds[0]];
   const branch = stores.byId[stores.allIds[0]]?.branches?.[0];
-  // useEffect(() => {
-  //   dispatch(getStoreByOwner());
-  // }, []);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    if (branch) dispatch(getBranch(branch.id));
+  }, [stores]);
   useEffect(() => {
     // const currStore = stores.byId[stores.allIds[0]];
     // if (currStore) setStore(currStore);
@@ -97,7 +100,7 @@ const StoreIndex = () => {
             {tabsState.map((tab) => (
               <Tab
                 key={tab.value}
-                label={tab.label}
+                label={t(tab.label)}
                 value={tab.value}
                 disabled={tab.disabled}
               />
@@ -105,7 +108,9 @@ const StoreIndex = () => {
           </Tabs>
           <Divider sx={{ mb: 3 }} />
           {currentTab === "general" && <StoreGeneralSettings store={store} />}
-          {currentTab === "address" && <AddressBranchForm branch={branch} />}
+          {currentTab === "address" && branch && (
+            <AddressBranchForm branchId={branch.id} />
+          )}
           {currentTab === "schedule" && <ScheduleBranchForm />}
           {/* {currentTab === "menu" && branch && <MenuBoard branch={branch} />} */}
         </Container>

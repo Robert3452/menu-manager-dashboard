@@ -3,6 +3,7 @@ import { Branch } from "@/api/models/branch";
 import MenuBoard from "@/components/dashboard/corridors/menu-board";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import { useAppSelector } from "@/store";
+import { Container } from "@mui/material";
 import React, { ReactNode, useEffect, useState } from "react";
 
 const DashboardMenu = () => {
@@ -14,7 +15,11 @@ const DashboardMenu = () => {
     if (branch) setCurrentBranch(branch);
   }, [stores]);
 
-  return currentBranch && <MenuBoard branch={currentBranch} />;
+  return (
+    <Container maxWidth="lg" sx={{ py: 4, overflowX: "auto" }}>
+      {currentBranch && <MenuBoard branch={currentBranch} />}
+    </Container>
+  );
 };
 
 DashboardMenu.getLayout = (page: ReactNode) => (

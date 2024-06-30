@@ -44,7 +44,7 @@ const getSections = (t: any) => [
       },
       {
         title: t("Presentación"),
-        path: "/landing-page",
+        path: "/dashboard/landing-page",
         icon: <CoPresentIcon fontSize="small" />,
       },
       {

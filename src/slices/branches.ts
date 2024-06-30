@@ -1,23 +1,20 @@
+import { Branch as BranchModel } from "@/api/models/branch";
 import { createSlice, Dispatch } from "@reduxjs/toolkit";
+import {
+  addressesApi,
+  CreateAddressDto
+} from "../api/address-api";
 import {
   branchesApi,
   CreateBranchDto,
   UpdateBranchDto,
 } from "../api/branch-api";
+import {
+  CreateWeekdayScheduleDto,
+  scheduleApi
+} from "../api/schedule-api";
 import { storeApi } from "../api/store-api";
 import { objFromArray } from "../utils/obj-from-array";
-import {
-  CreateScheduleDto,
-  CreateWeekdayScheduleDto,
-  scheduleApi,
-} from "../api/schedule-api";
-import {
-  addressesApi,
-  CreateAddressDto,
-  UpdateAddressDto,
-} from "../api/address-api";
-import { Branch as BranchModel } from "@/api/models/branch";
-import { Schedule, WeekdaySchedule } from "@/api/models/schedule";
 interface ByIdBranch {
   [key: number]: BranchModel;
 }

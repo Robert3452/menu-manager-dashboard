@@ -280,7 +280,7 @@ export const DashboardNavbar: React.FC<DashboardNavbarProps> = (props) => {
           <Box sx={{ flexGrow: 1 }} />
           <LanguageButton />
           <ContentSearchButton />
-          <ContactsButton />
+          {/* <ContactsButton /> */}
           <NotificationsButton />
           <AccountButton />
         </Toolbar>

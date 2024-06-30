@@ -1,6 +1,6 @@
 import { CreateAddressDto } from "@/api/address-api";
 import { Branch } from "@/api/models/branch";
-import { useAppDispatch } from "@/store";
+import { useAppDispatch, useAppSelector } from "@/store";
 import {
   Autocomplete,
   Box,
@@ -25,7 +25,11 @@ import { branchesApi } from "../../../api/branch-api";
 import { ubigeoApi } from "../../../api/masterData/ubigeo";
 import { Home as HomeIcon } from "../../../icons/home";
 import { OfficeBuilding as BuildingIcon } from "../../../icons/office-building";
-import { createAddress, updateAddress } from "../../../slices/branches";
+import {
+  createAddress,
+  getBranch,
+  updateAddress,
+} from "../../../slices/branches";
 // import { useDispatch, useSelector } from "../../../store";
 
 const addressTypesOptions = [
@@ -50,13 +54,10 @@ const streetTypes = [
   { text: "Pasaje", value: "pasaje" },
 ];
 type AddressBranchFormProps = {
-  branch?: Branch;
+  branchId: number;
 };
-interface QueryParams {
-  branchId?: number;
-}
 export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
-  const { branch, ...other } = props;
+  const { branchId, ...other } = props;
   const [department, setDepartment] = useState(null);
   const [province, setProvince] = useState(null);
   const [district, setDistrict] = useState(null);
@@ -75,8 +76,10 @@ export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
     phoneNumber: Yup.string().required("Phone Number field is required"),
     references: Yup.string(), //.required("References field is required")
   });
+
   const dispatch = useAppDispatch();
-  // const { branches } = useAppSelector((state) => state.branches);
+  const { branches } = useAppSelector((state) => state.branches);
+  const branch = branches.byId[branchId];
   const formik = useFormik({
     initialValues: {
       address: branch?.address?.address || "",
@@ -222,19 +225,22 @@ export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
   useEffect(() => {
     if (!branch || departments.length == 0) return;
     handleEditForm();
-  }, [departments, branch]);
+  }, [departments, branches]);
 
   useEffect(() => {
     getDepartments();
     if (branch?.id) {
-      setStreetType(
-        streetTypes.find(
-          (el: any) => el.value.toLowerCase() == branch?.address?.streetType
-        ) || null
-      );
+      dispatch(getBranch(branch?.id));
+      if (branch.address)
+        setStreetType(
+          streetTypes.find(
+            (el: any) => el.value.toLowerCase() == branch?.address?.streetType
+          ) || null
+        );
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const streetTypeChange = (event: any, newValue: any) => {
     let form = formik.values;
     form.streetType = newValue?.value;

@@ -199,7 +199,7 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
               pt={1}
             >
               <Typography
-                color="grey.200"
+                // color="grey.200"
                 sx={{
                   mb: 2,
                   mt: 2,

@@ -1,5 +1,3 @@
-import { ReactNode, useEffect, useState } from "react";
-import Head from "next/head";
 import {
   Box,
   Button,
@@ -9,33 +7,23 @@ import {
   Container,
   Divider,
   Grid,
-  MenuItem,
-  TextField,
-  Typography,
+  Typography
 } from "@mui/material";
+import { ReactNode, useEffect, useState } from "react";
 // import { AuthGuard } from "../../components/authentication/auth-guard";
-import { DashboardLayout } from "../../components/dashboard/dashboard-layout";
-import { OverviewBanner } from "../../components/dashboard/overview/overview-banner";
-import { OverviewCryptoWallet } from "../../components/dashboard/overview/overview-crypto-wallet";
-import { OverviewInbox } from "../../components/dashboard/overview/overview-inbox";
-import { OverviewLatestTransactions } from "../../components/dashboard/overview/overview-latest-transactions";
-import { OverviewPrivateWallet } from "../../components/dashboard/overview/overview-private-wallet";
-import { OverviewTotalBalance } from "../../components/dashboard/overview/overview-total-balance";
-import { OverviewTotalTransactions } from "../../components/dashboard/overview/overview-total-transactions";
 import { ArrowRight as ArrowRightIcon } from "@/icons/arrow-right";
 import { Briefcase as BriefcaseIcon } from "@/icons/briefcase";
 import { Download as DownloadIcon } from "@/icons/download";
 import { ExternalLink as ExternalLinkIcon } from "@/icons/external-link";
 import { InformationCircleOutlined as InformationCircleOutlinedIcon } from "@/icons/information-circle-outlined";
-import { Reports as ReportsIcon } from "@/icons/reports";
+import { DashboardLayout } from "../../components/dashboard/dashboard-layout";
+import { OverviewBanner } from "../../components/dashboard/overview/overview-banner";
 // import { UsersIcon } from '@/icons/users';
-import { gtm } from "../../lib/gtm";
-import UsersIcon from "@/icons/users";
-import { AuthGuard } from "@/components/authentication/auth-guard";
-import { useAppDispatch, useAppSelector } from "@/store";
-import { getStoreByOwner } from "@/slices/store";
-import { useRouter } from "next/router";
 import { useAuth } from "@/hooks/use-auth";
+import { getStoreByOwner } from "@/slices/store";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { useRouter } from "next/router";
+import { gtm } from "../../lib/gtm";
 
 const Overview = () => {
   const router = useRouter();
@@ -262,7 +250,6 @@ const Overview = () => {
               </Card>
             </Grid> */}
         </Grid>
-        {storeState && JSON.stringify(storeState.byId)}
       </Container>
     </Box>
   );
