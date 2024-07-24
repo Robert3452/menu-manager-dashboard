@@ -32,11 +32,17 @@ const primary = {
   ...neutral,
 };
 
+// const secondary = {
+// main: "#FFC107",
+// light: "#FFDC69",
+// dark: "#CC9A06",
+// contrastText: neutral[900],
+// };
 const secondary = {
-  main: "#FFC107",
-  light: "#FFDC69",
-  dark: "#CC9A06",
-  contrastText: neutral[900],
+  main: "#39831E",
+  light: "#5CA344",
+  dark: "#255912",
+  contrastText: "#FAFAFA",
 };
 
 const success = {
@@ -161,6 +167,13 @@ export const darkThemeOptions: ThemeOptions = {
           ".MuiTableCell-root": {
             color: neutral[300],
           },
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          color: neutral[100],
         },
       },
     },

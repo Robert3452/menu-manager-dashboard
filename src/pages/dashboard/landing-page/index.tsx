@@ -250,7 +250,7 @@ const LandingPage = () => {
                   minHeight: "60px",
                   backgroundColor: "background.paper",
                   position: "sticky",
-                  pt:3,
+                  pt: 3,
                   bottom: 0,
                   display: "flex",
                   justifyContent: "flex-end",
@@ -258,9 +258,10 @@ const LandingPage = () => {
               >
                 <Button
                   startIcon={<Cancel />}
-                  sx={{ my: 1, mr: 2 }}
                   color="error"
                   variant="contained"
+                  type="button"
+                  sx={{ my: 1, mr: 2 }}
                   onClick={onClose}
                 >
                   Cancel
@@ -268,7 +269,7 @@ const LandingPage = () => {
                 <Button
                   endIcon={<Save />}
                   sx={{ my: 1, mr: 4 }}
-                  color="primary"
+                  color="secondary"
                   type="submit"
                   variant="contained"
                 >

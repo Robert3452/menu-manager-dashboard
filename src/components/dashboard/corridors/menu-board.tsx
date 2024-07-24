@@ -7,7 +7,6 @@ import CorridorRow from "../../../components/dashboard/corridors/corridor-row";
 import CorridorRowAdd from "../../../components/dashboard/corridors/corridor-row-add";
 import { DashboardLayout } from "../../../components/dashboard/dashboard-layout";
 import { getBoard, moveProductCard } from "../../../slices/menu";
-// import { useDispatch, useSelector } from '../../../store';
 import { ResetTvOutlined } from "@mui/icons-material";
 import { Branch } from "@/api/models/branch";
 import { useAppDispatch, useAppSelector } from "@/store";

@@ -324,7 +324,7 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
             <Button
               endIcon={<Save />}
               sx={{ my: 1, mr: 4 }}
-              color="primary"
+              color="secondary"
               type="submit"
               variant="contained"
             >

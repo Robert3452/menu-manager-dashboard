@@ -36,7 +36,7 @@ const CategoryList = ({ arrayHelpers, formik }:any) => {
             onClick={addCategory}
             startIcon={<PlusIcon fontSize="small" />}
             sx={{
-              mb: 3,
+              m: 3,
               order: {
                 xs: -1,
                 md: 0,

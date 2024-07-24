@@ -1,16 +1,14 @@
 import { Home as HomeIcon } from "@/icons/home";
-import { Selector as SelectorIcon } from "@/icons/selector";
 import { ShoppingBag as ShoppingBagIcon } from "@/icons/shopping-bag";
 import CoPresentIcon from "@mui/icons-material/CoPresent";
 import GradingIcon from "@mui/icons-material/Grading";
 import StoreMallDirectoryIcon from "@mui/icons-material/StoreMallDirectory";
 import {
   Box,
-  Button,
   Divider,
   Drawer,
   Typography,
-  useMediaQuery,
+  useMediaQuery
 } from "@mui/material";
 import NextLink from "next/link";
 import { useRouter } from "next/router";

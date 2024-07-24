@@ -31,10 +31,17 @@ const primary = {
   contrastText: "#FAFAFA",
 };
 
+// const secondary = {
+//   main: "#FFC107",
+//   light: "#FFDC69",
+//   dark: "#CC9A06",
+//   contrastText: "#FAFAFA",
+// };
+
 const secondary = {
-  main: "#FFC107",
-  light: "#FFDC69",
-  dark: "#CC9A06",
+  main: "#39831E",
+  light: "#5CA344",
+  dark: "#255912",
   contrastText: "#FAFAFA",
 };
 
@@ -132,6 +139,11 @@ export const lightThemeOptions: ThemeOptions = {
           borderStyle: "solid",
           borderWidth: 1,
         },
+      },
+    },
+    MuiCard: {
+      styleOverrides: {
+        root: { boxShadow: "5px 5px 16px 0px rgba(0,0,0,0.2)" ,},
       },
     },
     MuiSwitch: {
