@@ -2,11 +2,11 @@
     "configurations": [
         {
             "type": "chrome",
-            "url":"http://localhost:3000",
-            "name": "Run Script NEXT DASHBOARD: dev",
+            "runtimeExecutable": "/Applications/Brave Browser.app/Contents/MacOS/Brave Browser",
+            "name": "TinkFood Dashboard",
+            "userDataDir": true,
             "request": "launch",
-            // "command": "npm run dev",
-            "cwd": "${workspaceFolder}"
+            "url": "http://localhost:3000"
         }
     ]
 }
