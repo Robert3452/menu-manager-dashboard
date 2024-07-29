@@ -1,10 +1,9 @@
-import { I } from "@/utils/generalObj";
-import { HttpClient } from "../httpClient";
-import { User } from "../models/auth/user";
-import { JwtResponse } from "../models/auth/payloadToken";
 import { httpServices } from "@/config";
+import { authManager } from "../httpClient";
+import { JwtResponse } from "../models/auth/payloadToken";
+import { User } from "../models/auth/user";
 
-const httpClient = HttpClient(`${process.env.NEXT_PUBLIC_AUTH_MANAGER}`);
+const httpClient = authManager;
 export interface LoginDto {
   email: string;
   password: string;
@@ -21,7 +20,7 @@ export interface CreateUserDto {
 export interface CreateGoogleUserDto {
   email: string;
   firstName: string;
-  roleId: number;
+  // roleId: number;
 }
 
 class AuthApi {
@@ -43,6 +42,14 @@ class AuthApi {
       { headers: { auth: secretKey } }
     );
     return data;
+  }
+
+  async refreshToken(oldToken: string) {
+    const secretKey = httpServices.apiKey;
+    const { data } = await httpClient.get<JwtResponse>(`/auth/refresh-token`, {
+      headers: { Authorization: `Bearer ${oldToken}`, auth: secretKey },
+    });
+    return data
   }
   async signupGoogle(body: CreateGoogleUserDto): Promise<JwtResponse> {
     const secretKey = httpServices.apiKey;

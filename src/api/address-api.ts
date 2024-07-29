@@ -1,9 +1,7 @@
-import { HttpClient } from "./httpClient";
+import { HttpClient, menuManager } from "./httpClient";
 import { Address } from "./models/address";
 import { IResponse } from "./models/GenericResponse";
-const httpClient = HttpClient(
-  `${process.env.NEXT_PUBLIC_MENU_MANAGER}/api/addresses`
-);
+const httpClient = menuManager;
 
 export interface CreateAddressDto extends Address {}
 export interface UpdateAddressDto extends Partial<CreateAddressDto> {
@@ -14,7 +12,7 @@ class AddressesApi {
   async createAddress(body: CreateAddressDto): Promise<IResponse<Address>> {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.post("", body, {
+    const { data } = await httpClient.post("/addresses", body, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;
@@ -26,7 +24,7 @@ class AddressesApi {
   ): Promise<IResponse<Address>> {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.put(`/${addressId}`, body, {
+    const { data } = await httpClient.put(`/addresses/${addressId}`, body, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;
@@ -35,7 +33,7 @@ class AddressesApi {
   async getAddressById(addressId: number): Promise<IResponse<Address>> {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.get(`/${addressId}`, {
+    const { data } = await httpClient.get(`/addresses/${addressId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;
@@ -44,7 +42,7 @@ class AddressesApi {
   async deleteAddress(addressId: number): Promise<IResponse<Address>> {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.get(`/${addressId}`, {
+    const { data } = await httpClient.get(`/addresses/${addressId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;

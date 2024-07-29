@@ -1,12 +1,13 @@
 "use client";
-import { ReactNode, useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import { getStoreByOwner } from "@/slices/store";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { Box } from "@mui/material";
 import { styled } from "@mui/material/styles";
+import { usePathname, useRouter } from "next/navigation";
+import PropTypes from "prop-types";
+import { ReactNode, useEffect, useState } from "react";
 import { DashboardNavbar } from "./dashboard-navbar";
 import { DashboardSidebar } from "./dashboard-sidebar";
-import { Box } from "@mui/material";
-import { useAppDispatch } from "@/store";
-import { getStoreByOwner } from "@/slices/store";
 
 const DashboardLayoutRoot = styled("div")(({ theme }) => ({
   display: "flex",
@@ -25,10 +26,18 @@ type DashboardLayoutProps = {
 export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
   const { children } = props;
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const router = useRouter();
+  const pathName = usePathname();
+  const activeStoreId = useAppSelector((state) => state.stores.activeStoreId);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
-    dispatch(getStoreByOwner());
-  }, []);
+    // console.log(activeStoreId);
+    if (!activeStoreId) {
+      dispatch(getStoreByOwner());
+      router.push("/dashboard/my-store");
+    }
+  }, [pathName, activeStoreId]);
 
   return (
     <>

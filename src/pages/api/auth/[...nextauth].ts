@@ -1,17 +1,17 @@
 import { authApi } from "@/api/auth/auth-api";
+import { JwtResponse } from "@/api/models/auth/payloadToken";
 import { AxiosError } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { AuthOptions } from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
-// import Cookies from "js-cookie";
 type AuthIntent = "signin" | "signup";
 const getAuthOptions = (intent: string) =>
   ({
     session: {
-      maxAge: 60 * 60,
+      maxAge: 60 * 60, // 1m
     },
-    secret: process.env.NEXTAUTH_SECRET, // Agrega esta línea,
+    secret: process.env.NEXTAUTH_SECRET,
     providers: [
       GoogleProvider({
         clientId: process.env.GOOGLE_CLIENT_ID as string,
@@ -22,17 +22,24 @@ const getAuthOptions = (intent: string) =>
         credentials: {
           username: { label: "Username", type: "text" },
           password: { label: "Password", type: "password" },
+          keepAlive: { label: "KeepAlive", type: "text" },
         },
 
         async authorize(credentials) {
           try {
-            const { accessToken } = await authApi.login({
+            const { accessToken, expirationTime } = await authApi.login({
               email: credentials?.username || "",
               password: credentials?.password || "",
             });
             const user: any = await authApi.me(accessToken);
-
-            if (user) return { ...user, accessToken };
+            console.log(credentials?.keepAlive);
+            if (user)
+              return {
+                ...user,
+                accessToken,
+                expirationTime,
+                keepAlive: credentials?.keepAlive,
+              };
             return null;
           } catch (error) {
             console.log(error);
@@ -45,20 +52,39 @@ const getAuthOptions = (intent: string) =>
     callbacks: {
       async jwt({ token, user, trigger, session, account }) {
         try {
+          if (token?.expirationTime) {
+            let tokend = token as any;
+            // GET NOW DATE
+            const now = new Date();
+            // GET EXPIRATION DATE
+            const expirationDate = new Date(tokend.expirationTime);
+            if (expirationDate < now) {
+              // console.log("token", token);
+              if (token?.keepAlive !== "true") {
+                console.log(token?.keepAlive);
+                return { ...token, error: "Token expired" };
+              }
+              if (token?.keepAlive === "true") {
+                const response = await authApi.refreshToken(
+                  `${token?.accessToken}`
+                );
+                token.expirationTime = response.expirationTime;
+                token.accessToken = response.accessToken;
+              }
+            }
+          }
           if (account?.provider === "google") {
+            let signedBygoogle: JwtResponse;
             if (intent === "signin") {
-              const googleLoginResponse = await authApi.loginGoogle(
-                user.email || ""
-              );
-              user.accessToken = googleLoginResponse.accessToken;
+              signedBygoogle = await authApi.loginGoogle(user.email || "");
             } else {
-              const googleSignupResponse = await authApi.signupGoogle({
+              signedBygoogle = await authApi.signupGoogle({
                 email: token?.email || "",
                 firstName: token.name || "",
-                roleId: 8, // TODO send the default roleId from auth api
               });
-              user.accessToken = googleSignupResponse.accessToken;
             }
+            user.accessToken = signedBygoogle.accessToken;
+            user.expirationTime = signedBygoogle.expirationTime;
           }
 
           if (trigger === "update") {
@@ -68,7 +94,7 @@ const getAuthOptions = (intent: string) =>
         } catch (error: any) {
           if (error instanceof AxiosError) {
             console.log(error.response);
-            throw new Error(error.response?.data.message);
+            return { ...token, error: error.response?.data.message };
           } else throw new Error(error);
         }
       },
@@ -92,7 +118,7 @@ const getAuthOptions = (intent: string) =>
     },
     pages: {
       signIn: "/authentication/login",
-      newUser: "",
+      newUser: "/authentication/register",
       error: "/authentication/register",
     },
   } as AuthOptions);
@@ -102,6 +128,5 @@ export default async function auth(req: NextApiRequest, res: NextApiResponse) {
   const cookieStore = req.cookies;
   const authIntent: string | undefined = cookieStore?.["auth-intent"];
   const intent = (authIntent ?? "signin") as AuthIntent;
-  console.log(intent);
   return await NextAuth(req, res, getAuthOptions(intent));
 }

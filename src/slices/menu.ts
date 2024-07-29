@@ -129,8 +129,6 @@ const slice = createSlice({
     },
     moveProductCard(state, action) {
       const { cardId, position, rowId } = action.payload;
-      const f = { ...state.cards.byId };
-      console.log(f);
       const sourceRowId = state.cards.byId[cardId].corridorId || 0;
       if (!sourceRowId)
         throw new Error(`Corridor not found Id in product card ${cardId}`);

@@ -7,25 +7,26 @@ import {
 } from "@/contexts/settings-context";
 import { store } from "@/store";
 import { createTheme } from "@/theme";
+import "@/theme/reset.css";
 import { createEmotionCache } from "@/utils/create-emotion-cache";
-import { CacheProvider, EmotionCache } from "@emotion/react";
+import { EmotionCache } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import { Inter } from "next/font/google";
 import Head from "next/head";
-import "@/theme/reset.css";
 // import Router from "next/router";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
 
 // import nProgress from 'nprogress';
+import { SplashScreen } from "@/components/splash-screen";
+import { SessionProvider } from "next-auth/react";
 import { AppProps } from "next/app";
+import React from "react";
 import { Toaster } from "react-hot-toast";
 import { Provider as ReduxProvider } from "react-redux";
 import { Page } from "../../types/page";
 import "../i18n";
-import { SplashScreen } from "@/components/splash-screen";
-import { SessionProvider } from "next-auth/react";
 type Props = AppProps & {
   Component: Page;
   emotionCache: EmotionCache;
@@ -58,7 +59,7 @@ export default function RootLayout(props: Props) {
 
   return (
     // <CacheProvider value={emotionCache}>
-    <>
+    <React.Fragment>
       <Head>
         <title>Cloud Order web application</title>
         <meta name="viewport" content="initial-scale=1, width=device-width" />
@@ -77,7 +78,6 @@ export default function RootLayout(props: Props) {
                         mode: settings.theme,
                       })}
                     >
-                      {/* <RTL direction={settings.direction}> */}
                       <CssBaseline />
                       <Toaster position="top-center" />
                       <SettingsButton />
@@ -86,9 +86,7 @@ export default function RootLayout(props: Props) {
                           return !auth.isInitialized ? (
                             <SplashScreen />
                           ) : (
-                            getLayout(
-                              <Component {...pageProps} />
-                            )
+                            getLayout(<Component {...pageProps} />)
                           );
                         }}
                       </AuthConsumer>
@@ -101,7 +99,7 @@ export default function RootLayout(props: Props) {
           </SessionProvider>
         </LocalizationProvider>
       </ReduxProvider>
-    </>
+    </React.Fragment>
 
     // </CacheProvider>
   );

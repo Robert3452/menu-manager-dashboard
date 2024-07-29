@@ -1,4 +1,4 @@
-import { HttpClient } from "./httpClient";
+import { menuManager } from "./httpClient";
 
 export interface CreateBranchDto {
   branchName: string;
@@ -9,14 +9,12 @@ export interface UpdateBranchDto extends Partial<CreateBranchDto> {
   id: number;
 }
 
-const httpClient = HttpClient(
-  `${process.env.NEXT_PUBLIC_MENU_MANAGER}/api/branches`
-);
+const httpClient = menuManager;
 class BranchesApi {
   async createBranch(body: CreateBranchDto) {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.post(``, body, {
+    const { data } = await httpClient.post(`/branches`, body, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;
@@ -25,7 +23,7 @@ class BranchesApi {
   async deleteBranch(branchId: number) {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.delete(`/${branchId}`, {
+    const { data } = await httpClient.delete(`/branches/${branchId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;
@@ -34,7 +32,7 @@ class BranchesApi {
   async updateBranch(branchId: number, body: UpdateBranchDto) {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.put(`/${branchId}`, body, {
+    const { data } = await httpClient.put(`/branches/${branchId}`, body, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;
@@ -42,7 +40,7 @@ class BranchesApi {
   async getBranchById(branchId: number) {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.get(`/${branchId}`, {
+    const { data } = await httpClient.get(`/branches/${branchId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;

@@ -1,10 +1,10 @@
 import { authApi, CreateUserDto } from "@/api/auth/auth-api";
-import { getStoreByOwner } from "@/slices/store";
-import { useAppDispatch, useAppSelector } from "@/store";
 import { I } from "@/utils/generalObj";
 import { signIn, signOut, useSession } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import PropTypes from "prop-types";
 import { createContext, useEffect, useReducer } from "react";
+import toast from "react-hot-toast";
 const initialState = {
   isAuthenticated: false,
   isInitialized: false,
@@ -56,19 +56,25 @@ export const AuthContext = createContext({
   loginGoogle: (...args: any[]) => Promise.resolve(),
   logout: (...args: any[]) => Promise.resolve(),
   register: (...args: any[]) => Promise.resolve(),
-  // registerGoogle: (...args: any[]) => Promise.resolve(),
 });
 
 export const AuthProvider = (props: any) => {
   const { data: session } = useSession();
-  const reduxDispatch = useAppDispatch();
-  const reduxStoreState = useAppSelector((state) => state.stores.stores);
   const { children } = props;
   const [state, dispatch] = useReducer(reducer, initialState);
+  const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const error = searchParams.get("error");
+    if (error) toast.error(error);
+  }, [searchParams]);
 
   const initialize = async () => {
     try {
       const user = session?.user;
+      if (user?.error) {
+        logout(user?.error);
+      }
       if (user) {
         window.localStorage.setItem("accessToken", user.accessToken);
         // reduxDispatch(getStoreByOwner());
@@ -100,12 +106,9 @@ export const AuthProvider = (props: any) => {
     }
   };
   useEffect(() => {
-    console.log("initial hook");
     initialize();
   }, []);
   useEffect(() => {
-    console.log("initialize hook");
-
     initialize();
   }, [session]);
 
@@ -117,11 +120,14 @@ export const AuthProvider = (props: any) => {
       username: email,
       password,
       redirect: false,
+      keepAlive: true,
     });
   };
 
-  const logout = async () => {
-    await signOut();
+  const logout = async (error?: string) => {
+    if (error)
+      signOut({ callbackUrl: `/authentication/register?error=${error}` });
+    else signOut();
     window.localStorage.removeItem("accessToken");
     dispatch({ type: "LOGOUT" });
   };
@@ -132,10 +138,6 @@ export const AuthProvider = (props: any) => {
       firstName: name,
       password,
     } as CreateUserDto);
-    // const user = await authApi.me(accessToken);
-
-    // localStorage.setItem("accessToken", `${accessToken}`);
-
     dispatch({
       type: "REGISTER",
       payload: {

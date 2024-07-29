@@ -1,9 +1,7 @@
-import { HttpClient } from "./httpClient";
+import { menuManager } from "./httpClient";
 import { Weekdays } from "./models/enums/Weekdays";
 
-const httpClient = HttpClient(
-  `${process.env.NEXT_PUBLIC_MENU_MANAGER}/api/schedules`
-);
+const httpClient = menuManager;
 export interface CreateScheduleDto {
   weekdaySchedules: CreateWeekdayScheduleDto[];
   branchId: number;
@@ -26,7 +24,7 @@ class SchedulesApi {
   async upsertSchedule(body: CreateScheduleDto) {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.post("", body, {
+    const { data } = await httpClient.post("/schedules", body, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;
@@ -35,7 +33,7 @@ class SchedulesApi {
   async updateSchedule(scheduleId: number, body: UpdateScheduleDto) {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.put(`/${scheduleId}`, body, {
+    const { data } = await httpClient.put(`/schedules/${scheduleId}`, body, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;
@@ -44,7 +42,7 @@ class SchedulesApi {
   async getSchedule(scheduleId: number) {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.get(`/${scheduleId}`, {
+    const { data } = await httpClient.get(`/schedules/${scheduleId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;
@@ -53,9 +51,12 @@ class SchedulesApi {
   async deleteScheduleWeekday(scheduleId: number, weekday: Weekdays) {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.delete(`/${scheduleId}/${weekday}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await httpClient.delete(
+      `/schedules/${scheduleId}/${weekday}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     return data;
   }
 }

@@ -1,9 +1,9 @@
-import { HttpClient } from "./httpClient";
+import { HttpClient, menuManager } from "./httpClient";
 import { Branch } from "./models/branch";
 import { Corridor } from "./models/corridor";
 import { IResponse } from "./models/GenericResponse";
 import { Product } from "./models/product";
-const client = HttpClient(`${process.env.NEXT_PUBLIC_MENU_MANAGER}/api`);
+const client = menuManager;
 
 export interface CreateCorridorDto extends Omit<Corridor, "id" | "products"> {
   id?: number;

@@ -3,6 +3,9 @@ declare module "next-auth" {
   interface UserSession {
     email: string;
     accessToken: string;
+    expirationTime: number;
+    keepAlive: boolean;
+    error?: string;
     firstName: string;
     lastname: string;
     roleId: number;

@@ -32,7 +32,6 @@ const Overview = () => {
   const auth = useAuth();
 
   useEffect(() => {
-    console.log(auth);
     // TODO Verify  if the role is the customer
     dispatch(getStoreByOwner());
   }, []);

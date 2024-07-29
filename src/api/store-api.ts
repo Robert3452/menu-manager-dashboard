@@ -1,9 +1,7 @@
-import { HttpClient } from "./httpClient";
+import { menuManager } from "./httpClient";
 import { IResponse } from "./models/GenericResponse";
 import { Store } from "./models/store";
-const httpClient = HttpClient(
-  `${process.env.NEXT_PUBLIC_MENU_MANAGER}/api/stores`
-);
+const httpClient = menuManager;
 export interface CreateStoreDto {
   name: string;
   file: Blob;
@@ -17,26 +15,33 @@ class StoresApi {
   async getStores(): Promise<IResponse<Store[]>> {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.get<IResponse<Store[]>>("", {
+    const { data } = await httpClient.get<IResponse<Store[]>>("/stores", {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;
   }
 
   async getStoreByOwner() {
-    const token = window.localStorage.getItem("accessToken");
-    const { data } = await httpClient.get("/my-store", {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return data;
+    try {
+      const token = window.localStorage.getItem("accessToken");
+      const { data } = await httpClient.get("/stores/my-store", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      return data;
+    } catch (error) {
+      return null;
+    }
   }
 
   async getStorebyId(storeId: number): Promise<IResponse<Store>> {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.get<IResponse<Store>>(`${storeId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await httpClient.get<IResponse<Store>>(
+      `/stores/${storeId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     return data;
   }
   async updateStore(
@@ -50,7 +55,7 @@ class StoresApi {
     const token = window.localStorage.getItem("accessToken");
 
     const { data } = await httpClient.put<IResponse<Store>>(
-      `/${storeId}`,
+      `/stores/${storeId}`,
       formData,
       { headers: { Authorization: `Bearer ${token}` } }
     );
@@ -60,24 +65,31 @@ class StoresApi {
   async deleteStore(storeId: number): Promise<IResponse<Store>> {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.delete<IResponse<Store>>(`/${storeId}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await httpClient.delete<IResponse<Store>>(
+      `/stores/${storeId}`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     return data;
   }
   async createStore(
     newStore: CreateStoreAndBranchDto
   ): Promise<IResponse<Store>> {
     const { name, file, branchName } = newStore;
-    const formData = new FormData(); 
+    const formData = new FormData();
     formData.append("name", name);
     formData.append("branchName", branchName);
     formData.append("file", file);
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.post<IResponse<Store>>("", formData, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
+    const { data } = await httpClient.post<IResponse<Store>>(
+      "/stores",
+      formData,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
     return data;
   }
 }

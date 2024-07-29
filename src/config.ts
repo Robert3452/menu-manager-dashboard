@@ -1,6 +1,7 @@
 export const httpServices = {
     menuManager: process.env.NEXT_PUBLIC_MENU_MANAGER,
-    apiKey: process.env.API_KEY
+    apiKey: process.env.API_KEY,
+    authManager:process.env.NEXT_PUBLIC_AUTH_MANAGER,
 
     
 }

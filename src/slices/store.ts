@@ -48,6 +48,11 @@ const slice = createSlice({
     },
     getStoreByOwner(state, action: PayloadAction<Store>) {
       const store = action.payload;
+      if (!store) {
+        state.activeStoreId = null;
+        return;
+      }
+      state.activeStoreId = store.id;
       state.stores.byId = objFromArray([store]);
       state.stores.allIds = Object.keys(state.stores.byId).map((el) => +el);
     },
@@ -91,7 +96,10 @@ export const getStore = (storeId: number) => async (dispatch: Dispatch) => {
 
 export const getStoreByOwner = () => async (dispatch: Dispatch) => {
   const response = await storeApi.getStoreByOwner();
-  if (response.data) dispatch(slice.actions.getStoreByOwner(response.data));
+  // if(!response) return null;
+
+  if (response?.data)
+    dispatch(slice.actions.getStoreByOwner(response?.data || null));
 
   return response;
 };

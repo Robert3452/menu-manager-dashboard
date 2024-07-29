@@ -1,7 +1,5 @@
-import { HttpClient } from "./httpClient";
-const httpClient = HttpClient(
-  `${process.env.NEXT_PUBLIC_MENU_MANAGER}/api/products`
-);
+import { menuManager } from "./httpClient";
+const httpClient = menuManager;
 export interface CreateProductDto {
   index: number;
   name: string;
@@ -55,7 +53,7 @@ class ProductsApi {
       const { image, ...body } = request;
       const {
         data: { data: newProduct },
-      } = await httpClient.post("", body, {
+      } = await httpClient.post("/products", body, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (image) {
@@ -91,7 +89,7 @@ class ProductsApi {
         urlImage = data.data.image;
       }
       const { data: response } = await httpClient.put(
-        `/${productId}`,
+        `/products/${productId}`,
         { ...body },
         {
           headers: {
@@ -120,7 +118,7 @@ class ProductsApi {
 
     const formData = new FormData();
     formData.append("file", image);
-    return await httpClient.put(`/${productId}/image`, formData, {
+    return await httpClient.put(`/products/${productId}/image`, formData, {
       headers: {
         "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
@@ -130,7 +128,7 @@ class ProductsApi {
   async deleteProduct({ productId }: { productId: number }) {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.delete(`/${productId}`, {
+    const { data } = await httpClient.delete(`/products/${productId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;
@@ -139,7 +137,7 @@ class ProductsApi {
   async getProductById({ productId }: { productId: number }) {
     const token = window.localStorage.getItem("accessToken");
 
-    const { data } = await httpClient.get(`/${productId}`, {
+    const { data } = await httpClient.get(`/products/${productId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     return data;

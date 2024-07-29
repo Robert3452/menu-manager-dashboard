@@ -108,6 +108,7 @@ export const JWTLogin: React.FC<any> = (props) => {
           onClick={loginGoogle}
           sx={{
             background: (theme) => theme.palette.grey["100"],
+            color: (theme) => theme.palette.grey["900"],
             "&:hover": { background: (theme) => theme.palette.grey["400"] },
           }}
         >

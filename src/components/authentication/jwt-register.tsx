@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
 import { useFormik } from "formik";
@@ -22,7 +22,7 @@ export const JWTRegister: React.FC<any> = (props) => {
   const query = router.query as { returnUrl: string };
   const { register, loginGoogle } = useAuth();
   useEffect(() => {
-    Cookies.set('auth-intent', 'signup')
+    Cookies.set("auth-intent", "signup");
     // return () => Cookies.remove('auth-intent');
   }, []);
   const formik = useFormik({
@@ -147,6 +147,7 @@ export const JWTRegister: React.FC<any> = (props) => {
           startIcon={<GoogleLogo />}
           onClick={loginGoogle}
           sx={{
+            color: (theme) => theme.palette.grey["900"],
             background: (theme) => theme.palette.grey["100"],
             "&:hover": { background: (theme) => theme.palette.grey["400"] },
           }}
