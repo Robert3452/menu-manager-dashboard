@@ -10,6 +10,7 @@ import {
   TextField,
   Typography,
   Link,
+  Grid,
 } from "@mui/material";
 import { useAuth } from "../../hooks/use-auth";
 import { useMounted } from "../../hooks/use-mounted";
@@ -28,7 +29,9 @@ export const JWTRegister: React.FC<any> = (props) => {
   const formik = useFormik({
     initialValues: {
       email: "",
-      name: "",
+      firstName: "",
+      lastName: "",
+      confirmPassword: "",
       password: "",
       policy: false,
       submit: null,
@@ -40,11 +43,15 @@ export const JWTRegister: React.FC<any> = (props) => {
         .required("Email is required"),
       name: Yup.string().max(255).required("Name is required"),
       password: Yup.string().min(7).max(255).required("Password is required"),
+      confirmPassword: Yup.string()
+        .min(7)
+        .max(255)
+        .required("Passwords don't match"),
       policy: Yup.boolean().oneOf([true], "This field must be checked"),
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await register(values.email, values.name, values.password);
+        await register(values.email, values.firstName, values.password);
 
         if (isMounted()) {
           const returnUrl = query.returnUrl || "/dashboard";
@@ -63,41 +70,81 @@ export const JWTRegister: React.FC<any> = (props) => {
 
   return (
     <form noValidate onSubmit={formik.handleSubmit} {...props}>
-      <TextField
-        error={Boolean(formik.touched.name && formik.errors.name)}
-        fullWidth
-        helperText={formik.touched.name && formik.errors.name}
-        label="Name"
-        margin="normal"
-        name="name"
-        onBlur={formik.handleBlur}
-        onChange={formik.handleChange}
-        value={formik.values.name}
-      />
-      <TextField
-        error={Boolean(formik.touched.email && formik.errors.email)}
-        fullWidth
-        helperText={formik.touched.email && formik.errors.email}
-        label="Email Address"
-        margin="normal"
-        name="email"
-        onBlur={formik.handleBlur}
-        onChange={formik.handleChange}
-        type="email"
-        value={formik.values.email}
-      />
-      <TextField
-        error={Boolean(formik.touched.password && formik.errors.password)}
-        fullWidth
-        helperText={formik.touched.password && formik.errors.password}
-        label="Password"
-        margin="normal"
-        name="password"
-        onBlur={formik.handleBlur}
-        onChange={formik.handleChange}
-        type="password"
-        value={formik.values.password}
-      />
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={6}>
+          <TextField
+            error={Boolean(formik.touched.firstName && formik.errors.firstName)}
+            fullWidth
+            helperText={formik.touched.firstName && formik.errors.firstName}
+            label="Nombres"
+            margin="normal"
+            name="firstName"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            value={formik.values.firstName}
+          />
+        </Grid>
+        <Grid item xs={12} md={6}>
+          <TextField
+            error={Boolean(formik.touched.lastName && formik.errors.lastName)}
+            fullWidth
+            helperText={formik.touched.lastName && formik.errors.lastName}
+            label="Apellidos"
+            margin="normal"
+            name="lastName"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            value={formik.values.lastName}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            error={Boolean(formik.touched.email && formik.errors.email)}
+            fullWidth
+            helperText={formik.touched.email && formik.errors.email}
+            label="Correo electrónico"
+            margin="normal"
+            name="email"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            type="email"
+            value={formik.values.email}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            error={Boolean(formik.touched.password && formik.errors.password)}
+            fullWidth
+            helperText={formik.touched.password && formik.errors.password}
+            label="Password"
+            margin="normal"
+            name="password"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            type="password"
+            value={formik.values.password}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            error={Boolean(
+              formik.touched.confirmPassword && formik.errors.confirmPassword
+            )}
+            fullWidth
+            helperText={
+              formik.touched.confirmPassword && formik.errors.confirmPassword
+            }
+            label="Confirm Password"
+            margin="normal"
+            name="confirmPassword"
+            onBlur={formik.handleBlur}
+            onChange={formik.handleChange}
+            type="password"
+            value={formik.values.confirmPassword}
+          />
+        </Grid>
+      </Grid>
+
       <Box
         sx={{
           alignItems: "center",

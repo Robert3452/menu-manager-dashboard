@@ -115,12 +115,16 @@ export const AuthProvider = (props: any) => {
   const loginGoogle = async () => {
     signIn("google", { callbackUrl: "/dashboard" });
   };
-  const login = async (email: string, password: string) => {
+  const login = async (
+    email: string,
+    password: string,
+    keepAlive: boolean = false
+  ) => {
     await signIn("credentials", {
       username: email,
       password,
       redirect: false,
-      keepAlive: true,
+      keepAlive,
     });
   };
 

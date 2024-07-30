@@ -2,7 +2,15 @@ import { ReactNode, useEffect } from "react";
 import Head from "next/head";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { Box, Card, Container, Divider, Link, Typography } from "@mui/material";
+import {
+  Box,
+  Card,
+  Container,
+  Divider,
+  Grid,
+  Link,
+  Typography,
+} from "@mui/material";
 import { GuestGuard } from "../../components/authentication/guest-guard";
 import { AuthBanner } from "../../components/authentication/auth-banner";
 import { Logo } from "../../components/logo";
@@ -41,7 +49,6 @@ const Login = () => {
           minHeight: "100vh",
         }}
       >
-        <AuthBanner />
         <Container
           maxWidth="sm"
           sx={{
@@ -51,33 +58,6 @@ const Login = () => {
             },
           }}
         >
-          <Box
-            sx={{
-              alignItems: "center",
-              backgroundColor: (theme) =>
-                theme.palette.mode === "dark" ? "grey.900" : "grey.100",
-              borderColor: "divider",
-              borderRadius: 1,
-              borderStyle: "solid",
-              borderWidth: 1,
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-              mb: 4,
-              p: 2,
-              "& > img": {
-                height: 32,
-                width: "auto",
-                flexGrow: 0,
-                flexShrink: 0,
-              },
-            }}
-          >
-            <Typography color="textSecondary" variant="caption">
-              The app authenticates via {platform}
-            </Typography>
-            <img alt="Auth platform" src={platformIcons[platform]} />
-          </Box>
           <Card elevation={16} sx={{ p: 4 }}>
             <Box
               sx={{
@@ -116,19 +96,42 @@ const Login = () => {
             </Box>
 
             <Divider sx={{ my: 3 }} />
-            <NextLink
-              href={
-                disableGuard
-                  ? `/authentication/register?disableGuard=${disableGuard}`
-                  : "/authentication/register"
-              }
-              passHref
-            >
-              <Typography color="textSecondary" variant="body2">
-                Create new account
-              </Typography>
-            </NextLink>
-          
+
+            <Grid container>
+              <Grid
+                item
+                xs={12}
+                md={6}
+                display="flex"
+                justifyContent={"flex-start"}
+                >
+                <NextLink
+                  href={
+                    disableGuard
+                      ? `/authentication/register?disableGuard=${disableGuard}`
+                      : "/authentication/register"
+                  }
+                  passHref
+                >
+                  <Typography color="textSecondary" variant="body2">
+                    Registrarme
+                  </Typography>
+                </NextLink>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                md={6}
+                display="flex"
+                justifyContent={"flex-end"}
+              >
+                <NextLink href={`/`} passHref>
+                  <Typography color="textSecondary" variant="body2">
+                    Volver al inicio
+                  </Typography>
+                </NextLink>
+              </Grid>
+            </Grid>
           </Card>
         </Container>
       </Box>

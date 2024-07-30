@@ -2,7 +2,16 @@ import { ReactNode, useEffect } from "react";
 import Head from "next/head";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { Box, Card, Container, Divider, Link, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  Divider,
+  Grid,
+  Link,
+  Typography,
+} from "@mui/material";
 import { GuestGuard } from "../../components/authentication/guest-guard";
 import { AuthBanner } from "../../components/authentication/auth-banner";
 import { JWTRegister } from "../../components/authentication/jwt-register";
@@ -41,7 +50,7 @@ const Register = () => {
           minHeight: "100vh",
         }}
       >
-        <AuthBanner />
+        {/* <AuthBanner /> */}
         <Container
           maxWidth="sm"
           sx={{
@@ -51,33 +60,6 @@ const Register = () => {
             },
           }}
         >
-          <Box
-            sx={{
-              alignItems: "center",
-              backgroundColor: (theme) =>
-                theme.palette.mode === "dark" ? "grey.900" : "grey.100",
-              borderColor: "divider",
-              borderRadius: 1,
-              borderStyle: "solid",
-              borderWidth: 1,
-              display: "flex",
-              flexWrap: "wrap",
-              justifyContent: "space-between",
-              mb: 4,
-              p: 2,
-              "& > img": {
-                height: 32,
-                width: "auto",
-                flexGrow: 0,
-                flexShrink: 0,
-              },
-            }}
-          >
-            <Typography color="textSecondary" variant="caption">
-              The app authenticates via {platform}
-            </Typography>
-            <img alt="Auth platform" src={platformIcons[platform]} />
-          </Box>
           <Card elevation={16} sx={{ p: 4 }}>
             <Box
               sx={{
@@ -111,18 +93,36 @@ const Register = () => {
               {platform === "JWT" && <JWTRegister />}
             </Box>
             <Divider sx={{ my: 3 }} />
-            <NextLink
-              href={
-                disableGuard
-                  ? `/authentication/login?disableGuard=${disableGuard}`
-                  : "/authentication/login"
-              }
-              passHref
-            >
-              <Typography color="textSecondary" variant="body2">
-                Having an account
-              </Typography>
-            </NextLink>
+            <Grid container>
+              <Grid item xs={12} md={6}>
+                <NextLink
+                  href={
+                    disableGuard
+                      ? `/authentication/login?disableGuard=${disableGuard}`
+                      : "/authentication/login"
+                  }
+                  passHref
+                >
+                  <Typography color="textSecondary" variant="body2">
+                    Tengo una cuenta
+                  </Typography>
+                </NextLink>
+              </Grid>
+
+              <Grid
+                item
+                xs={12}
+                md={6}
+                display="flex"
+                justifyContent={"flex-end"}
+              >
+                <NextLink href={`/`} passHref>
+                  <Typography color="textSecondary" variant="body2">
+                    Volver al inicio
+                  </Typography>
+                </NextLink>
+              </Grid>
+            </Grid>
           </Card>
         </Container>
       </Box>
