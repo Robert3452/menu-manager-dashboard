@@ -1,7 +1,7 @@
 import { authApi, CreateUserDto } from "@/api/auth/auth-api";
 import { I } from "@/utils/generalObj";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, usePathname } from "next/navigation";
 import PropTypes from "prop-types";
 import { createContext, useEffect, useReducer } from "react";
 import toast from "react-hot-toast";
@@ -61,8 +61,14 @@ export const AuthContext = createContext({
 export const AuthProvider = (props: any) => {
   const { data: session } = useSession();
   const { children } = props;
+  const pathname = usePathname();
   const [state, dispatch] = useReducer(reducer, initialState);
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    // console.log(session);
+    if (session?.user?.error) logout(session.user?.error);
+  }, [pathname]);
 
   useEffect(() => {
     const error = searchParams.get("error");

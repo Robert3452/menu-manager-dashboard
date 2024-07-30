@@ -1,5 +1,6 @@
 import { authApi } from "@/api/auth/auth-api";
 import { JwtResponse } from "@/api/models/auth/payloadToken";
+import { httpServices } from "@/config";
 import { AxiosError } from "axios";
 import { NextApiRequest, NextApiResponse } from "next";
 import NextAuth, { AuthOptions } from "next-auth";
@@ -9,7 +10,7 @@ type AuthIntent = "signin" | "signup";
 const getAuthOptions = (intent: string) =>
   ({
     session: {
-      maxAge: 60 * 60, // 1m
+      maxAge: httpServices.expirationToken, 
     },
     secret: process.env.NEXTAUTH_SECRET,
     providers: [
@@ -32,7 +33,6 @@ const getAuthOptions = (intent: string) =>
               password: credentials?.password || "",
             });
             const user: any = await authApi.me(accessToken);
-            console.log(credentials?.keepAlive);
             if (user)
               return {
                 ...user,
@@ -42,7 +42,7 @@ const getAuthOptions = (intent: string) =>
               };
             return null;
           } catch (error) {
-            console.log(error);
+            console.error(error);
             return null;
           }
         },
@@ -61,7 +61,6 @@ const getAuthOptions = (intent: string) =>
             if (expirationDate < now) {
               // console.log("token", token);
               if (token?.keepAlive !== "true") {
-                console.log(token?.keepAlive);
                 return { ...token, error: "Token expired" };
               }
               if (token?.keepAlive === "true") {
@@ -93,7 +92,6 @@ const getAuthOptions = (intent: string) =>
           return { ...token, ...user };
         } catch (error: any) {
           if (error instanceof AxiosError) {
-            console.log(error.response);
             return { ...token, error: error.response?.data.message };
           } else throw new Error(error);
         }
