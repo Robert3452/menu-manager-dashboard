@@ -120,9 +120,7 @@ export const StoreGeneralSettings: React.FC<StoreGeneralSettingsProps> = (
   const toggleModal = async () => {
     setOpenModal(!openModal);
   };
-  useEffect(() => {
-    console.log(selectedImage);
-  }, [selectedImage]);
+  
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     console.log("running");

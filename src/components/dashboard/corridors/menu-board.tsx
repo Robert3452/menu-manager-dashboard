@@ -1,20 +1,17 @@
-import { Box, Container, Grid, Typography } from "@mui/material";
-import React, { ReactNode, useEffect } from "react";
-import { DragDropContext } from "react-beautiful-dnd";
-import toast from "react-hot-toast";
-import { AuthGuard } from "../../authentication/auth-guard";
-import CorridorRow from "../../../components/dashboard/corridors/corridor-row";
-import CorridorRowAdd from "../../../components/dashboard/corridors/corridor-row-add";
-import { DashboardLayout } from "../../../components/dashboard/dashboard-layout";
-import { getBoard, moveProductCard } from "../../../slices/menu";
-import { ResetTvOutlined } from "@mui/icons-material";
 import { Branch } from "@/api/models/branch";
 import { useAppDispatch, useAppSelector } from "@/store";
+import { Box, Container, Grid, Typography } from "@mui/material";
+import React, { useEffect } from "react";
+import { DragDropContext } from "react-beautiful-dnd";
+import toast from "react-hot-toast";
+import CorridorRow from "../../../components/dashboard/corridors/corridor-row";
+import CorridorRowAdd from "../../../components/dashboard/corridors/corridor-row-add";
+import { getBoard, moveProductCard } from "../../../slices/menu";
 type MenuBoardProps = {
   branch: Branch;
 };
 const MenuBoard: React.FC<MenuBoardProps> = ({ branch }) => {
-  const { menu } = useAppSelector((state) => state);
+  const menu = useAppSelector((state) => state.menu);
 
   const dispatch = useAppDispatch();
   useEffect(() => {
