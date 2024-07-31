@@ -2,12 +2,10 @@ import { Store } from "@/api/models/store";
 import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
 import {
   CreateStoreAndBranchDto,
-  CreateStoreDto,
   storeApi,
   UpdateStoreDto,
 } from "../api/store-api";
 import { objFromArray } from "../utils/obj-from-array";
-import { addressesApi, CreateAddressDto } from "@/api/address-api";
 interface ByIdStore {
   [key: number]: Store;
 }
@@ -70,8 +68,8 @@ const slice = createSlice({
     },
     updateStore(state, action: PayloadAction<Store>) {
       const store = action.payload;
-
-      state.stores.byId[store.id] = store;
+      const currStore = state.stores.byId[store.id];
+      state.stores.byId[store.id] = { ...currStore, ...store };
     },
   },
 });

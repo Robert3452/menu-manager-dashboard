@@ -17,23 +17,34 @@ const VisuallyHiddenInput = styled("input")({
   whiteSpace: "nowrap",
   width: 1,
 });
-
-const UploadInput = (props: any) => {
-  const fileInputRef: any = useRef(null);
+type UploadInputProps = {
+  handleChange: (...args: any[]) => any;
+  handleDelete: (...args: any[]) => any;
+  value?: File | null | Blob;
+  placeholder?: string;
+  error?: boolean;
+  helperText?: string | boolean;
+  [key: string]: any;
+};
+const UploadInput = (props: UploadInputProps) => {
+  const fileInputRef: any = useRef();
   const { handleChange, handleDelete, value, placeholder } = props;
   const [file, setFile] = useState<any>(null);
-  const handleFileChange = (event: any) => {
-    const uploadedFile = event.target.files[0];
+  useEffect(() => {
+    if (value) setFile(file);
+  }, [value]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const uploadedFile = event.target.files?.[0];
     handleChange(event);
     setFile(uploadedFile);
   };
   useEffect(() => {
-    if (value) setFile(value);
-  }, []);
+    setFile(value);
+  }, [value]);
 
-  const handleDeleteFile = (event: any) => {
+  const handleDeleteFile = (event: React.ChangeEvent<HTMLInputElement>) => {
     handleDelete();
-    // console.log(fileInputRef.current.value)
     fileInputRef.current.value = "";
     setFile(null);
   };
@@ -64,6 +75,13 @@ const UploadInput = (props: any) => {
               />
               <IconButton color="error" onClick={handleDeleteFile}>
                 <Trash />
+                <VisuallyHiddenInput
+                  onBlur={props.onBlur}
+                  ref={fileInputRef}
+                  type="file"
+                  name={props.name || "file"}
+                  onChange={handleFileChange}
+                />
               </IconButton>
             </Box>
           ) : (
@@ -85,7 +103,7 @@ const UploadInput = (props: any) => {
                 tabIndex={-1}
                 startIcon={<Upload />}
               >
-                {placeholder}
+                {placeholder}{" "}
                 <VisuallyHiddenInput
                   onBlur={props.onBlur}
                   ref={fileInputRef}

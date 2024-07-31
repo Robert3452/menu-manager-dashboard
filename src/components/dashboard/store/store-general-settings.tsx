@@ -78,6 +78,8 @@ export const StoreGeneralSettings: React.FC<StoreGeneralSettingsProps> = (
           response = await dispatch(
             createStore({ ...values, branchName: values.name, file })
           );
+          setFile(null);
+
           toast.success(response.message);
         } else if (store?.id) {
           response = await dispatch(
@@ -86,6 +88,8 @@ export const StoreGeneralSettings: React.FC<StoreGeneralSettingsProps> = (
               file: file || undefined,
             })
           );
+          setFile(null);
+
           toast.success(response.message);
         }
         // const response = await storeApi.updateStore(store.id, { ...values, file })
@@ -105,29 +109,35 @@ export const StoreGeneralSettings: React.FC<StoreGeneralSettingsProps> = (
 
   const deleteStore = async () => {
     setDisableDeleteBtn(true);
-    const currentId =
-      typeof router.query.storeId === "string" ? +router.query.storeId : 0;
+    const currentId = store.id;
     const res = await dispatch(dispatchDeleteStore(currentId));
     toast.success(res.message);
     setDisableDeleteBtn(false);
-    // router.push(`/dashboard/stores`);
     handleDelete();
+    router.reload();
   };
 
   const toggleModal = async () => {
     setOpenModal(!openModal);
   };
+  useEffect(() => {
+    console.log(selectedImage);
+  }, [selectedImage]);
 
-  const handleChange = (event: any) => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log("running");
     const reader = new FileReader();
     formik.handleChange(event);
 
     reader.onload = () => {
       setSelectedImage(reader.result); // Establecer la imagen seleccionada
     };
-    reader.readAsDataURL(event.target.files[0]);
+    const file: any = event.target.files?.[0];
+    reader.readAsDataURL(file);
 
-    const uploadedFile = event.target.files[0];
+    const uploadedFile = file;
+    formik.setFieldValue("file", uploadedFile);
+
     setFile(uploadedFile);
   };
   const handleDelete = () => {
@@ -153,37 +163,25 @@ export const StoreGeneralSettings: React.FC<StoreGeneralSettingsProps> = (
                     display: "flex",
                   }}
                 >
-                  {store?.logo ? (
-                    <Box
-                      sx={{
-                        alignItems: "center",
-                        backgroundColor: "background.default",
-                        backgroundImage: `url(${selectedImage || store.logo})`,
-                        backgroundPosition: "center",
-                        backgroundSize: "cover",
-                        borderRadius: 1,
-                        display: "flex",
-                        height: 80,
-                        justifyContent: "center",
-                        overflow: "hidden",
-                        width: 80,
-                      }}
-                    />
-                  ) : (
-                    <Box
-                      sx={{
-                        alignItems: "center",
-                        backgroundColor: "background.default",
-                        borderRadius: 1,
-                        display: "flex",
-                        height: 80,
-                        justifyContent: "center",
-                        width: 80,
-                      }}
-                    >
+                  <Box
+                    sx={{
+                      alignItems: "center",
+                      backgroundColor: "background.default",
+                      backgroundImage: `url(${selectedImage || store?.logo})`,
+                      backgroundPosition: "center",
+                      backgroundSize: "cover",
+                      borderRadius: 1,
+                      display: "flex",
+                      height: 80,
+                      justifyContent: "center",
+                      overflow: "hidden",
+                      width: 80,
+                    }}
+                  >
+                    {!store?.logo && !selectedImage && (
                       <ImageIcon fontSize="small" />
-                    </Box>
-                  )}
+                    )}
+                  </Box>
                   <Box sx={{ pl: 2 }}>
                     <UploadInput
                       name={"file"}

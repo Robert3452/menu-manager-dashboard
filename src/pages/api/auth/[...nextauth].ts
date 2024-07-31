@@ -10,7 +10,7 @@ type AuthIntent = "signin" | "signup";
 const getAuthOptions = (intent: string) =>
   ({
     session: {
-      maxAge: httpServices.expirationToken, 
+      maxAge: +`${httpServices.expirationToken}`,
     },
     secret: process.env.NEXTAUTH_SECRET,
     providers: [

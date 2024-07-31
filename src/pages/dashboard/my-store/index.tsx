@@ -1,31 +1,20 @@
-import React from "react";
 import {
   Box,
   Container,
   Divider,
   Tab,
   Tabs,
-  Typography,
-  Link,
+  Typography
 } from "@mui/material";
 import Head from "next/head";
-import { useRouter } from "next/router";
-import NextLink from "next/link";
 import { ReactNode, useEffect, useState } from "react";
-
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { useAppDispatch, useAppSelector } from "@/store";
-import { Store } from "@/api/models/store";
-import { getStore, getStoreByOwner } from "@/slices/store";
-import { StoreGeneralSettings } from "@/components/dashboard/store/store-general-settings";
-import BranchList from "@/components/dashboard/store/branches/branch-list";
-import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
-import { json } from "stream/consumers";
 import AddressBranchForm from "@/components/dashboard/branch/address-branch-form";
 import ScheduleBranchForm from "@/components/dashboard/branch/schedules-branch-form";
-import MenuBoard from "@/components/dashboard/corridors/menu-board";
-import { t } from "i18next";
+import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
+import { StoreGeneralSettings } from "@/components/dashboard/store/store-general-settings";
 import { getBranch } from "@/slices/branches";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { t } from "i18next";
 interface ITabStore {
   label: string;
   value: string;
@@ -35,8 +24,6 @@ const tabs: ITabStore[] = [
   { label: "General", value: "general", disabled: false },
   { label: "Address", value: "address", disabled: true },
   { label: "Schedule", value: "schedule", disabled: true },
-  // { label: "Menu", value: "menu", disabled: true },
-  //   { label: "Team", value: "team", disabled: false },
 ];
 
 const StoreIndex = () => {

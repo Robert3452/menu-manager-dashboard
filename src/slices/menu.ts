@@ -185,7 +185,6 @@ export const getBoard =
   async (dispatch: Dispatch) => {
     try {
       const response = await branchesMenuApi.getBoard(branchId);
-      console.log(response.data.corridors);
 
       const store = response.data.corridors.reduce<IMenuBoard>(
         (prev: IMenuBoard, currCorridor: Corridor) => {
