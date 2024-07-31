@@ -117,7 +117,8 @@ const getAuthOptions = (intent: string) =>
     pages: {
       signIn: "/authentication/login",
       newUser: "/authentication/register",
-      error: "/authentication/register",
+      signOut: "/",
+      error: "/authentication/login",
     },
   } as AuthOptions);
 export default async function auth(req: NextApiRequest, res: NextApiResponse) {
