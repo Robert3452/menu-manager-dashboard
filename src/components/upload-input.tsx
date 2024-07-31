@@ -24,6 +24,7 @@ type UploadInputProps = {
   placeholder?: string;
   error?: boolean;
   helperText?: string | boolean;
+  variant: "text" | "outlined" | "contained";
   [key: string]: any;
 };
 const UploadInput = (props: UploadInputProps) => {
@@ -73,7 +74,11 @@ const UploadInput = (props: UploadInputProps) => {
                 label="File name"
                 value={file.name}
               />
-              <IconButton color="error" onClick={handleDeleteFile}>
+              <IconButton
+                component="button"
+                color="error"
+                onClick={handleDeleteFile as any}
+              >
                 <Trash />
                 <VisuallyHiddenInput
                   onBlur={props.onBlur}
