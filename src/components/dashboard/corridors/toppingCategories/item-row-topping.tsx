@@ -103,6 +103,9 @@ const ItemRowTopping: React.FC<ItemRowtoppingProps> = ({
           type="number"
           onBlur={saveChange}
           fullWidth
+          inputProps={{
+            min: 0,
+          }}
           label="Price"
           name={`${toppingsField}[${index}].price`}
           value={toppingForm.price}
@@ -111,12 +114,11 @@ const ItemRowTopping: React.FC<ItemRowtoppingProps> = ({
       <TableCell>
         <TextField
           type="number"
-          inputProps={{ min: 0 }}
-          // inputProps={{
-          //   min: 0,
-          //   max: formik.values.toppingCategories[indexCategory]
-          //     .maxToppingsForCategory,
-          // }}
+          inputProps={{
+            min: 0,
+            max: formik.values.toppingCategories[indexCategory]
+              .maxToppingsForCategory,
+          }}
           error={Boolean(
             formik.errors?.toppingCategories?.[indexCategory]?.toppings?.[index]
               ?.maxLimit
