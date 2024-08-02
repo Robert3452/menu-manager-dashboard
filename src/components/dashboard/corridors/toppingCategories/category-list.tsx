@@ -3,11 +3,11 @@ import { v4 as uuidv4 } from "uuid";
 import { Plus as PlusIcon } from "../../../../icons/plus";
 import { CategoryListTable } from "./category-list-table";
 
-const CategoryList = ({ arrayHelpers, formik }:any) => {
+const CategoryList = ({ arrayHelpers, formik }: any) => {
   const addCategory = () => {
     let form = { ...formik.values };
     const newCategory = {
-      title: "New topping",
+      title: "Nueva categoría",
       minToppingsForCategory: 0,
       maxToppingsForCategory: 0,
       toppingType: "exclusive",
@@ -17,7 +17,7 @@ const CategoryList = ({ arrayHelpers, formik }:any) => {
       toppings: [],
     };
     form.toppingCategories = [...form?.toppingCategories, newCategory];
-    const mapped = form.toppingCategories.map((el:any, index:number) => ({
+    const mapped = form.toppingCategories.map((el: any, index: number) => ({
       ...el,
       index,
     }));
@@ -48,7 +48,7 @@ const CategoryList = ({ arrayHelpers, formik }:any) => {
             }}
             variant="contained"
           >
-            Add Category
+            Categoría
           </Button>
           <CategoryListTable
             categories={formik.values.toppingCategories}

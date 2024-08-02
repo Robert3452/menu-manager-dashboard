@@ -27,20 +27,26 @@ const ScheduleBranchForm = () => {
   const query = router.query as QueryParams;
   const validationSchema = Yup.object().shape({
     weekdaySchedules: Yup.array().of(
-      Yup.object().shape({
-        weekday: Yup.string(), //.required("Weekday is required"),
-        openTime: Yup.date().nullable(), //.required(),
-        endTime: Yup.date().nullable(),
-        closed: Yup.boolean(), //.required()
-        id: Yup.number(),
-      })
-      // .test({
-      //   name: "TwoFieldsIfOneIsfilled",
-      //   message: "${path} is invalid.",
-      //   test: function ({ openTime, endTime, closed }) {
-      //     return (openTime && endTime) || (!openTime && !endTime && closed);
-      //   },
-      // })
+      Yup.object()
+        .shape({
+          weekday: Yup.string(), //.required("Weekday is required"),
+          openTime: Yup.date().nullable(), //.required(),
+          endTime: Yup.date().nullable(),
+          closed: Yup.boolean(), //.required()
+          id: Yup.number(),
+        })
+        .test({
+          name: "TwoFieldsIfOneIsfilled",
+          message: "${path} is invalid.",
+          test: function ({ openTime, endTime }) {
+            const bothDatesExist =
+              openTime instanceof Date && endTime instanceof Date;
+            const ifIsclosed =
+              typeof openTime === "undefined" && typeof endTime === "undefined";
+            return bothDatesExist || ifIsclosed;
+          },
+        })
+        
     ),
   });
 

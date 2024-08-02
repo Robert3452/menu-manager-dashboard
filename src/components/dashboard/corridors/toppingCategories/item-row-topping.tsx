@@ -36,7 +36,7 @@ const ItemRowTopping: React.FC<ItemRowtoppingProps> = ({
     title: topping?.title || "",
     price: topping?.price || 0,
     maxLimit: topping?.maxLimit || 0,
-    required: topping?.required || false,
+    available: topping?.available || false,
     remove: false,
     index: topping?.index,
     key: topping?.key,
@@ -128,7 +128,7 @@ const ItemRowTopping: React.FC<ItemRowtoppingProps> = ({
           onBlur={saveChange}
           fullWidth
           onChange={(event) => handleChange(event, "maxLimit")}
-          label="Max quantity"
+          label="Cant. Máx."
           name={`${toppingsField}[${index}].maxLimit`}
           value={toppingForm.maxLimit}
         />
@@ -136,11 +136,11 @@ const ItemRowTopping: React.FC<ItemRowtoppingProps> = ({
       <TableCell>
         <Switch
           onBlur={saveChange}
-          onChange={(event) => handleChange(event, "required")}
-          checked={toppingForm.required || false}
+          onChange={(event) => handleChange(event, "available")}
+          checked={toppingForm.available || false}
           edge="start"
           inputProps={{ "aria-label": "controlled" }}
-          name={`${toppingsField}[${index}].required`}
+          name={`${toppingsField}[${index}].available`}
         />
       </TableCell>
       <TableCell align="right">

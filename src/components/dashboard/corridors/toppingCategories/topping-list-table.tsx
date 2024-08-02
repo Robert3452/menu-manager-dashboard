@@ -106,7 +106,7 @@ const ToppingListTable: React.FC<any> = ({
                   startIcon={<PlusIcon fontSize="small" />}
                   variant="contained"
                 >
-                  Add Topping
+                  Topping
                 </Button>
               </TableCell>
             </TableRow>
@@ -115,8 +115,8 @@ const ToppingListTable: React.FC<any> = ({
               <TableCell></TableCell>
               <TableCell width="40%">Topping </TableCell>
               <TableCell width="25%">Precio </TableCell>
-              <TableCell width="25%">Max quantity </TableCell>
-              <TableCell width="10%">Required </TableCell>
+              <TableCell width="25%">Cant. Máx. </TableCell>
+              <TableCell width="10%">Disponible </TableCell>
               <TableCell align="right" width="10%">
                 Action
               </TableCell>

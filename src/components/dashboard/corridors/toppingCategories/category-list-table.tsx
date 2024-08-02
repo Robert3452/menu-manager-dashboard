@@ -49,13 +49,14 @@ export const CategoryListTable: React.FC<CategoryListTableProps> = (props) => {
           <TableHead>
             <TableRow>
               <TableCell width="5%" />
-              <TableCell width="35%">Category Name</TableCell>
-              <TableCell width="20%">Mandatory?</TableCell>
+              <TableCell width="35%">Nombre de la categoría</TableCell>
+              <TableCell width="20%">Obligatorio?</TableCell>
               <TableCell width="35%">
-                How many toppings you can choose?
+                {/* How many toppings you can choose? */}
+                ¿Cuántos toppings puedes elegir?
               </TableCell>
               <TableCell width="5%" align="right">
-                Actions
+                Acciones
               </TableCell>
             </TableRow>
           </TableHead>

@@ -3,29 +3,27 @@ import {
   Box,
   Grid,
   IconButton,
-  TableBody,
   TableCell,
   TableRow,
   TextField,
   Tooltip,
+  Typography,
 } from "@mui/material";
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-
 import { Close } from "@mui/icons-material";
 import { FieldArray } from "formik";
 import { ChevronDown as ChevronDownIcon } from "../../../../icons/chevron-down";
 import { ChevronRight as ChevronRightIcon } from "../../../../icons/chevron-right";
 import ToppingListTable from "./topping-list-table";
-import { useEffect } from "react";
 
 const isMandatoryOpts = [
-  { value: true, name: "Required" },
-  { value: false, name: "Optional" },
+  { value: true, name: "Requerido" },
+  { value: false, name: "Opcional" },
 ];
 const toppingTypeOpts = [
-  { value: "exclusive", name: "Exclusive" },
-  { value: "inclusive", name: "Inclusive" },
+  { value: "exclusive", name: "Individual" },
+  { value: "inclusive", name: "Múltiple" },
 ];
 type ItemRowCategoryProps = {
   // dragging: any;
@@ -45,25 +43,28 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
   provided,
   ...other
 }) => {
+  const [amounterror, setAmounterror] = useState(false);
+
   const [showTopping, setShowTopping] = useState(false);
-  const [openActions, setOpenActions] = useState(false);
+  const [individualType, setIndividualType] = useState(true);
   const currCategory = category;
   const curr = formik.values.toppingCategories[index];
   const [mandatory, setMandatory] = useState(
     category.mandatory ? isMandatoryOpts[0] : isMandatoryOpts[1]
   );
+  useEffect(() => {
+    const hasTestErrors =
+      typeof formik.errors?.toppingCategories?.[index] === "string";
+    if (hasTestErrors) setAmounterror(hasTestErrors);
+    else setAmounterror(false);
+  }, [formik.errors]);
+
   const [toppingType, setToppingType] = useState(
     toppingTypeOpts.find((el) => el.value == category.toppingType) ||
       toppingTypeOpts[0]
   );
-  const toggleEditAction = () => {
-    setOpenActions(!openActions);
-  };
   const handleOpenTopping = () => {
     setShowTopping(!showTopping);
-  };
-  const handleSaveCategory = () => {
-    setOpenActions(false);
   };
 
   const undoChanges = () => {
@@ -102,15 +103,31 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
       target: { value: newValue?.value, name: "field.mandatory" },
     });
   };
+
   const handleToppingType = (event: any, newValue: any) => {
     setToppingType(newValue);
-    handleChange({
-      target: { value: newValue?.value, name: "field.toppingType" },
+    setIndividualType(newValue?.value === "exclusive");
+    setCategoryForm({
+      ...categoryForm,
+      toppingType: newValue?.value || "exclusive",
+      minToppingsForCategory:
+        newValue?.value === "exclusive"
+          ? 1
+          : categoryForm.minToppingsForCategory,
+      maxToppingsForCategory:
+        newValue?.value === "exclusive"
+          ? 1
+          : categoryForm.maxToppingsForCategory,
     });
   };
   const handleRemove = () => {
     arrayHelpers.replace(index, { ...categoryForm, remove: true });
   };
+
+  useEffect(() => {
+    setIndividualType(categoryForm.toppingType === "exclusive");
+  }, [categoryForm]);
+
   return curr ? (
     <>
       <TableRow
@@ -141,7 +158,7 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
           <Box
             sx={{
               display: "flex",
-              alignItems: "center",
+              alignItems: "flex-start",
               justifyContent: "space-between",
             }}
           >
@@ -183,7 +200,7 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
               <TextField
                 // fullWidth
                 autoComplete="off"
-                label="Choose"
+                // label="Escoge"
                 {...params}
               />
             )}
@@ -217,7 +234,7 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
                     name={`toppingCategories[${index}].toppingType`}
                     // fullWidth
                     autoComplete="off"
-                    label="Choose"
+                    // label="Escoge"
                     {...params}
                   />
                 )}
@@ -236,7 +253,7 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
                 inputProps={{ min: 0 }}
                 error={Boolean(
                   formik.errors?.toppingCategories?.[index]
-                    ?.minToppingsForCategory
+                    ?.minToppingsForCategory || amounterror
                 )}
                 helperText={
                   formik.errors?.toppingCategories?.[index]
@@ -248,6 +265,7 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
                 autoComplete="off"
                 // helperText={formik.touched["streetNumber"] && formik.errors["streetNumber"]}
                 label="Min"
+                disabled={individualType}
                 // name="min"
                 onBlur={saveChange}
                 onChange={handleChange}
@@ -272,8 +290,9 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
                   formik.errors?.toppingCategories?.[index]
                     ?.maxToppingsForCategory
                 }
-                inputProps={{ min: 0 }}
+                inputProps={{ min: individualType ? 1 : 2 }}
                 type="number"
+                disabled={individualType}
                 autoComplete="off"
                 // helperText={formik.touched["streetNumber"] && formik.errors["streetNumber"]}
                 label="Máx"
@@ -283,6 +302,14 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
                 value={categoryForm?.maxToppingsForCategory}
               />
             </Grid>
+            {formik.errors?.toppingCategories?.[index] &&
+              !formik.errors?.toppingCategories?.[index]?.title && (
+                <Grid item xs={12} display="flex" justifyContent="center">
+                  <Typography variant="caption" color="error">
+                    {`${formik.errors?.toppingCategories?.[index]}`}
+                  </Typography>
+                </Grid>
+              )}
           </Grid>
         </TableCell>
         <TableCell align="right">

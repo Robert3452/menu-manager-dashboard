@@ -34,6 +34,7 @@ import {
 import { Corridor } from "@/api/models/corridor";
 import { Product } from "@/api/models/product";
 import { useAppDispatch } from "@/store";
+import { isEmptyObject } from "@/lib/object";
 
 type MenuCardModalProps = {
   row: Corridor;
@@ -58,29 +59,50 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
     index: Yup.number(),
     corridorId: Yup.number(),
     toppingCategories: Yup.array().of(
-      Yup.object().shape({
-        id: Yup.string(),
-        remove: Yup.bool().default(false),
-        index: Yup.number(),
-        title: Yup.string().required(),
-        minToppingsForCategory: Yup.number().required(),
-        maxToppingsForCategory: Yup.number().required(),
-        toppingType: Yup.string().required(),
-        mandatory: Yup.boolean().required(),
-        toppings: Yup.array().of(
-          Yup.object().shape({
-            id: Yup.string(),
-            index: Yup.number(),
-            remove: Yup.bool().default(false),
-
-            available: Yup.boolean(),
-            title: Yup.string().required(),
-            price: Yup.number(),
-            maxLimit: Yup.number(),
-            required: Yup.boolean(),
-          })
-        ),
-      })
+      Yup.object()
+        .shape({
+          id: Yup.string(),
+          remove: Yup.bool().default(false),
+          index: Yup.number(),
+          title: Yup.string().required("Campo requerido"),
+          minToppingsForCategory: Yup.number().required(),
+          maxToppingsForCategory: Yup.number().required(),
+          toppingType: Yup.string().required(),
+          mandatory: Yup.boolean().required(),
+          toppings: Yup.array().of(
+            Yup.object().shape({
+              id: Yup.string(),
+              index: Yup.number(),
+              remove: Yup.bool().default(false),
+              available: Yup.boolean(),
+              title: Yup.string().required(),
+              price: Yup.number(),
+              maxLimit: Yup.number(),
+              required: Yup.boolean(),
+            })
+          ),
+        })
+        .test({
+          exclusive: true,
+          name: "MandatoryField",
+          message: "Categoría obligatoria, no puede ser menor a 1.",
+          test: ({ mandatory, minToppingsForCategory }) => {
+            if (mandatory) return minToppingsForCategory > 0;
+            return true;
+          },
+        })
+        .test({
+          name: "MaxQuantityRequired",
+          message: "Cantidad máxima invalida, excede a la cantidad máxima",
+          test: ({ maxToppingsForCategory, toppings }) => {
+            if (toppings)
+              return toppings?.reduce((prev, curr) => {
+                if (curr?.maxLimit)
+                  return curr.maxLimit <= maxToppingsForCategory;
+                return true;
+              }, true);
+          },
+        })
     ),
   });
   const formik = useFormik({
@@ -101,6 +123,7 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
             toppings: el.toppings.map((el) => ({ ...el, key: uuidv4() })),
           })),
     },
+
     onSubmit: async (values, helpers) => {
       try {
         const response = product
@@ -160,7 +183,7 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
 
     reader.onload = () => {
       let result = reader.result;
-      setProductImage(result)
+      setProductImage(result);
 
       // if (result instanceof Blob) setProductImage(result);
     };
@@ -175,7 +198,31 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
   };
   useEffect(() => {
     console.log(formik.errors);
+    // if (Array.isArray(formik.errors.toppingCategories)) {
+    //   formik.errors.toppingCategories?.forEach((el: any) => {
+    //     // formik.errors.foreach()
+    //     toast.error(el.title);
+    //   });
+    // }
   }, [formik.errors]);
+
+  const handleSubmit = () => {
+    console.log(formik.values);
+    if (isEmptyObject(formik.errors) || !formik.errors) {
+      formik.submitForm();
+      return;
+    }
+    if (Array.isArray(formik.errors.toppingCategories)) {
+      formik.errors.toppingCategories?.forEach((el: any) => {
+        // formik.errors.foreach()
+        if (el?.title) {
+          toast.error(el?.title);
+          return;
+        }
+        toast.error(el);
+      });
+    }
+  };
 
   return (
     <Dialog fullWidth maxWidth="lg" onClose={onClose} open={open}>
@@ -325,7 +372,8 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
               endIcon={<Save />}
               sx={{ my: 1, mr: 4 }}
               color="secondary"
-              type="submit"
+              type="button"
+              onClick={handleSubmit}
               variant="contained"
             >
               Save

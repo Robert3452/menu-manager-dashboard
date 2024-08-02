@@ -7,11 +7,8 @@ import MenuCardModal from "./menu-card-modal";
 import { store, useAppSelector } from "@/store";
 import { CorridorState } from "@/api/models/corridor";
 
-const cardSelector = (
-  state: ReturnType<typeof store.getState>,
-  cardId: number
-) => {
-  const { cards } = state.menu;
+const cardSelector = (menu: any, cardId: number) => {
+  const { cards } = menu;
   const card = cards.byId[cardId];
   // debugger
   return {
@@ -30,7 +27,7 @@ type MenuCardProps = {
 const MenuCard = forwardRef<HTMLDivElement, MenuCardProps>((props, ref) => {
   const { cardId, dragging, row, ...other } = props;
   // debugger
-  const card = useAppSelector((state) => cardSelector(state, cardId));
+  const card = useAppSelector(({ menu }) => cardSelector(menu, cardId));
 
   const [open, setOpen] = useState(false);
 
