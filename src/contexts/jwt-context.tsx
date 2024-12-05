@@ -1,11 +1,17 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { authApi, CreateUserDto } from "@/api/auth/auth-api";
+import { GlobalUserSession } from "@/types/next-auth";
 import { I } from "@/utils/generalObj";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { useSearchParams, usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import PropTypes from "prop-types";
-import { createContext, useEffect, useReducer } from "react";
+import { createContext, useEffect, useReducer, useState } from "react";
 import toast from "react-hot-toast";
-const initialState = {
+const initialState: {
+  user: GlobalUserSession | null;
+  isAuthenticated: boolean;
+  isInitialized: boolean;
+} = {
   isAuthenticated: false,
   isInitialized: false,
   user: null,
@@ -59,21 +65,26 @@ export const AuthContext = createContext({
 });
 
 export const AuthProvider = (props: any) => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const { children } = props;
   const pathname = usePathname();
   const [state, dispatch] = useReducer(reducer, initialState);
+  const [errorMessage, setErrorMessage] = useState<string>();
   const searchParams = useSearchParams();
+  const error = searchParams.get("error");
 
   useEffect(() => {
-    // console.log(session);
     if (session?.user?.error) logout(session.user?.error);
   }, [pathname]);
 
+  // TODO Make a state context for message toasts
   useEffect(() => {
-    const error = searchParams.get("error");
-    if (error) toast.error(error);
-  }, [searchParams]);
+    if (error && error !== errorMessage) setErrorMessage(error);
+  }, [error]);
+
+  useEffect(() => {
+    if (errorMessage) toast.error(errorMessage);
+  }, [errorMessage]);
 
   const initialize = async () => {
     try {
@@ -112,11 +123,8 @@ export const AuthProvider = (props: any) => {
     }
   };
   useEffect(() => {
-    initialize();
-  }, []);
-  useEffect(() => {
-    initialize();
-  }, [session]);
+    if (status !== "loading") initialize();
+  }, [status]);
 
   const loginGoogle = async () => {
     signIn("google", { callbackUrl: "/dashboard" });
@@ -136,8 +144,8 @@ export const AuthProvider = (props: any) => {
 
   const logout = async (error?: string) => {
     if (error)
-      signOut({ callbackUrl: `/authentication/register?error=${error}` });
-    else signOut();
+      await signOut({ callbackUrl: `/authentication/register?error=${error}` });
+    else await signOut();
     window.localStorage.removeItem("accessToken");
     dispatch({ type: "LOGOUT" });
   };

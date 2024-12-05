@@ -206,7 +206,7 @@ export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
   } | null>(null);
 
   const handleEditForm = async () => {
-    const currDepartment = departments.find(
+    const currDepartment = departments?.find(
       (el: any) => el.name == branch?.address?.department
     );
     if (!currDepartment) return;
@@ -223,7 +223,7 @@ export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
     setDistrict(currDistrict);
   };
   useEffect(() => {
-    if (!branch || departments.length == 0) return;
+    if (!branch || departments?.length == 0) return;
     handleEditForm();
   }, [departments, branches]);
 

@@ -3,12 +3,11 @@ import Head from "next/head";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { Box, Card, Container, Divider, Link, Typography } from "@mui/material";
-import { GuestGuard } from "../../components/authentication/guest-guard";
-import { AuthBanner } from "../../components/authentication/auth-banner";
-import { Logo } from "../../components/logo";
-import { useAuth } from "../../hooks/use-auth";
-import { gtm } from "../../lib/gtm";
 import { I } from "@/utils/generalObj";
+import { useAuth } from "@/hooks/use-auth";
+import { AuthBanner } from "@/components/authentication/auth-banner";
+import { Logo } from "@/components/logo";
+import { GuestGuard } from "@/components/authentication/guest-guard";
 
 const platformIcons: I = {
   Amplify: "/static/icons/amplify.svg",
@@ -23,7 +22,7 @@ const VerifyCode = () => {
   const { disableGuard } = router.query;
 
   useEffect(() => {
-    gtm.push({ event: "page_view" });
+    // gtm.push({ event: "page_view" });
   }, []);
 
   return (

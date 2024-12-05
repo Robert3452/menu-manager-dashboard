@@ -1,24 +1,23 @@
-import { ReactNode, useEffect } from "react";
-import Head from "next/head";
-import NextLink from "next/link";
-import { useRouter } from "next/router";
+"use client";
+
+import { I } from "@/utils/generalObj";
 import {
   Box,
-  Button,
   Card,
   Container,
   Divider,
   Grid,
-  Link,
-  Typography,
+  Typography
 } from "@mui/material";
-import { GuestGuard } from "../../components/authentication/guest-guard";
-import { AuthBanner } from "../../components/authentication/auth-banner";
-import { JWTRegister } from "../../components/authentication/jwt-register";
-import { Logo } from "../../components/logo";
-import { useAuth } from "../../hooks/use-auth";
-import { gtm } from "../../lib/gtm";
-import { I } from "@/utils/generalObj";
+import Head from "next/head";
+import NextLink from "next/link";
+import { useRouter } from "next/router";
+import { ReactNode, useEffect } from "react";
+import { GuestGuard } from "../../../components/authentication/guest-guard";
+import { JWTRegister } from "../../../components/authentication/jwt-register";
+import { Logo } from "../../../components/logo";
+import { useAuth } from "../../../hooks/use-auth";
+import { gtm } from "../../../lib/gtm";
 
 const platformIcons: I = {
   Amplify: "/static/icons/amplify.svg",

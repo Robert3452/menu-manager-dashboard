@@ -1,23 +1,20 @@
-import { ReactNode, useEffect } from "react";
-import Head from "next/head";
-import NextLink from "next/link";
-import { useRouter } from "next/router";
+import { GuestGuard } from "@/components/authentication/guest-guard";
+import { JWTLogin } from "@/components/authentication/jwt-login";
+import { Logo } from "@/components/logo";
+import { useAuth } from "@/hooks/use-auth";
+import { I } from "@/utils/generalObj";
 import {
   Box,
   Card,
   Container,
   Divider,
   Grid,
-  Link,
-  Typography,
+  Typography
 } from "@mui/material";
-import { GuestGuard } from "../../components/authentication/guest-guard";
-import { AuthBanner } from "../../components/authentication/auth-banner";
-import { Logo } from "../../components/logo";
-import { useAuth } from "../../hooks/use-auth";
-import { gtm } from "../../lib/gtm";
-import { I } from "@/utils/generalObj";
-import { JWTLogin } from "@/components/authentication/jwt-login";
+import Head from "next/head";
+import NextLink from "next/link";
+import { useRouter } from "next/router";
+import { ReactNode, useEffect } from "react";
 
 const platformIcons: I = {
   Amplify: "/static/icons/amplify.svg",
@@ -32,7 +29,7 @@ const Login = () => {
   const { disableGuard } = router.query;
 
   useEffect(() => {
-    gtm.push({ event: "page_view" });
+    // gtm.push({ event@: "page_view" });
   }, []);
 
   return (
