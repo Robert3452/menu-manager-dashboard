@@ -16,6 +16,7 @@ import { FieldArray } from "formik";
 import { ChevronDown as ChevronDownIcon } from "../../../../icons/chevron-down";
 import { ChevronRight as ChevronRightIcon } from "../../../../icons/chevron-right";
 import ToppingListTable from "./topping-list-table";
+import { remove } from "nprogress";
 
 const isMandatoryOpts = [
   { value: true, name: "Requerido" },
@@ -80,6 +81,7 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
     toppings: formik.values?.toppingCategories?.[index]?.toppings || [],
     index: formik.values?.toppingCategories?.[index]?.index,
     key: formik.values?.toppingCategories?.[index]?.key,
+    remove: formik.values?.toppingCategories?.[index]?.remove,
   });
   const handleChange = (event: any) => {
     const value = event.target.value;
@@ -90,6 +92,13 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
     };
     setCategoryForm(current);
   };
+  // watching moved cards
+  useEffect(() => {
+    setCategoryForm((prevValue) => ({
+      ...prevValue,
+      index,
+    }));
+  }, [index]);
   const saveChange = () => {
     // console.log(categoryForm);
     arrayHelpers.replace(index, {
