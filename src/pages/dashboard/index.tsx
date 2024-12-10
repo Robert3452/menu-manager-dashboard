@@ -1,3 +1,10 @@
+import { useAuth } from "@/hooks/use-auth";
+import { ArrowRight as ArrowRightIcon } from "@/icons/arrow-right";
+import { Briefcase as BriefcaseIcon } from "@/icons/briefcase";
+import { Download as DownloadIcon } from "@/icons/download";
+import { ExternalLink as ExternalLinkIcon } from "@/icons/external-link";
+import { InformationCircleOutlined as InformationCircleOutlinedIcon } from "@/icons/information-circle-outlined";
+import { useAppDispatch, useAppSelector } from "@/store";
 import {
   Box,
   Button,
@@ -9,19 +16,10 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
+import { useRouter } from "next/router";
 import { ReactNode, useEffect, useState } from "react";
-import { ArrowRight as ArrowRightIcon } from "@/icons/arrow-right";
-import { Briefcase as BriefcaseIcon } from "@/icons/briefcase";
-import { Download as DownloadIcon } from "@/icons/download";
-import { ExternalLink as ExternalLinkIcon } from "@/icons/external-link";
-import { InformationCircleOutlined as InformationCircleOutlinedIcon } from "@/icons/information-circle-outlined";
 import { DashboardLayout } from "../../components/dashboard/dashboard-layout";
 import { OverviewBanner } from "../../components/dashboard/overview/overview-banner";
-import { useAuth } from "@/hooks/use-auth";
-import { getStoreByOwner } from "@/slices/store";
-import { useAppDispatch, useAppSelector } from "@/store";
-import { useRouter } from "next/router";
-import { gtm } from "../../lib/gtm";
 
 const Overview = () => {
   const router = useRouter();
@@ -29,11 +27,6 @@ const Overview = () => {
   const storeState = useAppSelector((state) => state.stores.stores);
   const auth = useAuth();
   const [displayBanner, setDisplayBanner] = useState(true);
-  
-  useEffect(() => {
-    // TODO Verify  if the role is customer
-    dispatch(getStoreByOwner());
-  }, []);
 
   useEffect(() => {
     // Restore the persistent state from local/session storage

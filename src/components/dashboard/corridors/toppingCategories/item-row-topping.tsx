@@ -6,7 +6,7 @@ import {
   TextField,
   Tooltip,
 } from "@mui/material";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { Close } from "@mui/icons-material";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { Topping } from "@/api/models/topping";
@@ -41,25 +41,37 @@ const ItemRowTopping: React.FC<ItemRowtoppingProps> = ({
     index: topping?.index,
     key: topping?.key,
   });
-  const saveChange = () => {
+
+  const saveChange = useCallback(() => {
     arrayHelpers.replace(index, toppingForm);
-  };
-  const handleChange = (event: any, field: any) => {
-    const current = {
-      ...toppingForm,
-      [field]:
-        event.target.type === "checkbox"
-          ? event.target?.checked
-          : event.target.value,
-    };
-    setToppingForm(current);
-    // arrayHelpers.replace(index, current);
+  }, [toppingForm, index, arrayHelpers]);
+
+  const handleChange = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+    field: string
+  ) => {
+    const value =
+      event.target.type === "checkbox" &&
+      event.target instanceof HTMLInputElement
+        ? event.target.checked
+        : event.target.value;
+
+    setToppingForm((previousForm) => ({
+      ...previousForm,
+      [field]: value,
+      index: toppingForm.remove ? -1 : index,
+    }));
   };
 
   const handleRemove = () => {
     setToppingForm({ ...toppingForm, remove: true });
-    arrayHelpers.replace(index, { ...toppingForm, remove: true });
+    arrayHelpers.replace(index, { ...toppingForm, remove: true, index: -1 });
   };
+
+  useEffect(() => {
+    setToppingForm((previousForm) => ({ ...previousForm, index }));
+  }, [index]);
+
   return (
     <TableRow
       key={topping.id}

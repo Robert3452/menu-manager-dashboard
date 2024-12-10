@@ -8,13 +8,17 @@ import React, { ReactNode, useEffect, useState } from "react";
 
 const DashboardMenu = () => {
   const stores = useAppSelector((state) => state.stores.stores);
+  const myStoreId = useAppSelector((state) => state.stores.activeStoreId);
   const [currentBranch, setCurrentBranch] = useState<Branch>();
-  // const store = stores.byId[stores.allIds[0]];
   useEffect(() => {
-    const branch = stores.byId[stores.allIds[0]]?.branches?.[0];
-    if (branch) setCurrentBranch(branch);
-  }, [stores]);
+    console.log(stores);
 
+    if (!myStoreId) return;
+    const branch = stores.byId[myStoreId]?.branches?.[0];
+
+    if (branch) setCurrentBranch(branch);
+  }, [myStoreId]);
+  console.log(currentBranch);
   return (
     <Container maxWidth="lg" sx={{ py: 4, overflowX: "auto" }}>
       {currentBranch && <MenuBoard branch={currentBranch} />}

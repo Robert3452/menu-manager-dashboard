@@ -101,7 +101,6 @@ const MenuBoard: React.FC<MenuBoardProps> = ({ branch }) => {
           >
             <Grid
               item
-              // style={{ padding: "auto 0" }}
             >
               <Typography variant="h4">Menu</Typography>
             </Grid>

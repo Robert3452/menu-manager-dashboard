@@ -17,6 +17,7 @@ import { useMounted } from "../../hooks/use-mounted";
 import GoogleLogo from "@/icons/googleg-g-logo";
 import { useEffect } from "react";
 import Cookies from "js-cookie";
+import { CreateUserDto } from "@/api/auth/auth-api";
 export const JWTRegister: React.FC<any> = (props) => {
   const isMounted = useMounted();
   const router = useRouter();
@@ -41,7 +42,7 @@ export const JWTRegister: React.FC<any> = (props) => {
         .email("Must be a valid email")
         .max(255)
         .required("Email is required"),
-      name: Yup.string().max(255).required("Name is required"),
+      firstName: Yup.string().max(255).required("Name is required"),
       password: Yup.string().min(7).max(255).required("Password is required"),
       confirmPassword: Yup.string()
         .min(7)
@@ -51,7 +52,14 @@ export const JWTRegister: React.FC<any> = (props) => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await register(values.email, values.firstName, values.password);
+        await register({
+          email: values.email,
+          firstName: values.firstName,
+          lastname: values.lastName,
+          password: values.password,
+          repeatPassword: values.confirmPassword,
+          roleId: 8,
+        });
 
         if (isMounted()) {
           const returnUrl = query.returnUrl || "/dashboard";
@@ -67,6 +75,9 @@ export const JWTRegister: React.FC<any> = (props) => {
       }
     },
   });
+  useEffect(() => {
+    console.log(formik.errors);
+  }, [formik.errors]);
 
   return (
     <form noValidate onSubmit={formik.handleSubmit} {...props}>

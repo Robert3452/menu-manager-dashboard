@@ -61,7 +61,7 @@ export const AuthContext = createContext({
   login: (...args: any[]) => Promise.resolve(),
   loginGoogle: (...args: any[]) => Promise.resolve(),
   logout: (...args: any[]) => Promise.resolve(),
-  register: (...args: any[]) => Promise.resolve(),
+  register: (body: CreateUserDto) => Promise.resolve(),
 });
 
 export const AuthProvider = (props: any) => {
@@ -150,12 +150,8 @@ export const AuthProvider = (props: any) => {
     dispatch({ type: "LOGOUT" });
   };
 
-  const register = async (email: string, name: string, password: string) => {
-    const user = await authApi.register({
-      email,
-      firstName: name,
-      password,
-    } as CreateUserDto);
+  const register = async (body: CreateUserDto) => {
+    const user = await authApi.register(body);
     dispatch({
       type: "REGISTER",
       payload: {

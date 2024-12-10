@@ -6,7 +6,12 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from "react-beautiful-dnd";
 import { Scrollbar } from "../../../scrollbar";
 import ItemRowCategory from "./item-row-category";
 
@@ -20,19 +25,39 @@ export const CategoryListTable: React.FC<CategoryListTableProps> = (props) => {
   const { categories, formik, arrayHelpers, ...other } = props;
   const onDragEnd = (result: any) => {
     if (!result.destination) return;
-    let updatedCategories = categories;
-    const [removedCategory] = updatedCategories.splice(result.source.index, 1);
-    updatedCategories.splice(result.destination.index, 0, removedCategory);
-    updatedCategories = updatedCategories.map((el, index) => ({
-      ...el,
-      index,
-    }));
-    const curr = formik.values;
+
+    const updatedCategories = [...categories]; // Copia para mantener inmutabilidad
+
+    // Mover la categoría de origen a destino
+    const [movedCategory] = updatedCategories.splice(result.source.index, 1);
+    updatedCategories.splice(result.destination.index, 0, movedCategory);
+
+    // Reasignar índices para evitar duplicados
+    const recalculatedCategories = updatedCategories.map((category, index) => {
+      const uniqueToppings = new Map();
+      category.toppings.forEach((topping) => {
+        uniqueToppings.set(topping.key, topping); // Usamos el título como clave
+      });
+
+      return {
+        ...category,
+        index,
+        toppings: Array.from(uniqueToppings.values()).map(
+          (topping, toppingIndex) => ({
+            ...topping,
+            index: toppingIndex, // Recalcular índices de toppings
+          })
+        ),
+      };
+    });
+
+    // Actualizar Formik con las categorías ajustadas
     formik.setValues({
-      ...curr,
-      toppingCategories: updatedCategories,
+      ...formik.values,
+      toppingCategories: recalculatedCategories,
     });
   };
+
   return (
     <div {...other}>
       <Scrollbar>

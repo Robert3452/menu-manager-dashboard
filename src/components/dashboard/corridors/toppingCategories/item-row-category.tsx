@@ -73,8 +73,8 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
   const [categoryForm, setCategoryForm] = useState({
     id: category?.id || 0,
     title: category?.title || "",
-    minToppingsForCategory: category?.minToppingsForCategory || 0,
-    maxToppingsForCategory: category?.maxToppingsForCategory || 0,
+    minToppingsForCategory: category?.minToppingsForCategory || 1,
+    maxToppingsForCategory: category?.maxToppingsForCategory || 1,
     toppingType: category?.toppingType || "",
     mandatory: category?.mandatory || false,
     toppings: formik.values?.toppingCategories?.[index]?.toppings || [],

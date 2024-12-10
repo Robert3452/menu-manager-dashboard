@@ -6,7 +6,12 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
+import {
+  DragDropContext,
+  Draggable,
+  Droppable,
+  DropResult,
+} from "react-beautiful-dnd";
 import { v4 as uuidv4 } from "uuid";
 import { Plus as PlusIcon } from "../../../../icons/plus";
 import ItemRowTopping from "./item-row-topping";
@@ -43,25 +48,55 @@ const ToppingListTable: React.FC<any> = ({
 
     // arrayHelpers.unshift();
   };
-  const onDragEnd = (result: any) => {
+  const onDragEnd = (result: DropResult) => {
+    // Verificar si el destino es válido
     if (!result.destination) return;
-    let updatedToppings = [...toppings];
-    const [removedTopping] = updatedToppings.splice(result.source.index, 1);
-    updatedToppings.splice(result.destination.index, 0, removedTopping);
-    updatedToppings = updatedToppings.map((el, index) => ({
-      ...el,
-      index,
-    }));
-    const curr = formik.values;
-    const currCategory = {
-      ...curr.toppingCategories[indexCategory],
-      toppings: updatedToppings,
-    };
-    curr.toppingCategories.splice(indexCategory, 1, currCategory);
-    formik.setValues({
-      ...curr,
+
+    const { source, destination } = result;
+
+    // Crear una copia de los toppings
+    const updatedToppings = [...toppings];
+
+    // Mover el elemento en el array
+    const [movedTopping] = updatedToppings.splice(source.index, 1);
+    updatedToppings.splice(destination.index, 0, movedTopping);
+
+    // Eliminar duplicados basados en `key`
+    const uniqueToppingsMap = new Map();
+    updatedToppings.forEach((topping) => {
+      uniqueToppingsMap.set(topping.key, topping); // Usar `key` como identificador único
+    });
+
+    // Reconstruir el array sin duplicados y reasignar índices
+    const reorderedToppings = Array.from(uniqueToppingsMap.values()).map(
+      (topping, index) => ({
+        ...topping,
+        index, // Reasignar índice
+      })
+    );
+
+    console.log(
+      "Toppings después de mover y eliminar duplicados: ",
+      reorderedToppings
+    );
+
+    // Actualizar el estado de formik
+    formik.setValues((prevValues: any) => {
+      const updatedCategory = {
+        ...prevValues.toppingCategories[indexCategory],
+        toppings: reorderedToppings,
+      };
+
+      const updatedCategories = [...prevValues.toppingCategories];
+      updatedCategories[indexCategory] = updatedCategory;
+
+      return {
+        ...prevValues,
+        toppingCategories: updatedCategories,
+      };
     });
   };
+
   return (
     <TableRow>
       <TableCell
@@ -92,9 +127,7 @@ const ToppingListTable: React.FC<any> = ({
             },
           }}
         >
-          <TableHead
-           sx={{ backgroundColor: "transparent" }}
-          >
+          <TableHead sx={{ backgroundColor: "transparent" }}>
             <TableRow>
               <TableCell
                 sx={{ backgroundColor: "transparent" }}

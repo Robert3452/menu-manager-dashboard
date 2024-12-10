@@ -44,7 +44,16 @@ type MenuCardModalProps = {
 };
 const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
   const { row, onClose, open } = props;
-  const product = props.card;
+  // const product = props.card;
+  const [product, setProduct] = useState<Product | undefined | null>(
+    props?.card
+  );
+
+  useEffect(() => {
+    console.log("producto actualizado");
+    setProduct(props.card);
+  }, [props.card]);
+
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const moreRef = useRef<HTMLButtonElement>(null);
@@ -126,6 +135,8 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
 
     onSubmit: async (values, helpers) => {
       try {
+        console.log("enviando producto........");
+        console.log(values);
         const response = product
           ? await dispatch(
               updateProductCard({
@@ -139,8 +150,10 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
               })
             );
         toast.success(response.message);
+
         helpers.setStatus({ succses: true });
-        onClose();
+
+        // onClose();
       } catch (error) {
         toast.error("Algo va mal.");
         helpers.setStatus({ success: false });
@@ -207,7 +220,6 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
   }, [formik.errors]);
 
   const handleSubmit = () => {
-    console.log(formik.values);
     if (isEmptyObject(formik.errors) || !formik.errors) {
       formik.submitForm();
       return;

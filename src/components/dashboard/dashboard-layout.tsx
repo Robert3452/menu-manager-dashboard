@@ -32,11 +32,11 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = (props) => {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    if (!activeStoreId) {
-      dispatch(getStoreByOwner());
-      // router.push("/dashboard/my-store");
-    }
-  }, [pathName, activeStoreId]);
+    // if (!activeStoreId) {
+    dispatch(getStoreByOwner());
+    // router.push("/dashboard/my-store");
+    // }
+  }, [pathName]);
 
   return (
     <>

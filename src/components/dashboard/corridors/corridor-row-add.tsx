@@ -1,26 +1,26 @@
-import React from "react";
-import { Box, Button, Link, OutlinedInput, Typography } from "@mui/material";
-// import { useDispatch, useSelector } from "../../../store";
-import { useState } from "react";
-import { Plus as PlusIcon } from "../../../icons/plus";
-// import { createRow } from "../../../slices/menu";
-import { useFormik } from "formik";
-import * as Yup from "yup";
-import toast from "react-hot-toast";
-import { useRouter } from "next/router";
-import { branchesApi } from "../../../api/branch-api";
-import { useAppDispatch, useAppSelector } from "@/store";
-import { createRow } from "@/slices/menu";
 import { CreateCorridorDto } from "@/api/menu-board-api";
+import { createRow } from "@/slices/menu";
+import { useAppDispatch, useAppSelector } from "@/store";
+import { Box, Button, Link, OutlinedInput, Typography } from "@mui/material";
+import { useFormik } from "formik";
+import { useRouter } from "next/router";
+import React, { useState } from "react";
+import toast from "react-hot-toast";
+import * as Yup from "yup";
+import { Plus as PlusIcon } from "../../../icons/plus";
 
 const CorridorRowAdd: React.FC<any> = (props) => {
   const dispatch = useAppDispatch();
   const [isExpanded, setIsExpanded] = useState(false);
   const { allIds } = useAppSelector((state) => state.menu.rows);
-  const router = useRouter();
+  const activeStoreId =
+    useAppSelector((state) => state.stores.activeStoreId) || 0;
+  const storesById = useAppSelector((state) => state.stores.stores.byId);
+  const branchId = storesById[activeStoreId].branches?.[0].id || 0;
+
   const validationSchema = Yup.object().shape({
     index: Yup.number(),
-    name: Yup.string().required("This field is required"),
+    name: Yup.string().required("Este campo es requerido."),
     description: Yup.string(),
   });
   const formik = useFormik({
@@ -28,10 +28,11 @@ const CorridorRowAdd: React.FC<any> = (props) => {
       index: allIds?.length ? allIds?.length : 0,
       name: "",
       description: "",
-      branchesIds: [router.query.branchId],
+      branchesIds: [branchId],
     },
     validationSchema,
     onSubmit: async (values, helpers) => {
+      console.log(values);
       try {
         const response = await dispatch(
           createRow({ ...values } as CreateCorridorDto)
@@ -94,7 +95,7 @@ const CorridorRowAdd: React.FC<any> = (props) => {
               <OutlinedInput
                 autoFocus
                 fullWidth
-                placeholder="New Corridor"
+                placeholder="Nuevo corredor"
                 name="name"
                 onChange={formik.handleChange}
                 value={formik.values.name}
@@ -148,7 +149,7 @@ const CorridorRowAdd: React.FC<any> = (props) => {
                   type="submit"
                   variant="contained"
                 >
-                  Add Row
+                  Nuevo corredor
                 </Button>
                 <Button onClick={handleAddCancel} size="small" sx={{ ml: 2 }}>
                   Cancel
