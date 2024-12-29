@@ -140,8 +140,6 @@ const LandingPage = () => {
                     error={formik.touched.title && Boolean(formik.errors.title)}
                     helperText={formik.touched.title && formik.errors.title}
                     name="title"
-                    //   value={}
-                    // onChange={}
                   />
                 </Grid>
                 <Grid item xs={12}>

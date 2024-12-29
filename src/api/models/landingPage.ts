@@ -6,6 +6,7 @@ export interface ILandingPage {
 }
 export interface IButton {
   id: number;
+  visible: boolean;
   index: number;
   name: string;
   link: string;

@@ -113,14 +113,11 @@ const TableButtons: React.FC<TableButtonsProps> = ({
                               disableUnderline
                               fullWidth
                               placeholder={t("Nombre del botón")}
-                              //   onClick={handleRenameInit}
-                              //   value={column.name}
-                                name={`buttons.${index}.name`}
-                                onChange={arrayHelpers.form.handleChange}
-                                onBlur={arrayHelpers.form.handleBlur}
-                                value={el.name}
+                              name={`buttons.${index}.name`}
+                              onChange={arrayHelpers.form.handleChange}
+                              onBlur={arrayHelpers.form.handleBlur}
+                              value={el.name}
                               sx={{
-                                // borderColor: "transparent",
                                 borderRadius: 1,
                                 borderColor: "action.selected",
 
@@ -174,7 +171,15 @@ const TableButtons: React.FC<TableButtonsProps> = ({
                               justifyContent={"space-between"}
                               alignItems={"flex-start"}
                             >
-                              <Switch />
+                              <Switch
+                                checked={el.visible}
+                                onChange={(event) =>
+                                  arrayHelpers.form.setFieldValue(
+                                    `buttons.${index}.visible`,
+                                    event.target.checked
+                                  )
+                                }
+                              />
                               <IconButton
                                 // onClick={handleDelete}
                                 sx={{ ml: 2 }}
@@ -193,10 +198,17 @@ const TableButtons: React.FC<TableButtonsProps> = ({
                 <TableRow>
                   <TableCell colSpan={4} align="right">
                     <Button
-                    endIcon={<Plus />}
+                      endIcon={<Plus />}
                       variant="contained"
                       color="primary"
-                      onClick={() => arrayHelpers.push({ id: Date.now(), name: "", link: "", index: buttons?.length || 0 })}
+                      onClick={() =>
+                        arrayHelpers.push({
+                          id: Date.now(),
+                          name: "",
+                          link: "",
+                          index: buttons?.length || 0,
+                        })
+                      }
                     >
                       {t("Agregar botón")}
                     </Button>
