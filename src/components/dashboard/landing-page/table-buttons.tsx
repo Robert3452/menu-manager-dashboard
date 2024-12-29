@@ -182,6 +182,7 @@ const TableButtons: React.FC<TableButtonsProps> = ({
                               />
                               <IconButton
                                 // onClick={handleDelete}
+                                onClick={() => arrayHelpers.remove(index)}
                                 sx={{ ml: 2 }}
                                 size="small"
                                 color="error"
