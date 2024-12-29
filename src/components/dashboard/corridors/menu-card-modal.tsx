@@ -44,13 +44,11 @@ type MenuCardModalProps = {
 };
 const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
   const { row, onClose, open } = props;
-  // const product = props.card;
   const [product, setProduct] = useState<Product | undefined | null>(
     props?.card
   );
 
   useEffect(() => {
-    console.log("producto actualizado");
     setProduct(props.card);
   }, [props.card]);
 
@@ -95,7 +93,7 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
           exclusive: true,
           name: "MandatoryField",
           message: "Categoría obligatoria, no puede ser menor a 1.",
-          test: ({ mandatory, minToppingsForCategory }) => {
+          test: ({ mandatory, minToppingsForCategory,index }) => {
             if (mandatory) return minToppingsForCategory > 0;
             return true;
           },
@@ -135,8 +133,6 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
 
     onSubmit: async (values, helpers) => {
       try {
-        console.log("enviando producto........");
-        console.log(values);
         const response = product
           ? await dispatch(
               updateProductCard({

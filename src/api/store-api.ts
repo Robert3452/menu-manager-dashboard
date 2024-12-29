@@ -1,17 +1,44 @@
 import { menuManager } from "./httpClient";
 import { IResponse } from "./models/GenericResponse";
+import { ILandingPage } from "./models/landingPage";
 import { Store } from "./models/store";
 const httpClient = menuManager;
 export interface CreateStoreDto {
   name: string;
   file: Blob;
 }
+export interface UpdateLandingPageDto extends Partial<ILandingPage> {}
 
 export interface CreateStoreAndBranchDto extends CreateStoreDto {
   branchName: string;
 }
 export interface UpdateStoreDto extends Partial<CreateStoreDto> {}
 class StoresApi {
+  async getLandingPageStore(storeId: number): Promise<IResponse<ILandingPage>> {
+    const token = window.localStorage.getItem("accessToken");
+    const { data } = await httpClient.get<IResponse<ILandingPage>>(
+      `/store/${storeId}/landing-page`,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return data;
+  }
+  async updateLandingPage(
+    storeId: number,
+    updateLandingPageDto: UpdateLandingPageDto
+  ): Promise<IResponse<ILandingPage>> {
+    const token = window.localStorage.getItem("accessToken");
+
+    const { data } = await httpClient.put<IResponse<ILandingPage>>(
+      `/store/${storeId}/landing-page`,
+      updateLandingPageDto,
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+    );
+    return data;
+  }
   async getStores(): Promise<IResponse<Store[]>> {
     const token = window.localStorage.getItem("accessToken");
 

@@ -91,11 +91,13 @@ export default function EditProductImage(props: any) {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState(null);
 
-  const handleFileChange = (event: any) => {
+  
+
+  function handleFileChange(event: any) {
     const uploadedFile = event.target.files[0];
     handleChange(event);
     setFile(uploadedFile);
-  };
+  }
 
   const onClick = () => {
     if (fileInputRef?.current) fileInputRef.current.click();

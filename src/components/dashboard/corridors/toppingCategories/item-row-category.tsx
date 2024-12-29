@@ -1,3 +1,5 @@
+import { Close } from "@mui/icons-material";
+import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import {
   Autocomplete,
   Box,
@@ -9,14 +11,11 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
-import React, { Fragment, useEffect, useState } from "react";
-import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
-import { Close } from "@mui/icons-material";
 import { FieldArray } from "formik";
+import React, { useEffect, useState } from "react";
 import { ChevronDown as ChevronDownIcon } from "../../../../icons/chevron-down";
 import { ChevronRight as ChevronRightIcon } from "../../../../icons/chevron-right";
 import ToppingListTable from "./topping-list-table";
-import { remove } from "nprogress";
 
 const isMandatoryOpts = [
   { value: true, name: "Requerido" },
@@ -27,7 +26,6 @@ const toppingTypeOpts = [
   { value: "inclusive", name: "Múltiple" },
 ];
 type ItemRowCategoryProps = {
-  // dragging: any;
   category: any;
   formik: any;
   arrayHelpers: any;
@@ -48,17 +46,11 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
 
   const [showTopping, setShowTopping] = useState(false);
   const [individualType, setIndividualType] = useState(true);
-  const currCategory = category;
+
   const curr = formik.values.toppingCategories[index];
   const [mandatory, setMandatory] = useState(
     category.mandatory ? isMandatoryOpts[0] : isMandatoryOpts[1]
   );
-  useEffect(() => {
-    const hasTestErrors =
-      typeof formik.errors?.toppingCategories?.[index] === "string";
-    if (hasTestErrors) setAmounterror(hasTestErrors);
-    else setAmounterror(false);
-  }, [formik.errors]);
 
   const [toppingType, setToppingType] = useState(
     toppingTypeOpts.find((el) => el.value == category.toppingType) ||
@@ -68,21 +60,19 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
     setShowTopping(!showTopping);
   };
 
-  const undoChanges = () => {
-    arrayHelpers.replace(index, currCategory);
-  };
-  const [categoryForm, setCategoryForm] = useState({
+  const currentCategory = {
     id: category?.id || 0,
     title: category?.title || "",
     minToppingsForCategory: category?.minToppingsForCategory || 1,
     maxToppingsForCategory: category?.maxToppingsForCategory || 1,
-    toppingType: category?.toppingType || "",
+    toppingType: category?.toppingType || "exclusive",
     mandatory: category?.mandatory || false,
     toppings: formik.values?.toppingCategories?.[index]?.toppings || [],
     index: formik.values?.toppingCategories?.[index]?.index,
     key: formik.values?.toppingCategories?.[index]?.key,
     remove: formik.values?.toppingCategories?.[index]?.remove,
-  });
+  };
+  const [categoryForm, setCategoryForm] = useState(currentCategory);
   const handleChange = (event: any) => {
     const value = event.target.value;
     const field = event.target.name.split(".").pop();
@@ -92,15 +82,8 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
     };
     setCategoryForm(current);
   };
-  // watching moved cards
-  useEffect(() => {
-    setCategoryForm((prevValue) => ({
-      ...prevValue,
-      index,
-    }));
-  }, [index]);
+
   const saveChange = () => {
-    // console.log(categoryForm);
     arrayHelpers.replace(index, {
       ...categoryForm,
       toppings: formik.values?.toppingCategories?.[index]?.toppings,
@@ -133,9 +116,28 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
     arrayHelpers.replace(index, { ...categoryForm, remove: true });
   };
 
+  // Watching validations from validation schema
+  useEffect(() => {
+    const hasTestErrors =
+      typeof formik.errors?.toppingCategories?.[index] === "string";
+    if (hasTestErrors) setAmounterror(hasTestErrors);
+    else setAmounterror(false);
+  }, [formik.errors]);
+  // watching when cards are moving
+  useEffect(() => {
+    setCategoryForm((prevValue) => ({
+      ...prevValue,
+      index,
+    }));
+  }, [index]);
+  // Handling when is an exclusive category
   useEffect(() => {
     setIndividualType(categoryForm.toppingType === "exclusive");
   }, [categoryForm]);
+  // Save form when the component is building
+  useEffect(() => {
+    saveChange();
+  }, []);
 
   return curr ? (
     <>
@@ -144,7 +146,6 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
         {...provided.dragHandleProps}
         {...provided.draggableProps}
         hover
-        // key={category.id}
         {...other}
       >
         <TableCell
