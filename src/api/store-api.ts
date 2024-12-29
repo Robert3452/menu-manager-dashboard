@@ -24,7 +24,7 @@ class StoresApi {
     );
     return data;
   }
-  async updateLandingPage(
+  async upsertLandingPage(
     storeId: number,
     updateLandingPageDto: UpdateLandingPageDto
   ): Promise<IResponse<ILandingPage>> {
