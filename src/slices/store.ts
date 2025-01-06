@@ -6,6 +6,8 @@ import {
   UpdateStoreDto,
 } from "../api/store-api";
 import { objFromArray } from "../utils/obj-from-array";
+import { store } from "@/store";
+import { ILandingPage } from "@/api/models/landingPage";
 interface ByIdStore {
   [key: number]: Store;
 }
@@ -37,6 +39,7 @@ const slice = createSlice({
     },
     getStore(state, action: PayloadAction<Store>) {
       const store = action.payload;
+      state.activeStoreId = store.id;
       if (store) {
         state.stores.byId[store.id] = store;
         if (!state.stores.allIds.includes(store.id)) {
@@ -46,6 +49,8 @@ const slice = createSlice({
     },
     getStoreByOwner(state, action: PayloadAction<Store>) {
       const store = action.payload;
+      state.activeStoreId = store.id;
+
       if (!store) {
         state.activeStoreId = null;
         return;
@@ -69,7 +74,8 @@ const slice = createSlice({
     updateStore(state, action: PayloadAction<Store>) {
       const store = action.payload;
       const currStore = state.stores.byId[store.id];
-      state.stores.byId[store.id] = { ...currStore, ...store };
+      const updated = { ...currStore, ...store };
+      state.stores.byId[store.id] = updated;
     },
   },
 });
@@ -82,7 +88,7 @@ export const getStores = () => async (dispatch: Dispatch) => {
     dispatch(slice.actions.getStores(response.data));
     return response;
   } catch (error) {
-    console.log(error);
+    console.error(error);
   }
 };
 
@@ -119,4 +125,28 @@ export const updateStore =
     const response = await storeApi.updateStore(storeId, store);
     dispatch(slice.actions.updateStore(response.data));
     return response;
+  };
+export const getLandingPage =
+  (storeId: number) => async (dispatch: Dispatch) => {
+    const { data: landingPage } = await storeApi.getLandingPageStore(storeId);
+    dispatch(
+      slice.actions.updateStore({
+        landingPages: [landingPage],
+        id: storeId,
+      } as Store)
+    );
+    return landingPage;
+  };
+export const upsertLandingPage =
+  (storeId: number, request: Partial<ILandingPage>) =>
+  async (dispatch: Dispatch) => {
+    const { data: landingPage } = await storeApi.upsertLandingPage(
+      storeId,
+      request
+    );
+    console.log("running store");
+    dispatch(
+      slice.actions.updateStore({ landingPages: [landingPage] } as Store)
+    );
+    return landingPage;
   };

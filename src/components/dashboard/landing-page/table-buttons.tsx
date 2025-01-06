@@ -1,5 +1,5 @@
 import { Trash as TrashIcon } from "@/icons/trash";
-import { Cancel, DragIndicator, Save } from "@mui/icons-material";
+import { DragIndicator } from "@mui/icons-material";
 import {
   Box,
   Button,
@@ -17,12 +17,11 @@ import {
 } from "@mui/material";
 import { t } from "i18next";
 import { DropResult } from "react-beautiful-dnd";
-
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-
-import { FieldArray, FieldArrayRenderProps, FormikProps } from "formik";
 import { IButton } from "@/api/models/landingPage";
 import { Plus } from "@/icons/plus";
+import { FieldArrayRenderProps } from "formik";
+import { array } from "yup";
 
 interface TableButtonsProps {
   buttons?: IButton[];
@@ -41,11 +40,12 @@ const TableButtons: React.FC<TableButtonsProps> = ({
     const [removed] = reorderedButtons.splice(result.source.index, 1);
     reorderedButtons.splice(result.destination.index, 0, removed);
 
-    reorderedButtons.forEach((button, index) => {
-      button.index = index;
-    });
+    const updatedButtons = reorderedButtons.map((button, index) => ({
+      ...button,
+      index,
+    }));
 
-    arrayHelpers.form.setFieldValue("buttons", reorderedButtons);
+    arrayHelpers.form.setFieldValue("buttons", updatedButtons);
   };
   return (
     <Grid item xs={12}>
@@ -172,13 +172,16 @@ const TableButtons: React.FC<TableButtonsProps> = ({
                               alignItems={"flex-start"}
                             >
                               <Switch
-                                checked={el.visible}
-                                onChange={(event) =>
+                                checked={Boolean(
+                                  arrayHelpers.form.values.buttons[index]
+                                    .visible
+                                )}
+                                onChange={(event) => {
                                   arrayHelpers.form.setFieldValue(
                                     `buttons.${index}.visible`,
                                     event.target.checked
-                                  )
-                                }
+                                  );
+                                }}
                               />
                               <IconButton
                                 // onClick={handleDelete}
@@ -208,7 +211,8 @@ const TableButtons: React.FC<TableButtonsProps> = ({
                           name: "",
                           link: "",
                           index: buttons?.length || 0,
-                        })
+                          visible: true,
+                        } as IButton)
                       }
                     >
                       {t("Agregar botón")}

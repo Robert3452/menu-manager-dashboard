@@ -11,14 +11,13 @@ const DashboardMenu = () => {
   const myStoreId = useAppSelector((state) => state.stores.activeStoreId);
   const [currentBranch, setCurrentBranch] = useState<Branch>();
   useEffect(() => {
-    console.log(stores);
+    // console.log(stores);
 
     if (!myStoreId) return;
     const branch = stores.byId[myStoreId]?.branches?.[0];
 
     if (branch) setCurrentBranch(branch);
   }, [myStoreId]);
-  console.log(currentBranch);
   return (
     <Container maxWidth="lg" sx={{ py: 4, overflowX: "auto" }}>
       {currentBranch && <MenuBoard branch={currentBranch} />}

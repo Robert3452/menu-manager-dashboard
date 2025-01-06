@@ -1,10 +1,11 @@
-import { ILandingPage } from "@/api/models/landingPage";
-import { storeApi } from "@/api/store-api";
 import EditProductImage from "@/components/dashboard/corridors/edit-product-image";
 import { DashboardLayout } from "@/components/dashboard/dashboard-layout";
 import TableButtons from "@/components/dashboard/landing-page/table-buttons";
-import { useAppSelector } from "@/store";
+import { getLandingPage, upsertLandingPage } from "@/slices/store";
+import { useAppDispatch, useAppSelector } from "@/store";
 import { Cancel, Save } from "@mui/icons-material";
+import toast from "react-hot-toast";
+
 import {
   Box,
   Button,
@@ -27,30 +28,30 @@ const data = [
 ];
 
 const LandingPage = () => {
-  const [landingPage, setLandingPage] = useState<ILandingPage>();
+  const dispatch = useAppDispatch();
+  const activeStoreId = useAppSelector((state) => state.stores.activeStoreId);
 
-  const activeStoreId =
-    useAppSelector((state) => state.stores.activeStoreId) || 0;
+  const landingPage = useAppSelector((state) =>
+    activeStoreId
+      ? state.stores.stores.byId[activeStoreId]?.landingPages?.[0]
+      : undefined
+  );
   useEffect(() => {
-    const fetchLandingPage = async () => {
-      try {
-        const response = await storeApi.getLandingPageStore(activeStoreId);
-        setLandingPage(response.data);
-      } catch (error) {
-        if (error instanceof AxiosError) {
-          if (error.response?.status === 404) {
-            setLandingPage(undefined);
-          }
-        } else {
-          console.error("Unexpected error: ", error);
-        }
-      }
-    };
+    if (typeof activeStoreId === "number")
+      dispatch(getLandingPage(activeStoreId));
+  }, [activeStoreId]);
+  useEffect(() => {
+    console.log("landing page", landingPage);
+    if (landingPage) {
+      formik.setValues({ ...landingPage } as any);
+      setLandingImage(landingPage.image);
+    }
+  }, [landingPage]);
+  useEffect(() => {
+    console.log("active store id: ", activeStoreId);
+  }, [activeStoreId]);
 
-    fetchLandingPage();
-  }, []);
   const [landingImage, setLandingImage] = useState<any>(landingPage?.image);
-  const [file, setFile] = useState<Blob>();
   const validationSchema = Yup.object({
     title: Yup.string().max(50).required("Campo requerido"),
     description: Yup.string().max(200).required("Campo requerido"),
@@ -73,8 +74,16 @@ const LandingPage = () => {
       image: landingPage?.image || "",
       buttons: landingPage?.buttons || [],
     },
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      try {
+        await dispatch(upsertLandingPage(activeStoreId as number, values));
+
+        toast.success("Página de presentación actualizada");
+      } catch (error) {
+        console.error(error);
+        const axiosError: AxiosError<any> = error as AxiosError;
+        toast.error(axiosError.response?.data.message);
+      }
     },
   });
   const onClose = () => {};
@@ -88,7 +97,7 @@ const LandingPage = () => {
     reader.readAsDataURL(event.target.files[0]);
     const uploadedFile = event.target.files[0];
     formik.setFieldValue("image", uploadedFile);
-    setFile(uploadedFile);
+    // setFile(uploadedFile);
   };
 
   useEffect(() => {
@@ -196,7 +205,7 @@ const LandingPage = () => {
                       sx={{ my: 1, mr: 2 }}
                       onClick={onClose}
                     >
-                      Cancel
+                      Cancelar
                     </Button>
                     <Button
                       endIcon={<Save />}
@@ -205,7 +214,7 @@ const LandingPage = () => {
                       type="submit"
                       variant="contained"
                     >
-                      Save
+                      Guardar
                     </Button>
                   </Box>
                 </Grid>

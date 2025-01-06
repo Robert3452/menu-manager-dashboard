@@ -21,15 +21,10 @@ const getSections = (t: any, role: string = "Customer") => {
   const sidebarMenus: I = {
     Customer: [
       {
-        title: t("General"),
+        title: t("Mi tienda"),
         items: [
           {
             title: t("Inicio"),
-            path: "/dashboard",
-            icon: <HomeIcon fontSize="small" />,
-          },
-          {
-            title: t("Mi tienda"),
             path: "/dashboard/my-store",
             icon: <StoreMallDirectoryIcon fontSize="small" />,
           },
@@ -43,31 +38,16 @@ const getSections = (t: any, role: string = "Customer") => {
             path: "/dashboard/landing-page",
             icon: <CoPresentIcon fontSize="small" />,
           },
-          {
-            title: t("Mi código QR"),
-            path: "/dashboard/qr",
-            icon: <QrCode2 fontSize="small" />,
-          },
         ],
       },
       {
-        title: t("Administrar"),
+        title: t("Pedidos"),
         items: [
           {
-            title: t("Pedidos"),
+            title: t("Lista de pedidos"),
             icon: <GradingIcon fontSize="small" />,
             path: "/dashboard/orders",
-            children: [
-              {
-                title: t("List"),
-                path: "/dashboard/orders",
-              },
-              {
-                title: t("Details"),
-                path: "/dashboard/orders/1",
-              },
-            ],
-          },
+          }
         ],
       },
     ],

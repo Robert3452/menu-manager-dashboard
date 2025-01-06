@@ -68,7 +68,7 @@ class ProductsApi {
         message: "Product updated successfully",
       };
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw error;
     }
   }
@@ -103,7 +103,7 @@ class ProductsApi {
         data: { ...response.data, image: urlImage || response.data.image },
       };
     } catch (error) {
-      console.log(error);
+      console.error(error);
       throw error;
     }
   }

@@ -32,7 +32,6 @@ const CorridorRowAdd: React.FC<any> = (props) => {
     },
     validationSchema,
     onSubmit: async (values, helpers) => {
-      console.log(values);
       try {
         const response = await dispatch(
           createRow({ ...values } as CreateCorridorDto)

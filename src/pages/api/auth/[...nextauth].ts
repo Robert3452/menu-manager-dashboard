@@ -59,7 +59,6 @@ const getAuthOptions = (intent: string) =>
             // GET EXPIRATION DATE
             const expirationDate = new Date(tokend.expirationTime);
             if (expirationDate < now) {
-              // console.log("token", token);
               if (token?.keepAlive !== "true") {
                 return { ...token, error: "Token expired" };
               }

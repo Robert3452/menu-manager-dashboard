@@ -31,6 +31,7 @@ import { useAppDispatch, useAppSelector } from "@/store";
 import { Store } from "@/api/models/store";
 import { File } from "buffer";
 import { useSession } from "next-auth/react";
+import axios from "axios";
 import { useMounted } from "@/hooks/use-mounted";
 type StoreGeneralSettingsProps = {
   store?: Store | null;
@@ -98,10 +99,12 @@ export const StoreGeneralSettings: React.FC<StoreGeneralSettingsProps> = (
         // router.reload();
         return;
       } catch (error) {
-        console.error(error);
-        toast.error("Algo fue mal.");
+        if (axios.isAxiosError(error)) {
+          toast.error(error.response?.data?.message || "Algo fue mal.");
+        } else {
+          toast.error("Algo fue mal.");
+        }
         helpers.setStatus({ success: false });
-        // helpers.setErrors({ submit: error.message });
         helpers.setSubmitting(false);
       }
     },
@@ -123,7 +126,6 @@ export const StoreGeneralSettings: React.FC<StoreGeneralSettingsProps> = (
   
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log("running");
     const reader = new FileReader();
     formik.handleChange(event);
 

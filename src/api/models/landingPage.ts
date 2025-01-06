@@ -1,7 +1,7 @@
 export interface ILandingPage {
   title: string;
   description: string;
-  image: string;
+  image:string | File ;
   buttons: IButton[];
 }
 export interface IButton {

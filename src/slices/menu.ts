@@ -202,7 +202,7 @@ export const getBoard =
       dispatch(slice.actions.getBoard(store));
       return response;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -274,7 +274,7 @@ export const moveProductCard =
       return response;
     } catch (error) {
       dispatch(slice.actions.undoMoveCard());
-      console.log(error);
+      console.error(error);
       throw error;
     }
   };

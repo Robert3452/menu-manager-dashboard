@@ -96,7 +96,6 @@ const WeekdayTable: React.FC<WeekdayTableProps> = (props) => {
         // console.log(formik.values.weekdaySchedules)
         formik.values.weekdaySchedules.foreach((_: any) => arrayHelpers.pop());
       }
-      console.log(branchSchedules);
       branchSchedules.forEach((item, index) => {
         arrayHelpers.push({
           ...item,
@@ -105,7 +104,7 @@ const WeekdayTable: React.FC<WeekdayTableProps> = (props) => {
         });
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }, [branches]);
 

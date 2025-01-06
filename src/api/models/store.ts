@@ -1,4 +1,5 @@
 import { Branch } from "./branch";
+import { ILandingPage } from "./landingPage";
 
 export interface Store {
   id: number;
@@ -8,4 +9,6 @@ export interface Store {
   logo: string;
 
   branches?: Branch[];
+
+  landingPages?: ILandingPage[];
 }

@@ -75,11 +75,6 @@ const ToppingListTable: React.FC<any> = ({
       })
     );
 
-    console.log(
-      "Toppings después de mover y eliminar duplicados: ",
-      reorderedToppings
-    );
-
     // Actualizar el estado de formik
     formik.setValues((prevValues: any) => {
       const updatedCategory = {

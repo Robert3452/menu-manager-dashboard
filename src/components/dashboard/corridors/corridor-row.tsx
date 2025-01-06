@@ -83,7 +83,7 @@ const CorridorRow: React.FC<CorridorRowProps> = (props) => {
       const response = await dispatch(deleteRow(row.id));
       toast.success(response.message);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Something went wrong.");
     }
   };
@@ -93,7 +93,7 @@ const CorridorRow: React.FC<CorridorRowProps> = (props) => {
       const response = await dispatch(clearRow(row.id));
       toast.success(response.message);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       toast.error("Something went wrong");
     }
   };

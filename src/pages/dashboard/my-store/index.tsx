@@ -1,11 +1,4 @@
-import {
-  Box,
-  Container,
-  Divider,
-  Tab,
-  Tabs,
-  Typography
-} from "@mui/material";
+import { Box, Container, Divider, Tab, Tabs, Typography } from "@mui/material";
 import Head from "next/head";
 import { ReactNode, useEffect, useState } from "react";
 import AddressBranchForm from "@/components/dashboard/branch/address-branch-form";
@@ -38,23 +31,13 @@ const StoreIndex = () => {
     if (branch) dispatch(getBranch(branch.id));
   }, [stores]);
   useEffect(() => {
-    // const currStore = stores.byId[stores.allIds[0]];
-    // if (currStore) setStore(currStore);
     const currTabs = tabsState;
 
-    // let indexFound = currTabs.findIndex((el) => el.label === "Branches");
     setTabsState(
-      currTabs
-        // .filter((el) => el.value !== "general")
-        .map((el) =>
-          el.value === "general"
-            ? el
-            : { ...el, disabled: !store ? true : false }
-        )
+      currTabs.map((el) =>
+        el.value === "general" ? el : { ...el, disabled: !store ? true : false }
+      )
     );
-    // if (indexFound < 0) return;
-    // currTabs[indexFound].disabled = !currStore ? true : false;
-    // setTabsState(currTabs);
   }, [stores]);
 
   const handleTabsChange = (event: any, value: any) => {
@@ -99,7 +82,6 @@ const StoreIndex = () => {
             <AddressBranchForm branchId={branch.id} />
           )}
           {currentTab === "schedule" && <ScheduleBranchForm />}
-          {/* {currentTab === "menu" && branch && <MenuBoard branch={branch} />} */}
         </Container>
       </Box>
     </>

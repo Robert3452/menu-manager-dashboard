@@ -12,7 +12,7 @@ class UbigeoApi {
       } = await httpClient.get("");
       return data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   async getProvincesByDepartmentCode(departmentCode: string) {

@@ -170,7 +170,7 @@ export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
       setDepartments(data);
       return data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setDepartments([]);
     }
   };
@@ -182,7 +182,7 @@ export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
       setProvinces(data);
       return data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setProvinces([]);
       setDistricts([]);
     }
@@ -196,7 +196,7 @@ export const AddressBranchForm: React.FC<AddressBranchFormProps> = (props) => {
       setDistricts(data);
       return data;
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setDistricts([]);
     }
   };
