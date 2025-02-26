@@ -44,14 +44,7 @@ type MenuCardModalProps = {
 };
 const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
   const { row, onClose, open } = props;
-  const [product, setProduct] = useState<Product | undefined | null>(
-    props?.card
-  );
-
-  useEffect(() => {
-    setProduct(props.card);
-  }, [props.card]);
-
+  const product = props.card;
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const moreRef = useRef<HTMLButtonElement>(null);
@@ -93,7 +86,7 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
           exclusive: true,
           name: "MandatoryField",
           message: "Categoría obligatoria, no puede ser menor a 1.",
-          test: ({ mandatory, minToppingsForCategory,index }) => {
+          test: ({ mandatory, minToppingsForCategory, index }) => {
             if (mandatory) return minToppingsForCategory > 0;
             return true;
           },
@@ -145,11 +138,12 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
                 product: { ...values, image: file || null },
               })
             );
+        
         toast.success(response.message);
 
         helpers.setStatus({ succses: true });
-
-        // onClose();
+        formik.resetForm();
+        onClose();
       } catch (error) {
         toast.error("Algo va mal.");
         helpers.setStatus({ success: false });
@@ -168,16 +162,12 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
   const handleChange = (event: any) => {
     const value = event.target.value;
     const field = event.target.name;
-
     const current = {
       ...productForm,
       [field]: value,
     };
     formik.setFieldValue(field, value);
     setProductForm(current);
-  };
-  const saveChanges = () => {
-    // formik.setValues(productForm);
   };
   const handleDeleteProduct = async () => {
     if (!product?.id) return;
@@ -193,8 +183,6 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
     reader.onload = () => {
       let result = reader.result;
       setProductImage(result);
-
-      // if (result instanceof Blob) setProductImage(result);
     };
     reader.readAsDataURL(event.target.files[0]);
     const uploadedFile = event.target.files[0];
@@ -254,7 +242,6 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
               pt={1}
             >
               <Typography
-                // color="grey.200"
                 sx={{
                   mb: 2,
                   mt: 2,
@@ -314,7 +301,6 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
                   label="Product Name"
                   value={productForm.name}
                   onChange={handleChange}
-                  onBlur={saveChanges}
                   name="name"
                 />
                 <TextField
@@ -341,7 +327,6 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
                   placeholder="0"
                   value={productForm.realPrice}
                   onChange={handleChange}
-                  onBlur={saveChanges}
                 />
               </Box>
             </Grid>

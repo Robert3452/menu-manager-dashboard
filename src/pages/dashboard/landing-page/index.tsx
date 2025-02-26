@@ -76,6 +76,7 @@ const LandingPage = () => {
     },
     onSubmit: async (values) => {
       try {
+        // console.log(values)
         await dispatch(upsertLandingPage(activeStoreId as number, values));
 
         toast.success("Página de presentación actualizada");
