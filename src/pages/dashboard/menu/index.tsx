@@ -11,7 +11,6 @@ const DashboardMenu = () => {
   const myStoreId = useAppSelector((state) => state.stores.activeStoreId);
   const [currentBranch, setCurrentBranch] = useState<Branch>();
   useEffect(() => {
-    // console.log(stores);
 
     if (!myStoreId) return;
     const branch = stores.byId[myStoreId]?.branches?.[0];

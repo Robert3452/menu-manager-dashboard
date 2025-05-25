@@ -144,7 +144,6 @@ export const upsertLandingPage =
       storeId,
       request
     );
-    console.log("running store");
     dispatch(
       slice.actions.updateStore({ landingPages: [landingPage] } as Store)
     );

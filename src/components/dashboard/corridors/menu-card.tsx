@@ -28,7 +28,7 @@ const MenuCard = forwardRef<HTMLDivElement, MenuCardProps>((props, ref) => {
   const { cardId, dragging, row, ...other } = props;
   // debugger
   const card = useAppSelector(({ menu }) => cardSelector(menu, cardId));
-
+  console.log("card", card);
   const [open, setOpen] = useState(false);
 
   const toggleOpen = () => {

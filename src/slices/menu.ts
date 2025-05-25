@@ -300,6 +300,7 @@ export const createProductCard =
 export const updateProductCard =
   ({ productId, product }: { productId: number; product: UpdateProductDto }) =>
   async (dispatch: Dispatch) => {
+    console.log("produt Dto: ", product);
     const response = await productsApi.updateProduct({
       productId,
       body: product,

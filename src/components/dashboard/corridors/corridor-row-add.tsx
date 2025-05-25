@@ -16,7 +16,7 @@ const CorridorRowAdd: React.FC<any> = (props) => {
   const activeStoreId =
     useAppSelector((state) => state.stores.activeStoreId) || 0;
   const storesById = useAppSelector((state) => state.stores.stores.byId);
-  const branchId = storesById[activeStoreId].branches?.[0].id || 0;
+  const branchId = storesById[activeStoreId]?.branches?.[0].id || 0;
 
   const validationSchema = Yup.object().shape({
     index: Yup.number(),

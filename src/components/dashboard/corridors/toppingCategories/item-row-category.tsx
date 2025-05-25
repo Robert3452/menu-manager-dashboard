@@ -73,6 +73,11 @@ const ItemRowCategory: React.FC<ItemRowCategoryProps> = ({
     remove: formik.values?.toppingCategories?.[index]?.remove,
   };
   const [categoryForm, setCategoryForm] = useState(currentCategory);
+  useEffect(() => {
+    if (category) {
+      setCategoryForm({ ...category });
+    }
+  }, [category]);
   const handleChange = (event: any) => {
     const value = event.target.value;
     const field = event.target.name.split(".").pop();

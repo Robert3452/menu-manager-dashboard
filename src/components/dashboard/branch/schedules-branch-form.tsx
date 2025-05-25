@@ -77,7 +77,6 @@ const ScheduleBranchForm = () => {
     },
   });
   const showErrors = () => {
-    console.log(formik.values);
     console.log(formik.errors);
   };
   return (

@@ -35,6 +35,7 @@ import { Corridor } from "@/api/models/corridor";
 import { Product } from "@/api/models/product";
 import { useAppDispatch } from "@/store";
 import { isEmptyObject } from "@/lib/object";
+import { CreateProductDto } from "@/api/product-api";
 
 type MenuCardModalProps = {
   row: Corridor;
@@ -43,8 +44,8 @@ type MenuCardModalProps = {
   card?: Product;
 };
 const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
-  const { row, onClose, open } = props;
-  const product = props.card;
+  const { row, onClose, open, card: product } = props;
+  // const product = props.card;
   const theme = useTheme();
   const dispatch = useAppDispatch();
   const moreRef = useRef<HTMLButtonElement>(null);
@@ -107,22 +108,7 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
   });
   const formik = useFormik({
     validationSchema,
-    initialValues: {
-      id: product?.id,
-      name: product?.name || "",
-      content: product?.content || "",
-      image: product?.image,
-      index: product?.index || 0,
-      realPrice: product?.realPrice || 0,
-      corridorId: row?.id || 0,
-      toppingCategories: !product?.toppingCategories
-        ? []
-        : product?.toppingCategories.map((el) => ({
-            ...el,
-            key: uuidv4(),
-            toppings: el.toppings.map((el) => ({ ...el, key: uuidv4() })),
-          })),
-    },
+    initialValues: product || ({} as Product),
 
     onSubmit: async (values, helpers) => {
       try {
@@ -135,10 +121,10 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
             )
           : await dispatch(
               createProductCard({
-                product: { ...values, image: file || null },
+                product: { ...values, image: file || null } as CreateProductDto,
               })
             );
-        
+
         toast.success(response.message);
 
         helpers.setStatus({ succses: true });
@@ -193,6 +179,26 @@ const MenuCardModal: React.FC<MenuCardModalProps> = (props) => {
   const toggleMenu = () => {
     setOpenMenu(!openMenu);
   };
+  useEffect(() => {
+    if (product) {
+      formik.setValues({
+        id: product?.id,
+        name: product?.name || "",
+        content: product?.content || "",
+        image: product?.image,
+        index: product?.index || 0,
+        realPrice: product?.realPrice || 0,
+        corridorId: row?.id || 0,
+        toppingCategories: !product?.toppingCategories
+          ? []
+          : product?.toppingCategories.map((el) => ({
+              ...el,
+              key: uuidv4(),
+              toppings: el.toppings.map((el) => ({ ...el, key: uuidv4() })),
+            })),
+      });
+    }
+  }, [product]);
   useEffect(() => {
     console.log(formik.errors);
     // if (Array.isArray(formik.errors.toppingCategories)) {

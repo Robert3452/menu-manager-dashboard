@@ -93,7 +93,6 @@ const WeekdayTable: React.FC<WeekdayTableProps> = (props) => {
       }
       setWeekdays(branchSchedules.sort((a, b) => a.id + b.id));
       if (formik.values.weekdaySchedules.length > 0) {
-        // console.log(formik.values.weekdaySchedules)
         formik.values.weekdaySchedules.foreach((_: any) => arrayHelpers.pop());
       }
       branchSchedules.forEach((item, index) => {

@@ -41,14 +41,12 @@ const LandingPage = () => {
       dispatch(getLandingPage(activeStoreId));
   }, [activeStoreId]);
   useEffect(() => {
-    console.log("landing page", landingPage);
     if (landingPage) {
       formik.setValues({ ...landingPage } as any);
       setLandingImage(landingPage.image);
     }
   }, [landingPage]);
   useEffect(() => {
-    console.log("active store id: ", activeStoreId);
   }, [activeStoreId]);
 
   const [landingImage, setLandingImage] = useState<any>(landingPage?.image);
@@ -76,7 +74,6 @@ const LandingPage = () => {
     },
     onSubmit: async (values) => {
       try {
-        // console.log(values)
         await dispatch(upsertLandingPage(activeStoreId as number, values));
 
         toast.success("Página de presentación actualizada");

@@ -10,7 +10,7 @@ export interface ToppingsCategory {
   maxToppingsForCategory: number;
   toppingType: ToppingType;
   index: number;
-  product: Product;
+  product?: Product;
   productId: number;
   toppings: Topping[];
 }
